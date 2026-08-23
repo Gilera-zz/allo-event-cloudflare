@@ -256,10 +256,11 @@ function Index() {
           </div>
         </section>
 
-        <section id="partners" className="allo-light-section py-20 md:py-24">
+        <section id="partners" className="allo-light-section allo-partners-section py-16 md:py-20">
           <div className="mx-auto max-w-[1180px] px-5 md:px-8">
             <div className="allo-partners-heading">
               <SectionHeading eyebrow={t.partners.kicker} title={t.partners.title} dark={false} centered />
+              <p className="allo-partners-intro">{t.partners.description}</p>
             </div>
             <div className="allo-partners-grid mt-10 grid gap-5 md:grid-cols-2">
               <PartnerCard
@@ -268,6 +269,7 @@ function Index() {
                 logoAlt="Nessim Fair Support"
                 title={t.partners.nessim_header}
                 description={t.partners.nessim_desc}
+                ctaLabel={t.partners.nessim_cta}
                 variant="nessim"
               />
               <PartnerCard
@@ -277,6 +279,7 @@ function Index() {
                 logoAlt="WorkMan Event"
                 title={t.partners.workman_header}
                 description={t.partners.workman_desc}
+                ctaLabel={t.partners.workman_cta}
                 variant="workman"
               />
             </div>
@@ -395,6 +398,7 @@ function PartnerCard({
   logoAlt,
   title,
   description,
+  ctaLabel,
   variant,
 }: {
   href: string;
@@ -403,6 +407,7 @@ function PartnerCard({
   logoAlt: string;
   title: string;
   description: string;
+  ctaLabel: string;
   variant: "nessim" | "workman";
 }) {
   return (
@@ -424,7 +429,7 @@ function PartnerCard({
       <div className="allo-partner-copy-stack">
         <h3 className="allo-card-title text-center text-base font-extrabold">{title}</h3>
         <p className="allo-card-copy mx-auto mt-3 text-center text-sm leading-relaxed">{description}</p>
-        <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+        <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{ctaLabel}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
       </div>
     </a>
   );

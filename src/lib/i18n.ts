@@ -55,14 +55,17 @@ export const translations = {
       ],
     },
     partners: {
-      kicker: "EXKLUSIVT NÄTVERK",
-      title: "Våra Samarbetspartners",
+      kicker: "PARTNERS",
+      title: "Samarbetspartners",
+      description: "Vi arbetar med specialister som kompletterar våra egna resurser och stärker leveransen från planering till genomförande.",
       nessim_header: "NESSIM FAIR SUPPORT",
       nessim_desc:
         "Marknadsledande inom eventmattor och golvlösningar för tillfälliga behov. Med egna lager i Stockholm, Göteborg och Jönköping garanterar Nessim ett oslagbart utbud och snabba leveranser – alltid med fokus på kvalitet och service, oavsett om du behöver bara mattan eller fullständig läggning.",
       workman_header: "WorkMan EVENT",
       workman_desc:
         "Sveriges ledande helhetspartner för mässor, utställningar och event. Med över två decennier av erfarenhet, eget snickeri och grafikproduktion samt ett enormt utbud av uthyrningsmöbler, levererar WorkMan nyckelfärdiga projekt med trygghet och kreativitet i fokus över hela Norden.",
+      nessim_cta: "Besök Nessim",
+      workman_cta: "Besök WorkMan",
     },
     contact: {
       tag: "Kontakt",
@@ -197,14 +200,17 @@ export const translations = {
       ],
     },
     partners: {
-      kicker: "EXCLUSIVE NETWORK",
-      title: "Our Partners",
+      kicker: "PARTNERS",
+      title: "Partners",
+      description: "We work with specialists who complement our own capabilities and strengthen delivery from planning through execution.",
       nessim_header: "NESSIM FAIR SUPPORT",
       nessim_desc:
         "Market leader in event carpets and flooring solutions for temporary needs. With local warehouses in Stockholm, Gothenburg, and Jönköping, Nessim guarantees an unbeatable range and fast deliveries – always focusing on quality and service.",
       workman_header: "WorkMan EVENT",
       workman_desc:
         "Sweden's leading full-service partner for fairs, exhibitions, and events. With over two decades of experience, in-house production, and a massive range of rental furniture, WorkMan delivers turnkey projects with reliability and creativity across the Nordics.",
+      nessim_cta: "Visit Nessim",
+      workman_cta: "Visit WorkMan",
     },
     contact: {
       tag: "Contact",

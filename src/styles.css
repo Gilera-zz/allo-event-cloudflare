@@ -1296,3 +1296,134 @@
     min-height: 0;
   }
 }
+
+/* V3.5 partner editorial polish -------------------------------------------------
+   Tighter, calmer, more Scandinavian: one-line title on desktop, short context,
+   stronger body readability and a cleaner two-column rhythm. */
+.allo-partners-section {
+  border-top: 1px solid var(--allo-border);
+}
+.allo-partners-heading {
+  display: block;
+  text-align: center;
+}
+.allo-partners-heading .allo-section-title {
+  max-width: none;
+  margin-inline: auto;
+  font-size: clamp(2.7rem, 4.7vw, 4.35rem);
+  line-height: .96;
+  letter-spacing: -.052em !important;
+  text-wrap: balance;
+}
+.allo-partners-intro {
+  max-width: 680px;
+  margin: 22px auto 0;
+  color: var(--allo-muted);
+  font-size: 15px;
+  line-height: 1.75;
+  text-align: center;
+}
+.allo-partners-grid {
+  gap: 0;
+  border-bottom: 1px solid var(--allo-border);
+}
+.allo-partner-card {
+  border-top: 0;
+  padding-bottom: 34px;
+}
+.allo-partner-card:hover {
+  border-top-color: transparent;
+}
+.allo-partner-logo-zone {
+  margin-bottom: 30px;
+  border-top: 1px solid var(--allo-border-strong);
+  border-bottom: 1px solid var(--allo-border);
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.allo-partner-copy-stack {
+  width: min(100%, 460px);
+  min-height: 236px;
+}
+.allo-partner-copy-stack .allo-card-title {
+  min-height: 2.5em;
+  font-size: 15px;
+  letter-spacing: -.02em !important;
+}
+.allo-partner-copy-stack .allo-card-copy {
+  max-width: 440px;
+  min-height: 8.2em;
+  font-size: 15px;
+  line-height: 1.72;
+}
+.allo-partner-copy-stack .allo-card-link {
+  min-height: auto;
+  margin-top: auto;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--allo-border-strong);
+  color: var(--allo-text) !important;
+  font-size: 11px;
+  letter-spacing: .04em;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+.allo-partner-card:hover .allo-card-link {
+  opacity: .72;
+  border-color: var(--allo-text);
+}
+@media (min-width: 768px) {
+  .allo-partners-heading .allo-section-title {
+    white-space: nowrap;
+  }
+  .allo-partner-card:first-child {
+    padding-right: 30px;
+  }
+  .allo-partner-card:last-child {
+    padding-left: 30px;
+    border-left: 1px solid var(--allo-border);
+  }
+}
+@media (max-width: 767px) {
+  .allo-partners-section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+  .allo-partners-heading .allo-section-title {
+    max-width: 10ch;
+    font-size: clamp(2.65rem, 13vw, 4rem);
+    white-space: normal;
+  }
+  .allo-partners-intro {
+    max-width: 34rem;
+    margin-top: 18px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .allo-partners-grid {
+    margin-top: 34px !important;
+    border-bottom: 0;
+  }
+  .allo-partner-card {
+    padding-bottom: 32px;
+  }
+  .allo-partner-card + .allo-partner-card {
+    margin-top: 6px;
+  }
+  .allo-partner-logo-zone {
+    margin-bottom: 24px;
+  }
+  .allo-partner-copy-stack {
+    width: min(100%, 390px);
+    min-height: auto;
+  }
+  .allo-partner-copy-stack .allo-card-title,
+  .allo-partner-copy-stack .allo-card-copy {
+    min-height: 0;
+  }
+  .allo-partner-copy-stack .allo-card-copy {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .allo-partner-copy-stack .allo-card-link {
+    margin-top: 20px;
+  }
+}
