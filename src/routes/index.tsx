@@ -262,19 +262,20 @@ function Index() {
             <div className="mt-10 grid gap-5 md:grid-cols-2">
               <PartnerCard
                 href="https://www.nessim.se"
-                logoSrc="/images/partners/nessim-logo-display.png"
+                logoSrc="/images/partners/nessim-logo-cropped.png"
                 logoAlt="Nessim Fair Support"
                 title={t.partners.nessim_header}
                 description={t.partners.nessim_desc}
-                brand="nessim"
+                variant="nessim"
               />
               <PartnerCard
                 href="https://www.workman.se"
                 logoSrc="/images/partners/workman-logo.png"
+                logoDarkSrc="/images/partners/workman-logo-white.png"
                 logoAlt="WorkMan Event"
                 title={t.partners.workman_header}
                 description={t.partners.workman_desc}
-                brand="workman"
+                variant="workman"
               />
             </div>
           </div>
@@ -385,16 +386,41 @@ function ProofItem({ icon: Icon, title, body }: { icon: typeof Users; title: str
   );
 }
 
-function PartnerCard({ href, logoSrc, logoAlt, title, description, brand }: { href: string; logoSrc: string; logoAlt: string; title: string; description: string; brand: "nessim" | "workman" }) {
+function PartnerCard({
+  href,
+  logoSrc,
+  logoDarkSrc,
+  logoAlt,
+  title,
+  description,
+  variant,
+}: {
+  href: string;
+  logoSrc: string;
+  logoDarkSrc?: string;
+  logoAlt: string;
+  title: string;
+  description: string;
+  variant: "nessim" | "workman";
+}) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`allo-partner-card allo-partner-card-${brand} group`}>
-      <div className="allo-partner-logo-stage">
-        <img src={logoSrc} alt={logoAlt} className={`allo-partner-logo allo-partner-logo-${brand}`} />
+    <a href={href} target="_blank" rel="noopener noreferrer" className="allo-partner-card group">
+      <div className="allo-partner-logo-zone">
+        <img
+          src={logoSrc}
+          alt={logoAlt}
+          className={`allo-partner-logo allo-partner-logo--${variant} ${logoDarkSrc ? "allo-logo-light-only" : ""}`}
+        />
+        {logoDarkSrc ? (
+          <img
+            src={logoDarkSrc}
+            alt={logoAlt}
+            className={`allo-partner-logo allo-partner-logo--${variant} allo-logo-dark-only`}
+          />
+        ) : null}
       </div>
-      <div className="allo-partner-copy">
-        <h3 className="allo-card-title text-center text-base font-extrabold">{title}</h3>
-        <p className="allo-card-copy mx-auto mt-3 max-w-md text-center text-sm leading-relaxed">{description}</p>
-      </div>
+      <h3 className="allo-card-title mt-6 text-center text-base font-extrabold">{title}</h3>
+      <p className="allo-card-copy mx-auto mt-3 max-w-md text-center text-sm leading-relaxed">{description}</p>
       <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
     </a>
   );
