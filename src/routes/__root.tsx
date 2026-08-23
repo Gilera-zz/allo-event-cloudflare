@@ -80,6 +80,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Allo Event" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "color-scheme", content: "light dark" },
+      { name: "theme-color", content: "#f2f2ef" },
     ],
     links: [
       {
@@ -89,17 +91,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       {
+        // Apply the saved/system theme before React hydrates to avoid a flash
+        // of the wrong theme. Missing storage intentionally means "system".
+        children: `(function(){try{var s=localStorage.getItem("allo-theme");var p=(s==="light"||s==="dark")?s:"system";var d=p==="dark"||(p==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);var r=document.documentElement;r.classList.toggle("dark",d);r.dataset.theme=d?"dark":"light";r.dataset.themePreference=p;r.style.colorScheme=d?"dark":"light";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",d?"#050505":"#f2f2ef");}catch(e){}})();`,
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Allo Event AB",
-          url: "https://hello-landing-world-30.lovable.app",
+          url: "https://alloevent.se",
           address: {
             "@type": "PostalAddress",
-            streetAddress: "Bjursätragatan 77",
-            postalCode: "124 63",
-            addressLocality: "Bandhagen",
+            streetAddress: "Surbrunnsgatan 30",
+            postalCode: "113 27",
+            addressLocality: "Stockholm",
             addressCountry: "SE",
           },
         }),
@@ -114,7 +121,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="sv" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

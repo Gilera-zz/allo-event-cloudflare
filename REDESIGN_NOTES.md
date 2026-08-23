@@ -41,3 +41,18 @@ The source ZIP did not include `node_modules`. Run the normal dependency install
 - Reworked buttons, service blocks, partner blocks and panels toward flatter editorial geometry instead of rounded SaaS cards.
 - Added subtle architectural grid treatment to dark sections and a monochrome fallback for the hero / 3D builder.
 - Existing project imagery remains dynamic, but is visually toned to fit the monochrome direction.
+
+## V3 — Adaptive monochrome theme
+
+- Theme preference now supports `system`, `light`, and `dark`.
+- New visitors follow `prefers-color-scheme` automatically.
+- System mode reacts live if the OS/browser theme changes while the site is open.
+- Manual light/dark choices are persisted in `localStorage`; choosing System removes the override.
+- An inline pre-hydration theme bootstrap prevents a flash of the wrong theme.
+- Native controls receive the matching `color-scheme`.
+- Public theme controls are available on desktop and mobile.
+- Added reduced-motion handling for accessibility.
+- Added a new "Så arbetar vi / How we work" four-step section instead of adding invented statistics.
+- Public sections use semantic monochrome design tokens so both themes stay visually consistent.
+- Hero and proof strip intentionally remain dark visual anchors; the rest of the public page adapts.
+- Cloudflare/Wrangler deployment configuration is unchanged.

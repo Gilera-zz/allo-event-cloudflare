@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Check,
   ChevronRight,
+  ClipboardList,
   Cuboid,
   Hammer,
   LayoutDashboard,
@@ -76,7 +77,7 @@ function Index() {
   const [lang, setLang] = useState<Lang>("sv");
   const [bemanningOpen, setBemanningOpen] = useState(false);
   const [heroImage, setHeroImage] = useState<string | null>(null);
-  const { theme, toggleTheme } = useTheme();
+  const { theme, preference, setTheme } = useTheme();
   const { isAdmin, loading } = useAuth();
 
   useEffect(() => {
@@ -112,7 +113,7 @@ function Index() {
 
   return (
     <div id="top" className="allo-site min-h-screen bg-background text-foreground">
-      <SiteHeader lang={lang} setLang={setLangPersist} theme={theme} toggleTheme={toggleTheme} t={t} />
+      <SiteHeader lang={lang} setLang={setLangPersist} theme={theme} preference={preference} setTheme={setTheme} t={t} />
 
       {!loading && isAdmin && (
         <Link to="/admin" className="allo-admin-fab">
@@ -165,6 +166,21 @@ function Index() {
           </div>
         </section>
 
+        <section className="allo-process-section py-20 md:py-24">
+          <div className="mx-auto max-w-[1380px] px-5 md:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
+              <SectionHeading eyebrow={copy.processEyebrow} title={copy.processTitle} dark={false} />
+              <p className="allo-section-lead max-w-2xl text-base leading-relaxed md:text-lg">{copy.processBody}</p>
+            </div>
+            <div className="allo-process-grid mt-12 grid md:grid-cols-4">
+              <ProcessStep number="01" icon={ClipboardList} title={copy.process1Title} body={copy.process1Body} />
+              <ProcessStep number="02" icon={CalendarDays} title={copy.process2Title} body={copy.process2Body} />
+              <ProcessStep number="03" icon={Hammer} title={copy.process3Title} body={copy.process3Body} />
+              <ProcessStep number="04" icon={PackageCheck} title={copy.process4Title} body={copy.process4Body} />
+            </div>
+          </div>
+        </section>
+
         <Dialog open={bemanningOpen} onOpenChange={setBemanningOpen}>
           <DialogContent className="max-w-lg allo-dialog">
             <DialogHeader>
@@ -189,12 +205,12 @@ function Index() {
           <div className="mx-auto grid max-w-[1380px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[0.78fr_1.22fr]">
             <div>
               <span className="allo-section-kicker">{copy.builderKicker}</span>
-              <h2 className="allo-section-title mt-3 text-[#111218]">{copy.builderTitle}</h2>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-[#565966] md:text-lg">{t.about.techDesc}</p>
-              <ul className="mt-7 grid gap-3 text-sm text-[#272934] sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <h2 className="allo-section-title allo-theme-heading mt-3">{copy.builderTitle}</h2>
+              <p className="allo-theme-muted mt-5 max-w-xl text-base leading-relaxed md:text-lg">{t.about.techDesc}</p>
+              <ul className="allo-theme-copy mt-7 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {t.showcase.bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-2.5">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full border border-[#181818]/15 bg-[#181818] text-white"><Check className="h-3.5 w-3.5" /></span>
+                    <span className="allo-check-dot flex h-6 w-6 items-center justify-center rounded-full"><Check className="h-3.5 w-3.5" /></span>
                     {bullet}
                   </li>
                 ))}
@@ -324,8 +340,8 @@ function Index() {
 function SectionHeading({ eyebrow, title, dark, centered = false }: { eyebrow: string; title: string; dark: boolean; centered?: boolean }) {
   return (
     <div className={centered ? "text-center" : ""}>
-      <span className={`allo-section-kicker ${dark ? "text-white/55" : "text-[#151515]/55"}`}>{eyebrow}</span>
-      <h2 className={`allo-section-title mt-3 ${dark ? "text-white" : "text-[#111218]"}`}>{title}</h2>
+      <span className={`allo-section-kicker ${dark ? "allo-section-kicker-dark" : ""}`}>{eyebrow}</span>
+      <h2 className={`allo-section-title allo-theme-heading mt-3 ${dark ? "allo-theme-heading-dark" : ""}`}>{title}</h2>
     </div>
   );
 }
@@ -335,15 +351,28 @@ function ServiceCard({ id, icon: Icon, title, description, href, external, onCli
     <>
       <div className="flex items-start justify-between gap-4">
         <span className="allo-service-icon"><Icon className="h-6 w-6" /></span>
-        <ChevronRight className="h-5 w-5 text-[#151515]/30 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#151515]" />
+        <ChevronRight className="allo-service-arrow h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
       </div>
-      <h3 className="mt-8 text-lg font-extrabold text-[#171820]">{title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-[#666977]">{description}</p>
+      <h3 className="allo-card-title mt-8 text-lg font-extrabold">{title}</h3>
+      <p className="allo-card-copy mt-3 text-sm leading-relaxed">{description}</p>
     </>
   );
   const className = "group allo-service-card scroll-mt-28";
   if (onClick) return <button id={id} type="button" onClick={onClick} className={`${className} text-left`}>{content}</button>;
   return <a id={id} href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>{content}</a>;
+}
+
+function ProcessStep({ number, icon: Icon, title, body }: { number: string; icon: typeof Users; title: string; body: string }) {
+  return (
+    <div className="allo-process-step">
+      <div className="flex items-center justify-between gap-4">
+        <span className="allo-process-number">{number}</span>
+        <Icon className="allo-process-icon h-5 w-5" />
+      </div>
+      <h3 className="allo-process-title mt-10 text-xl font-bold">{title}</h3>
+      <p className="allo-process-body mt-3 text-sm leading-relaxed">{body}</p>
+    </div>
+  );
 }
 
 function ProofItem({ icon: Icon, title, body }: { icon: typeof Users; title: string; body: string }) {
@@ -361,9 +390,9 @@ function PartnerCard({ href, logoSrc, logoAlt, title, description, workman }: { 
       <div className="flex min-h-24 items-center justify-center border-b border-[#151824]/8 pb-7">
         <img src={logoSrc} alt={logoAlt} className={`max-h-16 max-w-[220px] object-contain ${workman ? "" : ""}`} />
       </div>
-      <h3 className="mt-6 text-center text-base font-extrabold text-[#171820]">{title}</h3>
-      <p className="mx-auto mt-3 max-w-md text-center text-sm leading-relaxed text-[#686b78]">{description}</p>
-      <span className="mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold text-[#151515]/60">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+      <h3 className="allo-card-title mt-6 text-center text-base font-extrabold">{title}</h3>
+      <p className="allo-card-copy mx-auto mt-3 max-w-md text-center text-sm leading-relaxed">{description}</p>
+      <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
     </a>
   );
 }
@@ -456,6 +485,17 @@ const svCopy = {
   expoBody: "Monterplanering, byggnation och digital 3D-visualisering för en smidigare mässleverans.",
   logisticsTitle: "Rigg & Logistik",
   logisticsBody: "Inbärning, utbärning, montage, rivning, transport och stagehands när allt måste fungera i tid.",
+  processEyebrow: "Så arbetar vi",
+  processTitle: "En tydlig väg från brief till leverans",
+  processBody: "Event blir bättre när ansvar, timing och nästa steg är tydliga. Därför arbetar vi i ett enkelt flöde som binder ihop kund, produktion, personal och logistik.",
+  process1Title: "Brief & behov",
+  process1Body: "Vi sätter mål, omfattning, datum och vad som faktiskt behöver lösas.",
+  process2Title: "Planering",
+  process2Body: "Team, tidsplan, material, logistik och ansvar samlas i en gemensam leveransplan.",
+  process3Title: "Produktion",
+  process3Body: "Vi bygger, bemannar, riggar och driver genomförandet på plats.",
+  process4Title: "Leverans & avslut",
+  process4Body: "Vi följer upp, river, lastar ut och ser till att projektet stängs ordentligt.",
   builderKicker: "Digital monterplanering",
   builderTitle: "Bygg din monter innan den finns",
   proof1Title: "Helhetsleverans",
@@ -489,6 +529,17 @@ const enCopy = {
   expoBody: "Booth planning, construction and digital 3D visualization for a smoother exhibition delivery.",
   logisticsTitle: "Rigging & Logistics",
   logisticsBody: "Load-in, load-out, assembly, dismantling, transport and stagehands when timing matters.",
+  processEyebrow: "How we work",
+  processTitle: "A clear path from brief to delivery",
+  processBody: "Events work better when ownership, timing and next steps are clear. Our process connects the client, production, staffing and logistics in one delivery flow.",
+  process1Title: "Brief & needs",
+  process1Body: "We define the goal, scope, dates and what actually needs to be solved.",
+  process2Title: "Planning",
+  process2Body: "Team, timeline, material, logistics and responsibilities are brought into one delivery plan.",
+  process3Title: "Production",
+  process3Body: "We build, staff, rig and run the execution on site.",
+  process4Title: "Handover & close",
+  process4Body: "We follow up, dismantle, load out and make sure the project is properly closed.",
   builderKicker: "Digital booth planning",
   builderTitle: "Build your booth before it exists",
   proof1Title: "End-to-end delivery",

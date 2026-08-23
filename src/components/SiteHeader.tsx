@@ -3,19 +3,21 @@ import { ChevronDown, Globe, Menu, UserRound, X } from "lucide-react";
 import logo from "@/assets/allo-logo.png";
 import type { Lang } from "@/lib/i18n";
 import { ThemeToggle } from "./ThemeToggle";
+import type { Theme, ThemePreference } from "@/hooks/use-theme";
 
 interface Props {
   lang: Lang;
   setLang: (l: Lang) => void;
-  theme: "light" | "dark";
-  toggleTheme: () => void;
+  theme: Theme;
+  preference: ThemePreference;
+  setTheme: (theme: ThemePreference) => void;
   t: any;
 }
 
 const BUILDER_URL = "https://verktyg.alloevent.se";
 const PORTAL_URL = "https://personal.alloevent.se";
 
-export function SiteHeader({ lang, setLang, theme, toggleTheme }: Props) {
+export function SiteHeader({ lang, setLang, theme, preference, setTheme }: Props) {
   const [open, setOpen] = useState(false);
   const sv = lang === "sv";
 
@@ -72,7 +74,7 @@ export function SiteHeader({ lang, setLang, theme, toggleTheme }: Props) {
             <Globe className="h-4 w-4" />
             <span className="text-[11px] font-bold">{lang.toUpperCase()}</span>
           </button>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <ThemeToggle theme={theme} preference={preference} setTheme={setTheme} lang={lang} />
           <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer" className="allo-header-jobs">
             <UserRound className="h-4 w-4" />
             {labels.jobs}
@@ -101,6 +103,17 @@ export function SiteHeader({ lang, setLang, theme, toggleTheme }: Props) {
             <a onClick={() => setOpen(false)} href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="allo-mobile-link">{labels.builder}</a>
             <a onClick={() => setOpen(false)} href="#about" className="allo-mobile-link">{labels.about}</a>
             <a onClick={() => setOpen(false)} href="#contact" className="allo-mobile-link">{labels.contact}</a>
+            <div className="mt-4 flex items-center justify-between gap-3 border-b border-current/10 pb-4">
+              <button
+                onClick={() => setLang(lang === "sv" ? "en" : "sv")}
+                className="allo-header-icon"
+                aria-label="Byt språk"
+              >
+                <Globe className="h-4 w-4" />
+                <span className="text-[11px] font-bold">{lang.toUpperCase()}</span>
+              </button>
+              <ThemeToggle theme={theme} preference={preference} setTheme={setTheme} lang={lang} />
+            </div>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer" className="allo-secondary-button justify-center">{labels.jobs}</a>
               <a onClick={() => setOpen(false)} href="#booking" className="allo-primary-button justify-center">{labels.start}</a>

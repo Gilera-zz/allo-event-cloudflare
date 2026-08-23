@@ -729,3 +729,393 @@
   .allo-display { font-size: clamp(3.7rem, 18vw, 5.9rem); }
   .allo-service-card { min-height: 215px; }
 }
+
+/* Allo Event — V3 adaptive monochrome theme ----------------------------------
+   New visitors follow prefers-color-scheme. A manual choice is persisted by
+   use-theme.tsx. Public-site styles below intentionally use only neutral tones. */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+.allo-site {
+  --allo-bg: #f2f2ef;
+  --allo-bg-soft: #e9e9e5;
+  --allo-surface: #fafaf8;
+  --allo-surface-2: #ffffff;
+  --allo-text: #0a0a0a;
+  --allo-muted: rgba(10, 10, 10, 0.58);
+  --allo-faint: rgba(10, 10, 10, 0.38);
+  --allo-border: rgba(10, 10, 10, 0.14);
+  --allo-border-strong: rgba(10, 10, 10, 0.28);
+  --allo-inverse-bg: #050505;
+  --allo-inverse-text: #f7f7f4;
+  --allo-header-bg: rgba(242, 242, 239, 0.88);
+  --allo-shadow: 0 24px 70px rgba(0, 0, 0, 0.08);
+  --allo-grid: rgba(10, 10, 10, 0.035);
+  --background: #f2f2ef;
+  --foreground: #0a0a0a;
+  --surface: rgba(10, 10, 10, 0.035);
+  --surface-line: rgba(10, 10, 10, 0.14);
+  --muted-foreground: #666662;
+  --card: rgba(255,255,255,.9);
+  --gold: #111111;
+  --gold-soft: #111111;
+  --gold-surface: rgba(10,10,10,.055);
+  --gold-line: rgba(10,10,10,.18);
+  background: var(--allo-bg);
+  color: var(--allo-text);
+  transition: background-color .28s ease, color .28s ease;
+}
+
+.dark .allo-site {
+  --allo-bg: #050505;
+  --allo-bg-soft: #0a0a0a;
+  --allo-surface: #0d0d0d;
+  --allo-surface-2: #121212;
+  --allo-text: #f5f5f2;
+  --allo-muted: rgba(245, 245, 242, 0.60);
+  --allo-faint: rgba(245, 245, 242, 0.40);
+  --allo-border: rgba(255, 255, 255, 0.12);
+  --allo-border-strong: rgba(255, 255, 255, 0.24);
+  --allo-inverse-bg: #f4f4f1;
+  --allo-inverse-text: #070707;
+  --allo-header-bg: rgba(5, 5, 5, 0.88);
+  --allo-shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+  --allo-grid: rgba(255, 255, 255, 0.026);
+  --background: #050505;
+  --foreground: #f5f5f2;
+  --surface: rgba(255,255,255,.045);
+  --surface-line: rgba(255,255,255,.12);
+  --muted-foreground: #a1a19d;
+  --card: rgba(10,10,10,.94);
+  --gold: #f4f4f1;
+  --gold-soft: #ffffff;
+  --gold-surface: rgba(255,255,255,.055);
+  --gold-line: rgba(255,255,255,.18);
+}
+
+/* Header and navigation */
+.allo-header {
+  color: var(--allo-text);
+  border-bottom-color: var(--allo-border);
+  background: var(--allo-header-bg);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--allo-text) 6%, transparent);
+}
+.allo-header > div > a:first-child img {
+  filter: brightness(0);
+}
+.dark .allo-header > div > a:first-child img {
+  filter: brightness(0) invert(1);
+}
+.allo-nav-link,
+.allo-header-jobs {
+  color: var(--allo-muted);
+}
+.allo-nav-link:hover,
+.allo-header-jobs:hover,
+.allo-nav-link-active {
+  color: var(--allo-text);
+}
+.allo-nav-link-active::after {
+  background: var(--allo-text);
+}
+.allo-menu-card,
+.allo-mobile-menu,
+.allo-theme-menu {
+  color: var(--allo-text) !important;
+  border-color: var(--allo-border) !important;
+  background: color-mix(in srgb, var(--allo-surface-2) 96%, transparent) !important;
+  box-shadow: var(--allo-shadow) !important;
+}
+.allo-menu-item,
+.allo-mobile-link {
+  color: var(--allo-muted);
+}
+.allo-menu-item:hover,
+.allo-mobile-link:hover {
+  color: var(--allo-text);
+  background: color-mix(in srgb, var(--allo-text) 6%, transparent);
+}
+.allo-header-icon,
+.allo-header button[aria-label^="Tema"],
+.allo-header button[aria-label^="Theme"] {
+  color: var(--allo-muted);
+  border-color: var(--allo-border);
+  background: transparent;
+}
+.allo-header-icon:hover,
+.allo-header button[aria-label^="Tema"]:hover,
+.allo-header button[aria-label^="Theme"]:hover {
+  color: var(--allo-inverse-text);
+  background: var(--allo-inverse-bg);
+}
+.allo-theme-option {
+  color: var(--allo-muted) !important;
+  border-radius: 1px !important;
+  cursor: pointer !important;
+}
+.allo-theme-option:focus,
+.allo-theme-option[data-state="checked"] {
+  color: var(--allo-text) !important;
+  background: color-mix(in srgb, var(--allo-text) 7%, transparent) !important;
+}
+
+/* Buttons: dark ink in light mode, white ink in dark mode. Hero remains inverse. */
+.allo-primary-button {
+  border-color: var(--allo-text);
+  background: var(--allo-text);
+  color: var(--allo-bg);
+}
+.allo-primary-button:hover {
+  background: color-mix(in srgb, var(--allo-text) 92%, var(--allo-bg));
+  box-shadow: 0 12px 34px color-mix(in srgb, var(--allo-text) 10%, transparent);
+}
+.allo-secondary-button {
+  border-color: var(--allo-border-strong);
+  background: transparent;
+  color: var(--allo-text);
+}
+.allo-secondary-button:hover {
+  background: color-mix(in srgb, var(--allo-text) 6%, transparent);
+}
+.allo-hero .allo-primary-button {
+  border-color: #f4f4f1;
+  background: #f4f4f1;
+  color: #050505;
+}
+.allo-hero-secondary {
+  border-color: rgba(255,255,255,.28);
+  color: #fff;
+  background: rgba(255,255,255,.015);
+}
+
+/* Main neutral surfaces */
+.allo-light-section,
+.allo-process-section,
+.allo-dark-section,
+.allo-about-panel,
+.allo-booking-wrap,
+.allo-contact-section {
+  background: var(--allo-bg);
+  color: var(--allo-text);
+}
+.allo-process-section,
+.allo-dark-section,
+.allo-about-panel,
+.allo-contact-section {
+  border-top: 1px solid var(--allo-border);
+}
+.allo-about-panel {
+  background-image:
+    linear-gradient(var(--allo-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--allo-grid) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.allo-theme-heading,
+.allo-card-title,
+.allo-process-title {
+  color: var(--allo-text) !important;
+}
+.allo-theme-copy {
+  color: color-mix(in srgb, var(--allo-text) 82%, transparent) !important;
+}
+.allo-theme-muted,
+.allo-card-copy,
+.allo-card-link,
+.allo-section-lead,
+.allo-process-body {
+  color: var(--allo-muted) !important;
+}
+.allo-section-kicker {
+  color: var(--allo-faint) !important;
+}
+
+/* Services */
+.allo-service-card {
+  border-top-color: var(--allo-border);
+  color: var(--allo-text);
+}
+.allo-service-card:hover {
+  border-top-color: var(--allo-border-strong);
+}
+.allo-service-icon {
+  color: var(--allo-text);
+  border-color: var(--allo-border);
+}
+.allo-service-arrow {
+  color: var(--allo-faint);
+}
+.allo-service-card:hover .allo-service-arrow {
+  color: var(--allo-text);
+}
+
+/* Process — added in V3 to show delivery maturity without invented metrics. */
+.allo-process-grid {
+  border-top: 1px solid var(--allo-border-strong);
+  border-bottom: 1px solid var(--allo-border);
+}
+.allo-process-step {
+  min-height: 300px;
+  padding: 28px 24px 30px;
+  border-bottom: 1px solid var(--allo-border);
+}
+.allo-process-step:last-child { border-bottom: 0; }
+.allo-process-number {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  color: var(--allo-faint);
+}
+.allo-process-icon { color: var(--allo-text); }
+@media (min-width: 768px) {
+  .allo-process-step {
+    border-bottom: 0;
+    border-right: 1px solid var(--allo-border);
+  }
+  .allo-process-step:first-child { padding-left: 0; }
+  .allo-process-step:last-child { border-right: 0; padding-right: 0; }
+}
+
+/* Projects / cases */
+.allo-dark-section #projects > div:first-child > div:first-child > span,
+.allo-dark-section #projects p {
+  color: var(--allo-muted) !important;
+}
+.allo-dark-section #projects h2,
+.allo-dark-section #projects h3 {
+  color: var(--allo-text) !important;
+}
+.allo-dark-section #projects article {
+  border-color: var(--allo-border) !important;
+  background: var(--allo-surface) !important;
+  box-shadow: none !important;
+}
+.allo-dark-section #projects article:hover {
+  border-color: var(--allo-border-strong) !important;
+}
+
+/* Builder */
+.allo-check-dot {
+  border: 1px solid var(--allo-border-strong);
+  background: var(--allo-text);
+  color: var(--allo-bg);
+}
+.allo-builder-shell {
+  border-color: var(--allo-border-strong);
+  box-shadow: var(--allo-shadow);
+}
+
+/* About and contact cards now adapt instead of staying hard-coded black. */
+.allo-about-card,
+.allo-person-card,
+.allo-company-card {
+  color: var(--allo-text);
+  border-color: var(--allo-border);
+  background: color-mix(in srgb, var(--allo-text) 2%, transparent);
+}
+.allo-about-panel .text-white,
+.allo-contact-section .text-white {
+  color: var(--allo-text) !important;
+}
+.allo-about-panel .text-white\/76,
+.allo-about-panel .text-white\/70,
+.allo-about-panel .text-white\/60,
+.allo-about-panel .text-white\/55,
+.allo-contact-section .text-white\/70,
+.allo-contact-section .text-white\/62,
+.allo-contact-section .text-white\/60,
+.allo-contact-section .text-white\/55 {
+  color: var(--allo-muted) !important;
+}
+
+/* Partners keep real brand marks on a neutral plate for contrast in both themes. */
+.allo-partner-card {
+  border-top-color: var(--allo-border);
+  color: var(--allo-text);
+}
+.allo-partner-card:hover { border-top-color: var(--allo-border-strong); }
+.allo-partner-card > div:first-child {
+  margin-inline: -12px;
+  padding-inline: 20px;
+  border-color: var(--allo-border) !important;
+  background: #f5f5f2;
+}
+
+/* Booking form: remove V2's forced black surface and let semantic tokens work. */
+.allo-booking-wrap #booking {
+  background: var(--allo-bg) !important;
+}
+.allo-booking-wrap #booking > div > div > div:first-child,
+.allo-booking-wrap #booking form {
+  color: var(--allo-text) !important;
+  border-color: var(--allo-border) !important;
+  background: var(--allo-surface) !important;
+  box-shadow: none !important;
+}
+.allo-booking-wrap #booking input,
+.allo-booking-wrap #booking textarea,
+.allo-booking-wrap #booking select,
+.allo-booking-wrap #booking button[role="combobox"] {
+  color: var(--allo-text) !important;
+  border-color: var(--allo-border) !important;
+  background: color-mix(in srgb, var(--allo-text) 2.5%, transparent) !important;
+}
+
+/* Dialogs used from the public page also adapt. */
+.allo-dialog {
+  color: var(--allo-text) !important;
+  border-color: var(--allo-border) !important;
+  background: var(--allo-surface-2) !important;
+}
+.allo-role-chip {
+  color: var(--allo-muted);
+  border-color: var(--allo-border);
+  background: color-mix(in srgb, var(--allo-text) 4%, transparent);
+}
+
+/* Proof strip and hero are intentionally always dark: they act as visual anchors
+   in light mode and blend seamlessly into the dark theme. */
+.allo-proof-strip {
+  background: #050505;
+  color: #f5f5f2;
+}
+.allo-proof-strip .text-white { color: #fff !important; }
+
+/* Footer remains dark in both themes for a consistent close to the page. */
+.allo-footer {
+  background: #040404;
+  color: #fff;
+}
+.allo-footer img { filter: brightness(0) invert(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .allo-site *,
+  .allo-site *::before,
+  .allo-site *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Radix mounts the theme menu in a portal outside .allo-site, so it uses the
+   global semantic tokens rather than the public-site scoped variables. */
+.allo-theme-menu {
+  color: var(--popover-foreground) !important;
+  border-color: var(--border) !important;
+  background: var(--popover) !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.18) !important;
+}
+.allo-theme-menu .allo-theme-option {
+  color: var(--muted-foreground) !important;
+}
+.allo-theme-menu .allo-theme-option:focus,
+.allo-theme-menu .allo-theme-option[data-state="checked"] {
+  color: var(--foreground) !important;
+  background: var(--muted) !important;
+}
