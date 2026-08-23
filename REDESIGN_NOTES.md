@@ -32,3 +32,12 @@ This redesign updates the public landing page while leaving the existing applica
 ## Build note
 
 The source ZIP did not include `node_modules`. Run the normal dependency install (`npm install` or your existing package-manager workflow) before `npm run build` / `npm run dev`.
+
+## V2 — Monochrome Scandinavian / Futurist direction
+
+- Removed the purple visual language from the public homepage.
+- Shifted the public site to black, white, graphite and soft off-white only.
+- Kept the premium information architecture, Supabase projects/cases, booking logic, partners, portals and Cloudflare deployment unchanged.
+- Reworked buttons, service blocks, partner blocks and panels toward flatter editorial geometry instead of rounded SaaS cards.
+- Added subtle architectural grid treatment to dark sections and a monochrome fallback for the hero / 3D builder.
+- Existing project imagery remains dynamic, but is visually toned to fit the monochrome direction.

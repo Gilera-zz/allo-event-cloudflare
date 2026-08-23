@@ -487,3 +487,245 @@
   color: #fff;
   background: rgba(255,255,255,.07);
 }
+
+/* Allo Event — Monochrome Scandinavian / Futurist direction -------------------
+   Public-site overrides only. Admin/system styling keeps the existing tokens. */
+.allo-site {
+  --allo-purple: #ffffff;
+  --allo-purple-soft: rgba(255,255,255,.72);
+  --allo-ink: #080808;
+  --allo-panel: #0d0d0d;
+  --allo-paper: #f3f3f0;
+  --allo-line: rgba(255,255,255,.12);
+  --gold: #f4f4f2;
+  --gold-soft: #ffffff;
+  --gold-surface: rgba(255,255,255,.055);
+  --gold-line: rgba(255,255,255,.18);
+  --accent: #ffffff;
+  --ring: rgba(255,255,255,.58);
+  background: #050505;
+}
+
+.allo-header {
+  border-bottom-color: rgba(255,255,255,.11);
+  background: rgba(5,5,5,.86);
+  box-shadow: 0 1px 0 rgba(0,0,0,.55);
+}
+.allo-nav-link { color: rgba(255,255,255,.58); letter-spacing: .015em; }
+.allo-nav-link-active::after {
+  bottom: -27px;
+  height: 1px;
+  background: rgba(255,255,255,.9);
+  box-shadow: none;
+}
+.allo-menu-card,
+.allo-mobile-menu {
+  background: rgba(8,8,8,.98);
+  border-color: rgba(255,255,255,.12);
+  box-shadow: 0 24px 70px rgba(0,0,0,.6);
+}
+.allo-menu-item { border-radius: 2px; }
+.allo-menu-item:hover { background: rgba(255,255,255,.075); color: #fff; }
+
+.allo-header-icon {
+  border-radius: 2px;
+  border-color: rgba(255,255,255,.14);
+  background: transparent;
+}
+.allo-header-icon:hover { background: #fff; color: #050505; }
+.allo-header-jobs { color: rgba(255,255,255,.62); }
+
+.allo-primary-button,
+.allo-secondary-button,
+.allo-hero-secondary {
+  min-height: 48px;
+  border-radius: 2px;
+  padding-inline: 22px;
+  letter-spacing: .015em;
+}
+.allo-primary-button {
+  border: 1px solid #f4f4f2;
+  background: #f4f4f2;
+  color: #080808;
+  box-shadow: none;
+}
+.allo-primary-button:hover {
+  transform: translateY(-1px);
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(255,255,255,.08);
+}
+.allo-secondary-button,
+.allo-hero-secondary {
+  border-color: rgba(255,255,255,.26);
+  background: rgba(255,255,255,.01);
+  color: #fff;
+}
+.allo-secondary-button:hover,
+.allo-hero-secondary:hover { background: rgba(255,255,255,.065); }
+
+.allo-admin-fab {
+  border-radius: 2px;
+  border-color: rgba(255,255,255,.2);
+  background: #f5f5f3;
+  color: #050505;
+  box-shadow: 0 18px 50px rgba(0,0,0,.36);
+}
+
+.allo-hero { background: #050505; }
+.allo-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: .2;
+  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 84px 84px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+.allo-hero-overlay {
+  background:
+    linear-gradient(90deg, rgba(3,3,3,.97) 0%, rgba(3,3,3,.84) 34%, rgba(3,3,3,.38) 66%, rgba(3,3,3,.56) 100%),
+    linear-gradient(180deg, rgba(3,3,3,.06) 25%, rgba(3,3,3,.88) 100%);
+}
+.allo-eyebrow {
+  gap: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  color: rgba(255,255,255,.56);
+  letter-spacing: .22em;
+}
+.allo-eyebrow::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: rgba(255,255,255,.6);
+}
+.allo-display {
+  max-width: 1000px;
+  font-size: clamp(4.3rem, 9.2vw, 9rem);
+  line-height: .79;
+  letter-spacing: -.082em !important;
+  text-shadow: none;
+}
+
+.allo-light-section { background: #f2f2ef; color: #111; }
+.allo-dark-section { background: #070707; }
+.allo-section-kicker {
+  color: rgba(17,17,17,.55);
+  letter-spacing: .22em;
+}
+.allo-section-title { letter-spacing: -.048em !important; }
+
+.allo-service-card {
+  min-height: 285px;
+  border: 0;
+  border-top: 1px solid rgba(17,17,17,.20);
+  border-radius: 0;
+  background: transparent;
+  padding: 26px 4px 18px;
+  box-shadow: none;
+}
+.allo-service-card:hover {
+  transform: translateY(-2px);
+  border-color: #111;
+  box-shadow: none;
+}
+.allo-service-icon {
+  height: 50px;
+  width: 50px;
+  border: 1px solid rgba(17,17,17,.17);
+  border-radius: 50%;
+  background: transparent;
+  color: #111;
+}
+
+.allo-dialog {
+  background: #090909 !important;
+  border-color: rgba(255,255,255,.16) !important;
+  border-radius: 2px !important;
+}
+.allo-role-chip {
+  border-color: rgba(255,255,255,.18);
+  border-radius: 2px;
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.72);
+}
+
+.allo-dark-section #projects { max-width: 1380px; padding-top: 104px; padding-bottom: 110px; }
+.allo-dark-section #projects > div:first-child > div:first-child > span { color: rgba(255,255,255,.52) !important; }
+.allo-dark-section #projects p { color: rgba(255,255,255,.47) !important; }
+.allo-dark-section #projects article {
+  border-color: rgba(255,255,255,.13) !important;
+  border-radius: 2px !important;
+  background: #0b0b0b !important;
+  box-shadow: none !important;
+}
+.allo-dark-section #projects article:hover { border-color: rgba(255,255,255,.28) !important; }
+.allo-dark-section #projects article > div:first-child { height: 270px !important; filter: saturate(.72) contrast(1.04); }
+
+.allo-builder-shell {
+  border-color: rgba(15,15,15,.18);
+  border-radius: 2px;
+  background: #080808;
+  box-shadow: 0 34px 90px rgba(0,0,0,.20);
+}
+.allo-builder-topbar { background: #050505; }
+
+.allo-proof-strip { background: #050505; }
+.allo-about-panel {
+  background:
+    linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px),
+    #090909;
+  background-size: 72px 72px;
+}
+.allo-about-card {
+  border-color: rgba(255,255,255,.13);
+  border-radius: 2px;
+  background: rgba(255,255,255,.018);
+  padding: 30px;
+}
+
+.allo-partner-card {
+  border: 0;
+  border-top: 1px solid rgba(17,17,17,.18);
+  border-radius: 0;
+  background: transparent;
+  padding: 34px 12px 24px;
+  box-shadow: none;
+}
+.allo-partner-card:hover { transform: translateY(-2px); box-shadow: none; border-top-color: #111; }
+
+.allo-booking-wrap { background: #050505; }
+.allo-booking-wrap #booking { background: #050505 !important; padding-top: 108px !important; padding-bottom: 108px !important; }
+.allo-booking-wrap #booking > div > div > div:first-child,
+.allo-booking-wrap #booking form {
+  border-color: rgba(255,255,255,.14) !important;
+  border-radius: 2px !important;
+  background: #090909 !important;
+}
+.allo-booking-wrap #booking input,
+.allo-booking-wrap #booking textarea,
+.allo-booking-wrap #booking button[role="combobox"] {
+  border-radius: 1px !important;
+  border-color: rgba(255,255,255,.14) !important;
+  background: rgba(255,255,255,.018) !important;
+}
+
+.allo-contact-section { background: #0a0a0a; }
+.allo-person-card,
+.allo-company-card {
+  border-color: rgba(255,255,255,.13);
+  border-radius: 2px;
+  background: transparent;
+}
+.allo-footer { background: #040404; }
+
+@media (max-width: 767px) {
+  .allo-hero::after { background-size: 48px 48px; }
+  .allo-display { font-size: clamp(3.7rem, 18vw, 5.9rem); }
+  .allo-service-card { min-height: 215px; }
+}

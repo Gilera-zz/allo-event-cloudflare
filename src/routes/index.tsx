@@ -137,7 +137,7 @@ function Index() {
                 {copy.heroEyebrow}
               </div>
               <h1 className="allo-display mt-5 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-                WE MAKE IT<br />HAPPEN<span className="text-[var(--allo-purple)]">.</span>
+                WE MAKE IT<br />HAPPEN<span className="text-white/45">.</span>
               </h1>
               <p className="mt-6 text-xl font-semibold text-white md:text-2xl">{copy.heroLine}</p>
               <p className="mt-3 max-w-xl text-base leading-relaxed text-white/72 md:text-lg">{copy.heroBody}</p>
@@ -194,7 +194,7 @@ function Index() {
               <ul className="mt-7 grid gap-3 text-sm text-[#272934] sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {t.showcase.bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-2.5">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#7028e8]/10 text-[#7028e8]"><Check className="h-3.5 w-3.5" /></span>
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full border border-[#181818]/15 bg-[#181818] text-white"><Check className="h-3.5 w-3.5" /></span>
                     {bullet}
                   </li>
                 ))}
@@ -219,7 +219,7 @@ function Index() {
         <section className="allo-about-panel py-20 md:py-28">
           <div className="mx-auto grid max-w-[1380px] gap-12 px-5 md:px-8 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <span className="allo-section-kicker text-[#a97cff]">{t.about.tag}</span>
+              <span className="allo-section-kicker text-white/55">{t.about.tag}</span>
               <h2 className="allo-section-title mt-3 text-white">{t.about.title}</h2>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -227,12 +227,12 @@ function Index() {
                 <p className="text-lg leading-relaxed text-white/76 md:text-xl">{t.about.p1}</p>
               </div>
               <div className="allo-about-card">
-                <Boxes className="h-7 w-7 text-[#a97cff]" />
+                <Boxes className="h-7 w-7 text-white/70" />
                 <h3 className="mt-5 text-xl font-bold text-white">{t.about.tech}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-white/60">{t.about.techDesc}</p>
               </div>
               <div className="allo-about-card">
-                <Sparkles className="h-7 w-7 text-[#a97cff]" />
+                <Sparkles className="h-7 w-7 text-white/70" />
                 <h3 className="mt-5 text-xl font-bold text-white">{t.about.vision}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-white/60">{t.about.visionDesc}</p>
               </div>
@@ -276,11 +276,11 @@ function Index() {
             </div>
             <div className="allo-company-card mt-5 grid gap-6 md:grid-cols-[1fr_1fr_auto] md:items-center">
               <div>
-                <div className="flex items-center gap-2 text-sm font-semibold text-white"><Building2 className="h-4 w-4 text-[#a97cff]" />Allo Event AB</div>
+                <div className="flex items-center gap-2 text-sm font-semibold text-white"><Building2 className="h-4 w-4 text-white/60" />Allo Event AB</div>
                 <p className="mt-2 text-sm text-white/55">{t.contact.org}: 559547-6549</p>
               </div>
               <div className="flex items-start gap-2 text-sm text-white/70">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#a97cff]" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/60" />
                 <span>Surbrunnsgatan 30<br />113 27 Stockholm</span>
               </div>
               <a href="#booking" className="allo-primary-button justify-center">{copy.startProject}</a>
@@ -324,7 +324,7 @@ function Index() {
 function SectionHeading({ eyebrow, title, dark, centered = false }: { eyebrow: string; title: string; dark: boolean; centered?: boolean }) {
   return (
     <div className={centered ? "text-center" : ""}>
-      <span className={`allo-section-kicker ${dark ? "text-[#a97cff]" : "text-[#7028e8]"}`}>{eyebrow}</span>
+      <span className={`allo-section-kicker ${dark ? "text-white/55" : "text-[#151515]/55"}`}>{eyebrow}</span>
       <h2 className={`allo-section-title mt-3 ${dark ? "text-white" : "text-[#111218]"}`}>{title}</h2>
     </div>
   );
@@ -335,7 +335,7 @@ function ServiceCard({ id, icon: Icon, title, description, href, external, onCli
     <>
       <div className="flex items-start justify-between gap-4">
         <span className="allo-service-icon"><Icon className="h-6 w-6" /></span>
-        <ChevronRight className="h-5 w-5 text-[#7028e8]/45 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#7028e8]" />
+        <ChevronRight className="h-5 w-5 text-[#151515]/30 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#151515]" />
       </div>
       <h3 className="mt-8 text-lg font-extrabold text-[#171820]">{title}</h3>
       <p className="mt-3 text-sm leading-relaxed text-[#666977]">{description}</p>
@@ -349,7 +349,7 @@ function ServiceCard({ id, icon: Icon, title, description, href, external, onCli
 function ProofItem({ icon: Icon, title, body }: { icon: typeof Users; title: string; body: string }) {
   return (
     <div className="flex items-center gap-4 py-7 md:px-7 md:py-8 first:md:pl-0 last:md:pr-0">
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#8a45f7]/35 bg-[#7028e8]/10 text-[#a97cff]"><Icon className="h-5 w-5" /></span>
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/18 bg-white/[0.04] text-white/70"><Icon className="h-5 w-5" /></span>
       <div><div className="text-base font-bold text-white">{title}</div><div className="mt-1 text-xs leading-relaxed text-white/45">{body}</div></div>
     </div>
   );
@@ -363,7 +363,7 @@ function PartnerCard({ href, logoSrc, logoAlt, title, description, workman }: { 
       </div>
       <h3 className="mt-6 text-center text-base font-extrabold text-[#171820]">{title}</h3>
       <p className="mx-auto mt-3 max-w-md text-center text-sm leading-relaxed text-[#686b78]">{description}</p>
-      <span className="mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold text-[#7028e8]">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+      <span className="mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold text-[#151515]/60">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
     </a>
   );
 }
@@ -371,7 +371,7 @@ function PartnerCard({ href, logoSrc, logoAlt, title, description, workman }: { 
 function PersonCard({ name, role, email, phone }: { name: string; role: string; email: string; phone: string }) {
   return (
     <div className="allo-person-card">
-      <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#a97cff]">{role}</div>
+      <div className="text-xs font-bold uppercase tracking-[0.18em] text-white/55">{role}</div>
       <h3 className="mt-3 text-2xl font-extrabold text-white">{name}</h3>
       <div className="mt-6 space-y-3 text-sm text-white/62">
         <a href={`mailto:${email}`} className="flex items-center gap-3 hover:text-white"><Mail className="h-4 w-4" />{email}</a>
@@ -394,10 +394,10 @@ function FooterColumn({ title, links }: { title: string; links: [string, string]
 
 function HeroFallback() {
   return (
-    <div className="absolute inset-0 -z-20 overflow-hidden bg-[#090a0f]">
-      <div className="absolute inset-x-0 top-0 h-1/2 bg-[radial-gradient(circle_at_68%_10%,rgba(130,55,255,.32),transparent_30%),radial-gradient(circle_at_32%_18%,rgba(65,125,255,.15),transparent_30%)]" />
-      <div className="absolute bottom-[14%] right-[8%] h-[52%] w-[46%] border border-white/8 bg-white/[0.025] shadow-[0_0_80px_rgba(112,40,232,.12)]" />
-      <div className="absolute bottom-[14%] right-[8%] h-[6px] w-[46%] bg-[#7028e8]/45 blur-sm" />
+    <div className="absolute inset-0 -z-20 overflow-hidden bg-[#050505]">
+      <div className="absolute inset-x-0 top-0 h-1/2 bg-[radial-gradient(circle_at_68%_10%,rgba(255,255,255,.10),transparent_28%),radial-gradient(circle_at_32%_18%,rgba(255,255,255,.04),transparent_30%)]" />
+      <div className="absolute bottom-[14%] right-[8%] h-[52%] w-[46%] border border-white/8 bg-white/[0.025] shadow-[0_0_80px_rgba(255,255,255,.035)]" />
+      <div className="absolute bottom-[14%] right-[8%] h-[6px] w-[46%] bg-white/18 blur-sm" />
       <div className="absolute inset-x-0 top-[14%] h-px bg-white/10" />
       <div className="absolute left-[12%] top-[14%] h-[38%] w-px rotate-[17deg] bg-white/10" />
       <div className="absolute right-[14%] top-[14%] h-[38%] w-px -rotate-[17deg] bg-white/10" />
@@ -410,18 +410,18 @@ function BuilderPreview() {
   return (
     <div className="allo-builder-shell">
       <div className="allo-builder-topbar">
-        <span className="flex items-center gap-2 text-xs font-extrabold tracking-[0.12em] text-white"><span className="h-2.5 w-2.5 rounded-sm bg-[#7a31ee]" />ALLO EVENT</span>
+        <span className="flex items-center gap-2 text-xs font-extrabold tracking-[0.12em] text-white"><span className="h-2.5 w-2.5 rounded-sm bg-white/80" />ALLO EVENT</span>
         <span className="text-[10px] text-white/40">3D BOOTH BUILDER</span>
       </div>
       <div className="grid min-h-[400px] md:grid-cols-[120px_1fr_150px]">
         <div className="hidden border-r border-white/8 bg-[#0b0c11] p-4 md:block">
-          {['RUM','VÄGGAR','GOLV','MÖBLER','BELYSNING','DEKOR','VARUMÄRKE'].map((item, index) => <div key={item} className={`py-3 text-[9px] font-bold tracking-[.12em] ${index === 1 ? 'text-[#a97cff]' : 'text-white/38'}`}>{item}</div>)}
+          {['RUM','VÄGGAR','GOLV','MÖBLER','BELYSNING','DEKOR','VARUMÄRKE'].map((item, index) => <div key={item} className={`py-3 text-[9px] font-bold tracking-[.12em] ${index === 1 ? 'text-white' : 'text-white/38'}`}>{item}</div>)}
         </div>
-        <div className="relative overflow-hidden bg-[radial-gradient(circle_at_50%_25%,rgba(117,48,239,.22),transparent_30%),linear-gradient(180deg,#171924_0%,#0d0e14_100%)]">
+        <div className="relative overflow-hidden bg-[radial-gradient(circle_at_50%_25%,rgba(255,255,255,.09),transparent_28%),linear-gradient(180deg,#151515_0%,#090909_100%)]">
           <div className="absolute inset-x-[8%] bottom-[13%] h-[43%] [transform:perspective(700px)_rotateX(62deg)] border border-white/12 bg-white/[0.035]" />
-          <div className="absolute bottom-[32%] left-[18%] h-[36%] w-[64%] border border-white/18 bg-[#f1f1f2] shadow-[0_0_50px_rgba(112,40,232,.18)]">
+          <div className="absolute bottom-[32%] left-[18%] h-[36%] w-[64%] border border-white/18 bg-[#f1f1f2] shadow-[0_0_50px_rgba(255,255,255,.06)]">
             <div className="absolute inset-x-[10%] top-[12%] flex h-[31%] items-center justify-center bg-[#171820] text-sm font-black tracking-[.14em] text-white">ALLO EVENT</div>
-            <div className="absolute bottom-0 left-[10%] h-[32%] w-[26%] bg-[#7028e8]/80" />
+            <div className="absolute bottom-0 left-[10%] h-[32%] w-[26%] bg-[#171717]" />
             <div className="absolute bottom-0 right-[9%] h-[27%] w-[34%] border border-[#14151b]/20 bg-[#d8d8da]" />
           </div>
           <div className="absolute bottom-[17%] left-1/2 h-12 w-28 -translate-x-1/2 border border-white/15 bg-[#22242d] shadow-xl" />
@@ -433,7 +433,7 @@ function BuilderPreview() {
           <div className="mt-5 space-y-3 text-[10px] text-white/44">
             <div className="flex justify-between"><span>Väggar</span><span>—</span></div><div className="flex justify-between"><span>Golv</span><span>—</span></div><div className="flex justify-between"><span>Möbler</span><span>—</span></div><div className="flex justify-between"><span>Belysning</span><span>—</span></div>
           </div>
-          <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="mt-8 flex justify-center rounded-lg bg-[#7028e8] px-3 py-2.5 text-[10px] font-bold text-white">Öppna verktyget</a>
+          <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="mt-8 flex justify-center rounded-sm border border-white/20 bg-white px-3 py-2.5 text-[10px] font-bold text-black hover:bg-white/90">Öppna verktyget</a>
         </div>
       </div>
     </div>
