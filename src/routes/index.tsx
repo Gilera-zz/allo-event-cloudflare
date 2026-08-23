@@ -262,10 +262,11 @@ function Index() {
             <div className="mt-10 grid gap-5 md:grid-cols-2">
               <PartnerCard
                 href="https://www.nessim.se"
-                logoSrc="/images/partners/nessim-logo.png"
+                logoSrc="/images/partners/nessim-logo-display.png"
                 logoAlt="Nessim Fair Support"
                 title={t.partners.nessim_header}
                 description={t.partners.nessim_desc}
+                brand="nessim"
               />
               <PartnerCard
                 href="https://www.workman.se"
@@ -273,7 +274,7 @@ function Index() {
                 logoAlt="WorkMan Event"
                 title={t.partners.workman_header}
                 description={t.partners.workman_desc}
-                workman
+                brand="workman"
               />
             </div>
           </div>
@@ -384,14 +385,16 @@ function ProofItem({ icon: Icon, title, body }: { icon: typeof Users; title: str
   );
 }
 
-function PartnerCard({ href, logoSrc, logoAlt, title, description, workman }: { href: string; logoSrc: string; logoAlt: string; title: string; description: string; workman?: boolean }) {
+function PartnerCard({ href, logoSrc, logoAlt, title, description, brand }: { href: string; logoSrc: string; logoAlt: string; title: string; description: string; brand: "nessim" | "workman" }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="allo-partner-card group">
-      <div className="flex min-h-24 items-center justify-center border-b border-[#151824]/8 pb-7">
-        <img src={logoSrc} alt={logoAlt} className={`max-h-16 max-w-[220px] object-contain ${workman ? "" : ""}`} />
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`allo-partner-card allo-partner-card-${brand} group`}>
+      <div className="allo-partner-logo-stage">
+        <img src={logoSrc} alt={logoAlt} className={`allo-partner-logo allo-partner-logo-${brand}`} />
       </div>
-      <h3 className="allo-card-title mt-6 text-center text-base font-extrabold">{title}</h3>
-      <p className="allo-card-copy mx-auto mt-3 max-w-md text-center text-sm leading-relaxed">{description}</p>
+      <div className="allo-partner-copy">
+        <h3 className="allo-card-title text-center text-base font-extrabold">{title}</h3>
+        <p className="allo-card-copy mx-auto mt-3 max-w-md text-center text-sm leading-relaxed">{description}</p>
+      </div>
       <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
     </a>
   );

@@ -185,38 +185,19 @@ export function BookingSection({ t }: { t: BookingT }) {
         <div className="grid lg:grid-cols-2 gap-10 items-stretch">
           {/* Left: brand panel */}
           <div
-            className="relative rounded-3xl overflow-hidden p-10 lg:p-12 flex flex-col justify-center items-start min-h-[520px]"
-            style={{
-              background:
-                "linear-gradient(135deg, var(--gold-surface) 0%, var(--surface) 50%, var(--background) 100%)",
-              border: "1px solid var(--gold-line)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-            }}
+            className="allo-booking-brand-panel relative overflow-hidden p-10 lg:p-12 flex flex-col justify-center items-start min-h-[520px]"
           >
-            <div
-              className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-20"
-              style={{ background: "radial-gradient(circle, var(--gold), transparent 70%)" }}
-            />
-            <div className="relative">
-              <span
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs uppercase tracking-[0.2em] font-semibold"
-                style={{
-                  color: "var(--gold)",
-                  backgroundColor: "color-mix(in srgb, var(--gold) 8%, transparent)",
-                  border: "1px solid color-mix(in srgb, var(--gold) 25%, transparent)",
-                }}
-              >
+            <div className="allo-booking-brand-grid absolute inset-0 pointer-events-none" aria-hidden="true" />
+            <div className="relative z-10 max-w-[460px]">
+              <span className="allo-booking-badge inline-flex items-center gap-2 px-3 py-1 text-xs uppercase tracking-[0.2em] font-semibold">
                 <Sparkles className="h-3 w-3" /> {t.badge}
               </span>
-              <h2
-                className="mt-6 text-5xl lg:text-6xl font-bold leading-[0.95] tracking-tight"
-                style={{ color: "var(--foreground)", fontFamily: "Urbanist, sans-serif" }}
-              >
-                {t.headlineTop}
-                <br />
-                <span style={{ color: "var(--gold)" }}>{t.headlineBottom}</span>
+              <h2 className="allo-booking-headline mt-7 text-5xl lg:text-6xl font-bold leading-[0.92] tracking-tight">
+                <span className="allo-booking-headline-top block">{t.headlineTop}</span>
+                <span className="allo-booking-headline-bottom block">{t.headlineBottom}</span>
               </h2>
-              <p className="mt-6 text-base leading-relaxed max-w-md" style={{ color: "var(--muted-foreground)" }}>
+              <div className="allo-booking-divider mt-7" aria-hidden="true" />
+              <p className="allo-booking-description mt-6 text-base leading-relaxed max-w-md">
                 {t.brandDescription}
               </p>
             </div>
