@@ -65,7 +65,7 @@ function ProjectsView() {
   const past = projects.filter((p) => !p.starts_at || new Date(p.starts_at).getTime() < now);
 
   return (
-    <div className="px-10 py-12 max-w-7xl">
+    <div className="admin-page">
       <div className="mb-8">
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Operations</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight">Projekt & Bemanning</h1>

@@ -87,7 +87,7 @@ function TillganglighetView() {
   const next = () => setCursor((c) => c.m === 11 ? { y: c.y + 1, m: 0 } : { ...c, m: c.m + 1 });
 
   return (
-    <div className="px-10 py-12 max-w-[1200px]">
+    <div className="admin-page">
       <div className="mb-8">
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Min sida</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight">Tillgänglighet</h1>

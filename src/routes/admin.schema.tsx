@@ -144,7 +144,7 @@ function SchemaView() {
   const next = () => setCursor((c) => c.m === 11 ? { y: c.y + 1, m: 0 } : { ...c, m: c.m + 1 });
 
   return (
-    <div className="px-10 py-12 max-w-[1400px]">
+    <div className="admin-page">
       <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
         <div>
           <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Admin Översikt</p>

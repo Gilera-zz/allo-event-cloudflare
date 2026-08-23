@@ -150,7 +150,7 @@ function StaffView() {
   }, [profiles, q, sortKey, filter]);
 
   return (
-    <div className="px-10 py-12 max-w-7xl">
+    <div className="admin-page">
       <div className="mb-6">
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Operations</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight">Personalinsyn</h1>

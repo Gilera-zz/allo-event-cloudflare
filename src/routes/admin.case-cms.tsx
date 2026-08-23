@@ -240,7 +240,7 @@ function CaseCmsView() {
   };
 
   return (
-    <div className="min-h-screen px-5 py-8 lg:px-8 xl:px-10">
+    <div className="admin-page admin-case-page">
       <div className="mx-auto max-w-[1600px]">
         <div className="flex flex-wrap items-end justify-between gap-4 border-b pb-6" style={{ borderColor: "var(--surface-line)" }}>
           <div>

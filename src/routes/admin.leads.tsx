@@ -9,11 +9,15 @@ export const Route = createFileRoute("/admin/leads")({
 
 type Lead = {
   id: string;
-  name: string;
+  name?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   email: string;
   phone: string | null;
-  company: string | null;
-  event_type: string | null;
+  company?: string | null;
+  company_name?: string | null;
+  event_type?: string | null;
+  category?: string | null;
   event_date: string | null;
   start_date: string | null;
   end_date: string | null;
@@ -22,7 +26,8 @@ type Lead = {
   org_number: string | null;
   guests: number | null;
   budget: string | null;
-  message: string | null;
+  message?: string | null;
+  description?: string | null;
   source: string | null;
   status: string;
   notes: string | null;
@@ -47,6 +52,23 @@ const STATUS_STYLE: Record<string, { bg: string; fg: string }> = {
   lost: { bg: "color-mix(in srgb, var(--destructive) 12%, transparent)", fg: "var(--destructive)" },
   archived: { bg: "var(--surface)", fg: "var(--muted-foreground)" },
 };
+
+function leadName(lead: Lead) {
+  const composed = [lead.first_name, lead.last_name].filter(Boolean).join(" ").trim();
+  return lead.name || composed || "Okänd kontakt";
+}
+
+function leadCompany(lead: Lead) {
+  return lead.company || lead.company_name || null;
+}
+
+function leadCategory(lead: Lead) {
+  return lead.event_type || lead.category || null;
+}
+
+function leadMessage(lead: Lead) {
+  return lead.message || lead.description || null;
+}
 
 function fmtDate(d: string) {
   return new Date(d).toLocaleDateString("sv-SE", { year: "numeric", month: "short", day: "numeric" });
@@ -81,7 +103,7 @@ function LeadsInbox() {
   };
 
   return (
-    <div className="px-10 py-12 max-w-7xl">
+    <div className="admin-page">
       <div className="mb-8 flex items-start justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">CRM</p>
@@ -146,7 +168,7 @@ function LeadsInbox() {
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-sm truncate">{l.name}</span>
+                          <span className="font-medium text-sm truncate">{leadName(l)}</span>
                           <span
                             className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider"
                             style={{ backgroundColor: s.bg, color: s.fg }}
@@ -155,7 +177,7 @@ function LeadsInbox() {
                           </span>
                         </div>
                         <p className="text-xs text-muted-foreground mt-1 truncate">
-                          {l.company ? `${l.company} · ` : ""}{l.email}
+                          {leadCompany(l) ? `${leadCompany(l)} · ` : ""}{l.email}
                         </p>
                       </div>
                       <div className="text-right shrink-0">
@@ -175,8 +197,8 @@ function LeadsInbox() {
             <div className="space-y-5">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Lead</p>
-                <h2 className="mt-1 text-xl font-semibold">{selected.name}</h2>
-                {selected.company && <p className="text-sm text-muted-foreground">{selected.company}</p>}
+                <h2 className="mt-1 text-xl font-semibold">{leadName(selected)}</h2>
+                {leadCompany(selected) && <p className="text-sm text-muted-foreground">{leadCompany(selected)}</p>}
               </div>
 
               <div className="space-y-2 text-sm">
@@ -184,7 +206,7 @@ function LeadsInbox() {
                 {selected.phone && <div className="flex items-center gap-2"><Phone className="h-3.5 w-3.5 text-muted-foreground" /><a className="hover:underline" href={`tel:${selected.phone}`}>{selected.phone}</a></div>}
                 {selected.org_number && <div className="text-muted-foreground text-xs">Org.nr: {selected.org_number}</div>}
                 {selected.city && <div className="text-muted-foreground text-xs">Ort: {selected.city}</div>}
-                {selected.event_type && <div className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-muted-foreground" /><span>{selected.event_type}</span></div>}
+                {leadCategory(selected) && <div className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-muted-foreground" /><span>{leadCategory(selected)}</span></div>}
                 {(selected.start_date || selected.end_date || selected.event_date) && (
                   <div className="flex items-start gap-2">
                     <Calendar className="h-3.5 w-3.5 text-muted-foreground mt-0.5" />
@@ -206,10 +228,10 @@ function LeadsInbox() {
                 {selected.budget && <div className="text-muted-foreground">Budget: {selected.budget}</div>}
               </div>
 
-              {selected.message && (
+              {leadMessage(selected) && (
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">Meddelande</p>
-                  <p className="text-sm whitespace-pre-wrap rounded-lg p-3" style={{ backgroundColor: "var(--card)" }}>{selected.message}</p>
+                  <p className="text-sm whitespace-pre-wrap rounded-lg p-3" style={{ backgroundColor: "var(--card)" }}>{leadMessage(selected)}</p>
                 </div>
               )}
 

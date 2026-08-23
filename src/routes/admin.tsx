@@ -26,11 +26,13 @@ function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen flex bg-background text-foreground">
-      <AdminSidebar />
-      <main className="flex-1 min-w-0">
-        <Outlet />
-      </main>
+    <div className="admin-app min-h-screen bg-background text-foreground">
+      <div className="admin-shell min-h-screen md:flex">
+        <AdminSidebar />
+        <main className="admin-main min-w-0 flex-1">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
