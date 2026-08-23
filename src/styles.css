@@ -1237,3 +1237,62 @@
     min-height: 0;
   }
 }
+
+
+/* V3.4 partner alignment: lock both cards to the same structural rhythm. */
+.allo-partners-grid {
+  align-items: stretch;
+}
+.allo-partner-card {
+  height: 100%;
+}
+.allo-partner-logo-zone {
+  height: 172px;
+  min-height: 172px;
+  align-items: center;
+}
+.allo-partner-logo {
+  max-height: 92px;
+}
+.allo-partner-logo--nessim {
+  width: min(100%, 280px);
+  max-height: 76px;
+}
+.allo-partner-logo--workman {
+  width: min(100%, 170px);
+  max-height: 104px;
+}
+.allo-partner-copy-stack {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+}
+.allo-partner-copy-stack .allo-card-title {
+  min-height: 2.8em;
+}
+.allo-partner-copy-stack .allo-card-copy {
+  width: 100%;
+  min-height: 7.6em;
+}
+.allo-partner-copy-stack .allo-card-link {
+  min-height: 1.4em;
+}
+@media (max-width: 767px) {
+  .allo-partner-logo-zone {
+    height: 126px;
+    min-height: 126px;
+  }
+  .allo-partner-logo {
+    max-height: 72px;
+  }
+  .allo-partner-logo--nessim {
+    width: min(100%, 220px);
+    max-height: 58px;
+  }
+  .allo-partner-logo--workman {
+    width: min(100%, 142px);
+    max-height: 80px;
+  }
+  .allo-partner-copy-stack .allo-card-copy {
+    min-height: 0;
+  }
+}
