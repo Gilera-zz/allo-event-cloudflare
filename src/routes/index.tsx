@@ -258,8 +258,10 @@ function Index() {
 
         <section id="partners" className="allo-light-section py-20 md:py-24">
           <div className="mx-auto max-w-[1180px] px-5 md:px-8">
-            <SectionHeading eyebrow={t.partners.kicker} title={t.partners.title} dark={false} centered />
-            <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="allo-partners-heading">
+              <SectionHeading eyebrow={t.partners.kicker} title={t.partners.title} dark={false} centered />
+            </div>
+            <div className="allo-partners-grid mt-10 grid gap-5 md:grid-cols-2">
               <PartnerCard
                 href="https://www.nessim.se"
                 logoSrc="/images/partners/nessim-logo-cropped.png"
@@ -419,9 +421,11 @@ function PartnerCard({
           />
         ) : null}
       </div>
-      <h3 className="allo-card-title mt-6 text-center text-base font-extrabold">{title}</h3>
-      <p className="allo-card-copy mx-auto mt-3 max-w-md text-center text-sm leading-relaxed">{description}</p>
-      <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+      <div className="allo-partner-copy-stack">
+        <h3 className="allo-card-title text-center text-base font-extrabold">{title}</h3>
+        <p className="allo-card-copy mx-auto mt-3 text-center text-sm leading-relaxed">{description}</p>
+        <span className="allo-card-link mx-auto mt-5 flex w-fit items-center gap-1 text-xs font-bold">{logoAlt}<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+      </div>
     </a>
   );
 }

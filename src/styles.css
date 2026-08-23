@@ -1170,3 +1170,70 @@
     width: min(100%, 142px);
   }
 }
+
+
+/* V3.3 partner layout rebalance: restore the premium centered composition
+   while keeping the transparent logos introduced in V3.2. */
+.allo-partners-heading {
+  display: flex;
+  justify-content: center;
+}
+.allo-partners-heading .allo-section-title {
+  max-width: 11ch;
+  margin-inline: auto;
+  text-wrap: balance;
+}
+.allo-partners-grid {
+  align-items: start;
+}
+.allo-partner-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-inline: 0;
+}
+.allo-partner-logo-zone {
+  width: 100%;
+  justify-content: center;
+  border-top: 1px solid var(--allo-border);
+  padding-top: 28px;
+  margin-bottom: 28px;
+}
+.allo-partner-copy-stack {
+  width: min(100%, 468px);
+  min-height: 218px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.allo-partner-copy-stack .allo-card-title {
+  min-height: 2.8em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.allo-partner-copy-stack .allo-card-copy {
+  max-width: 440px;
+  min-height: 6.9em;
+}
+.allo-partner-copy-stack .allo-card-link {
+  margin-top: auto;
+}
+@media (max-width: 767px) {
+  .allo-partners-heading .allo-section-title {
+    max-width: 9.5ch;
+  }
+  .allo-partner-card {
+    padding-bottom: 6px;
+  }
+  .allo-partner-copy-stack {
+    width: min(100%, 360px);
+    min-height: auto;
+  }
+  .allo-partner-copy-stack .allo-card-title,
+  .allo-partner-copy-stack .allo-card-copy {
+    min-height: 0;
+  }
+}
