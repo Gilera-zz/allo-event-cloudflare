@@ -152,6 +152,13 @@ function Section({
                     />
                   </div>
                 </div>
+                <a
+                  href={`/admin/case-cms?project=${p.id}`}
+                  className="mt-1 inline-flex items-center justify-between border-t pt-3 text-xs font-semibold"
+                  style={{ borderColor: "var(--surface-line)", color: "var(--gold-soft)" }}
+                >
+                  Redigera projekt & case <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
               </article>
             );
           })}

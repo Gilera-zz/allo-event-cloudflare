@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as CaseSlugRouteImport } from './routes/case.$slug'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminCaseCmsRouteImport } from './routes/admin.case-cms'
 import { Route as AdminDesignsRouteImport } from './routes/admin.designs'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminMassutskickRouteImport } from './routes/admin.massutskick'
@@ -40,9 +42,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaseSlugRoute = CaseSlugRouteImport.update({
+  id: '/case/$slug',
+  path: '/case/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCaseCmsRoute = AdminCaseCmsRouteImport.update({
+  id: '/case-cms',
+  path: '/case-cms',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDesignsRoute = AdminDesignsRouteImport.update({
@@ -105,6 +117,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
+  '/case/$slug': typeof CaseSlugRoute
+  '/admin/case-cms': typeof AdminCaseCmsRoute
   '/admin/designs': typeof AdminDesignsRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/massutskick': typeof AdminMassutskickRoute
@@ -121,6 +135,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/case/$slug': typeof CaseSlugRoute
+  '/admin/case-cms': typeof AdminCaseCmsRoute
   '/admin/designs': typeof AdminDesignsRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/massutskick': typeof AdminMassutskickRoute
@@ -139,6 +155,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
+  '/case/$slug': typeof CaseSlugRoute
+  '/admin/case-cms': typeof AdminCaseCmsRoute
   '/admin/designs': typeof AdminDesignsRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/massutskick': typeof AdminMassutskickRoute
@@ -158,6 +176,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/login'
+    | '/case/$slug'
+    | '/admin/case-cms'
     | '/admin/designs'
     | '/admin/leads'
     | '/admin/massutskick'
@@ -174,6 +194,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/case/$slug'
+    | '/admin/case-cms'
     | '/admin/designs'
     | '/admin/leads'
     | '/admin/massutskick'
@@ -191,6 +213,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/login'
+    | '/case/$slug'
+    | '/admin/case-cms'
     | '/admin/designs'
     | '/admin/leads'
     | '/admin/massutskick'
@@ -209,6 +233,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
+  CaseSlugRoute: typeof CaseSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -234,11 +259,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/case/$slug': {
+      id: '/case/$slug'
+      path: '/case/$slug'
+      fullPath: '/case/$slug'
+      preLoaderRoute: typeof CaseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/case-cms': {
+      id: '/admin/case-cms'
+      path: '/case-cms'
+      fullPath: '/admin/case-cms'
+      preLoaderRoute: typeof AdminCaseCmsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/designs': {
@@ -322,6 +361,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminCaseCmsRoute: typeof AdminCaseCmsRoute
   AdminDesignsRoute: typeof AdminDesignsRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminMassutskickRoute: typeof AdminMassutskickRoute
@@ -337,6 +377,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCaseCmsRoute: AdminCaseCmsRoute,
   AdminDesignsRoute: AdminDesignsRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminMassutskickRoute: AdminMassutskickRoute,
@@ -357,6 +398,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
+  CaseSlugRoute: CaseSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

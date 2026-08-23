@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, X, Archive, ZoomIn } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, MapPin, Calendar, Users, X, Archive, ZoomIn } from "lucide-react";
 import { supabase, supabaseConfigError } from "@/integrations/supabase/client";
 import type { translations } from "@/lib/i18n";
+import { caseServices, demoCase, PROJECT_CASE_SELECT, type ProjectCase } from "@/lib/project-case";
 
 type ProjectsT = {
   readonly [K in keyof (typeof translations)["sv"]["projectsSection"]]: string;
@@ -44,11 +45,30 @@ function fmtRange(s: string | null, e: string | null) {
 export function ProjectsSection({ t }: { t: ProjectsT }) {
   const [ongoing, setOngoing] = useState<Project[]>([]);
   const [completed, setCompleted] = useState<Project[]>([]);
+  const [publishedCases, setPublishedCases] = useState<ProjectCase[]>([]);
   const [loading, setLoading] = useState(true);
   
   const [index, setIndex] = useState(0);
   const [active, setActive] = useState<Project | null>(null);
   const [showArchive, setShowArchive] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("projects")
+          .select(PROJECT_CASE_SELECT)
+          .eq("case_published", true)
+          .order("case_featured", { ascending: false })
+          .order("case_sort_order", { ascending: true })
+          .limit(8);
+        if (!error && data) setPublishedCases(data as ProjectCase[]);
+      } catch {
+        // Case CMS migration may not have been applied yet. The demo case below
+        // keeps the design preview usable without breaking existing projects.
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -99,7 +119,9 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
 
   return (
     <section id="projects" className="mx-auto max-w-6xl px-6 py-24 scroll-mt-24">
-      <div className="flex items-end justify-between flex-wrap gap-4">
+      <SelectedCases cases={publishedCases.length ? publishedCases : [demoCase]} demo={!publishedCases.length} />
+
+      <div className="allo-live-projects-heading flex items-end justify-between flex-wrap gap-4">
         <div>
           <span
             className="inline-flex items-center px-3 py-1 rounded-full text-xs uppercase tracking-[0.2em] font-semibold"
@@ -216,6 +238,53 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
 
       {active && <ProjectModal p={active} onClose={() => setActive(null)} t={t} />}
     </section>
+  );
+}
+
+function SelectedCases({ cases, demo }: { cases: ProjectCase[]; demo: boolean }) {
+  return (
+    <div className="allo-selected-cases mb-20 md:mb-28">
+      <div className="grid gap-6 lg:grid-cols-[.48fr_1.52fr] lg:items-end">
+        <div>
+          <span className="allo-selected-kicker">SELECTED WORK</span>
+          <h2 className="allo-selected-title mt-4">Case som visar jobbet bakom upplevelsen.</h2>
+        </div>
+        <p className="allo-selected-intro">Från första load-in till öppnade dörrar. Här samlar vi utvalda produktioner och visar inte bara slutresultatet – utan hur vi faktiskt fick det att hända.</p>
+      </div>
+
+      {demo ? <div className="allo-demo-notice mt-7"><span>DEMO</span> Future Retail Summit är ett AI-genererat demonstrationscase. Publicerade projekt från Case CMS ersätter automatiskt demon.</div> : null}
+
+      <div className="mt-10 grid gap-5">
+        {cases.map((project, index) => <SelectedCaseCard key={project.id} project={project} index={index} />)}
+      </div>
+    </div>
+  );
+}
+
+function SelectedCaseCard({ project, index }: { project: ProjectCase; index: number }) {
+  const image = project.case_hero_image_url || project.image_url;
+  const services = caseServices(project).slice(0, 4);
+  const href = `/case/${project.slug || project.id}`;
+  return (
+    <a href={href} className="allo-selected-case group">
+      <div className="allo-selected-case-media">
+        {image ? <img src={image} alt={project.title || "Allo Event case"} /> : <div className="allo-selected-case-fallback">ALLO</div>}
+        <div className="allo-selected-case-shade" />
+        <div className="allo-selected-case-number">{String(index + 1).padStart(2, "0")}</div>
+        <div className="allo-selected-case-view">VIEW CASE <ArrowRight className="h-4 w-4" /></div>
+      </div>
+      <div className="allo-selected-case-copy">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[.16em] text-muted-foreground">
+          {project.location ? <span>{project.location}</span> : null}
+          {project.case_year ? <span>{project.case_year}</span> : null}
+          {project.category ? <span>{project.category}</span> : null}
+        </div>
+        <h3>{project.title}</h3>
+        <p>{project.case_excerpt || project.case_subtitle || project.description}</p>
+        {services.length ? <div className="allo-selected-tags">{services.map((service) => <span key={service}>{service}</span>)}</div> : null}
+        <strong>Utforska caset <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></strong>
+      </div>
+    </a>
   );
 }
 

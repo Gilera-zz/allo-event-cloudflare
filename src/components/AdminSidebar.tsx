@@ -18,6 +18,7 @@ import {
   CalendarCheck2,
   CalendarDays,
   Megaphone,
+  GalleryHorizontalEnd,
 } from "lucide-react";
 import logo from "@/assets/allo-logo.png";
 import { useAuth } from "@/hooks/use-auth";
@@ -54,6 +55,7 @@ const GROUPS: Group[] = [
     items: [
       { to: "/admin", label: "Översikt", icon: LayoutDashboard, exact: true },
       { to: "/admin/projects", label: "Hantera projekt", icon: CalendarRange },
+      { to: "/admin/case-cms", label: "Case CMS", icon: GalleryHorizontalEnd },
       { to: "/admin/schema", label: "Schema & Planering", icon: CalendarDays },
       { to: "/admin/leads", label: "Kundförfrågningar", icon: Inbox },
       { to: "/admin/timesheets", label: "Tidrapporter & Fakturering", icon: Clock },
