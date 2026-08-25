@@ -12,6 +12,7 @@ Migrations are one-time schema upgrades and some have dependencies.
 5. `20260611_leads_public_insert.sql`
 6. `20260626_receive_job_notices.sql`
 7. `20260823_project_case_cms.sql`
+8. `20260825_homepage_hero.sql`
 
 ## Existing Allo Event database
 
@@ -19,4 +20,9 @@ Run only migrations for features that have not already been applied. The current
 `20260610_availability.sql` is upgrade-safe and can repair an older availability
 table that lacks `status`, `note`, `created_at` or `updated_at`.
 
-For the V4/V5 Case CMS, `20260823_project_case_cms.sql` must be applied once.
+For the Case CMS, `20260823_project_case_cms.sql` must be applied once.
+
+For V5.2.4 homepage hero controls and the future Case slideshow, run
+`20260825_homepage_hero.sql` once. It is additive: it creates the singleton
+`site_settings` row, a public `site-media` bucket and two hero-selection fields
+on existing projects. It does not delete or replace operational project data.

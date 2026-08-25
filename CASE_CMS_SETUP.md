@@ -67,3 +67,10 @@ Future Retail Summit 2026, its statistics, quote and images are fictitious/AI-ge
 ## Data model philosophy
 
 Operational project data stays in the original columns. Public case content uses `case_*` fields on the same row. Arrays such as services, facts, timeline, gallery and credits are stored as JSONB so the system stays simple and does not require a second CMS.
+
+## Homepage hero integration (V5.2.4)
+
+After the Case CMS migration, also run `db/migrations/20260825_homepage_hero.sql`.
+That migration adds the explicit Case-to-hero opt-in fields and the singleton
+homepage settings row. Published Cases are never added to the homepage hero
+unless `Visa i hero slideshow` is enabled.

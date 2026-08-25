@@ -35,6 +35,8 @@ export type ProjectCase = {
   slug?: string | null;
   case_published?: boolean | null;
   case_featured?: boolean | null;
+  case_show_in_hero?: boolean | null;
+  case_hero_priority?: number | null;
   case_sort_order?: number | null;
   case_client_name?: string | null;
   case_venue?: string | null;
@@ -119,6 +121,8 @@ export const PROJECT_CASE_SELECT = [
   "case_published_at",
 ].join(",");
 
+export const PROJECT_CASE_CMS_SELECT = `${PROJECT_CASE_SELECT},case_show_in_hero,case_hero_priority`;
+
 function parseJson<T>(value: unknown, fallback: T): T {
   if (Array.isArray(value)) return value as T;
   if (value && typeof value === "object") return value as T;
@@ -171,6 +175,8 @@ export function casePresetPayload() {
     slug: null,
     case_published: false,
     case_featured: false,
+    case_show_in_hero: false,
+    case_hero_priority: 100,
     case_sort_order: 100,
     case_subtitle: "",
     case_excerpt: "",

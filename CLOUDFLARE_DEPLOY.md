@@ -72,3 +72,10 @@ Rekommenderad ordning:
 ## Gratisnivån
 
 Cloudflare tar inte betalt för vanliga statiska asset-anrop. SSR-anrop kör Worker-koden och räknas mot Workers Free-planens kvot. För en normal företagshemsida är gratisnivån normalt mycket generös, men kontrollera användningen i Cloudflare Dashboard efter flytten.
+
+## V5.2.4 homepage hero
+
+Before using **Admin → Hemsida & hero**, run
+`db/migrations/20260825_homepage_hero.sql` once in Supabase SQL Editor.
+The public site remains safe before the migration and uses its graphical hero
+fallback rather than exposing an arbitrary operational project image.

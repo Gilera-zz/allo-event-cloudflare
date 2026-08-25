@@ -26,6 +26,7 @@ import {
   caseServices,
   caseTimeline,
   casePresetPayload,
+  PROJECT_CASE_CMS_SELECT,
   PROJECT_CASE_SELECT,
   slugifyCaseTitle,
   type CaseCredit,
@@ -61,6 +62,8 @@ const EMPTY_DRAFT: Draft = {
   slug: "",
   case_published: false,
   case_featured: false,
+  case_show_in_hero: false,
+  case_hero_priority: 100,
   case_sort_order: 100,
   case_client_name: "",
   case_venue: "",
@@ -112,14 +115,28 @@ function CaseCmsView() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [migrationMissing, setMigrationMissing] = useState(false);
+  const [heroMigrationMissing, setHeroMigrationMissing] = useState(false);
   const [filter, setFilter] = useState<"all" | "published" | "drafts">("all");
 
   const load = async (preferredId?: string) => {
     setLoading(true);
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from("projects")
-      .select(PROJECT_CASE_SELECT)
+      .select(PROJECT_CASE_CMS_SELECT)
       .order("starts_at", { ascending: false, nullsFirst: false });
+
+    if (error && /case_show_in_hero|case_hero_priority/i.test(error.message)) {
+      setHeroMigrationMissing(true);
+      toast.warning("Hero-slideshowfält saknas. Kör 20260825_homepage_hero.sql när du vill aktivera hero-CMS.");
+      const fallback = await supabase
+        .from("projects")
+        .select(PROJECT_CASE_SELECT)
+        .order("starts_at", { ascending: false, nullsFirst: false });
+      data = fallback.data;
+      error = fallback.error;
+    } else {
+      setHeroMigrationMissing(false);
+    }
 
     if (error) {
       console.error("Case CMS load error", error);
@@ -183,6 +200,7 @@ function CaseCmsView() {
       slug: draft.slug?.trim() || null,
       case_published: !!draft.case_published,
       case_featured: !!draft.case_featured,
+      ...(!heroMigrationMissing ? { case_show_in_hero: !!draft.case_show_in_hero, case_hero_priority: Number(draft.case_hero_priority ?? 100) } : {}),
       case_sort_order: Number(draft.case_sort_order ?? 100),
       case_client_name: draft.case_client_name?.trim() || null,
       case_venue: draft.case_venue?.trim() || null,
@@ -256,6 +274,7 @@ function CaseCmsView() {
         </div>
 
         {migrationMissing ? <MigrationNotice /> : null}
+        {heroMigrationMissing ? <div className="admin-homepage-migration mt-4"><strong>Hero-slideshow är inte aktiverat ännu.</strong><span>Kör <code>db/migrations/20260825_homepage_hero.sql</code>. Resten av Case CMS fungerar som vanligt tills dess.</span></div> : null}
 
         <div className="mt-6 grid gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
           <aside className="admin-case-project-list">
@@ -317,6 +336,8 @@ function ProjectEditor({ draft, update }: { draft: Draft; update: <K extends key
         <div className="grid gap-4 md:grid-cols-2">
           <ToggleField label="Publicera som case" description="Gör projektet synligt publikt på hemsidan." checked={!!draft.case_published} onChange={(v) => update("case_published", v)} />
           <ToggleField label="Featured case" description="Prioriteras i Selected Work på startsidan." checked={!!draft.case_featured} onChange={(v) => update("case_featured", v)} />
+          <ToggleField label="Visa i hero slideshow" description="Kan användas på startsidans hero när slideshow-läget är aktivt." checked={!!draft.case_show_in_hero} onChange={(v) => update("case_show_in_hero", v)} />
+          <NumberField label="Hero-prioritet" value={draft.case_hero_priority ?? 100} onChange={(v) => update("case_hero_priority", v)} />
           <TextField label="Slug / URL" value={draft.slug ?? ""} onChange={(v) => update("slug", slugifyCaseTitle(v))} prefix="alloevent.se/case/" />
           <NumberField label="Visningsordning" value={draft.case_sort_order ?? 100} onChange={(v) => update("case_sort_order", v)} />
         </div>

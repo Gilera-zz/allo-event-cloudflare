@@ -24,10 +24,10 @@ import logo from "@/assets/allo-logo.png";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { BookingSection } from "@/components/BookingSection";
+import { HomepageHeroBackground } from "@/components/HomepageHeroBackground";
 import { translations, type Lang } from "@/lib/i18n";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const BEMANNING_ROLES = [
@@ -76,7 +76,6 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [lang, setLang] = useState<Lang>("sv");
   const [bemanningOpen, setBemanningOpen] = useState(false);
-  const [heroImage, setHeroImage] = useState<string | null>(null);
   const { theme, preference, setTheme } = useTheme();
   const { isAdmin, loading } = useAuth();
 
@@ -159,22 +158,6 @@ function Index() {
     };
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await supabase
-          .from("projects")
-          .select("image_url")
-          .not("image_url", "is", null)
-          .order("starts_at", { ascending: false, nullsFirst: false })
-          .limit(1);
-        const image = data?.[0]?.image_url;
-        if (typeof image === "string" && image.trim()) setHeroImage(image);
-      } catch {
-        // The graphical hero fallback is intentional when no project image is available.
-      }
-    })();
-  }, []);
 
   const setLangPersist = (l: Lang) => {
     setLang(l);
@@ -198,12 +181,7 @@ function Index() {
 
       <main>
         <section className="allo-hero relative isolate overflow-hidden">
-          <div
-            className="absolute inset-0 -z-20 bg-cover bg-center transition-opacity duration-700"
-            style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}
-          />
-          {!heroImage && <HeroFallback />}
-          <div className="allo-hero-overlay absolute inset-0 -z-10" />
+          <HomepageHeroBackground />
 
           <div className="mx-auto flex min-h-[680px] max-w-[1380px] items-end px-5 pb-16 pt-24 md:min-h-[720px] md:px-8 md:pb-20 lg:pb-24">
             <div className="max-w-4xl">
@@ -534,20 +512,6 @@ function FooterColumn({ title, links }: { title: string; links: [string, string]
       <div className="mt-4 grid gap-2.5 text-sm text-white/50">
         {links.map(([label, href]) => <a key={`${label}-${href}`} href={href} className="hover:text-white">{label}</a>)}
       </div>
-    </div>
-  );
-}
-
-function HeroFallback() {
-  return (
-    <div className="absolute inset-0 -z-20 overflow-hidden bg-[#050505]">
-      <div className="absolute inset-x-0 top-0 h-1/2 bg-[radial-gradient(circle_at_68%_10%,rgba(255,255,255,.10),transparent_28%),radial-gradient(circle_at_32%_18%,rgba(255,255,255,.04),transparent_30%)]" />
-      <div className="absolute bottom-[14%] right-[8%] h-[52%] w-[46%] border border-white/8 bg-white/[0.025] shadow-[0_0_80px_rgba(255,255,255,.035)]" />
-      <div className="absolute bottom-[14%] right-[8%] h-[6px] w-[46%] bg-white/18 blur-sm" />
-      <div className="absolute inset-x-0 top-[14%] h-px bg-white/10" />
-      <div className="absolute left-[12%] top-[14%] h-[38%] w-px rotate-[17deg] bg-white/10" />
-      <div className="absolute right-[14%] top-[14%] h-[38%] w-px -rotate-[17deg] bg-white/10" />
-      <div className="absolute right-[17%] top-[25%] text-[clamp(2rem,5vw,5rem)] font-black tracking-[.1em] text-white/[0.035]">ALLO EVENT</div>
     </div>
   );
 }

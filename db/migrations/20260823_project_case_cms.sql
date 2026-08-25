@@ -18,6 +18,8 @@ alter table public.projects
   add column if not exists slug text,
   add column if not exists case_published boolean not null default false,
   add column if not exists case_featured boolean not null default false,
+  add column if not exists case_show_in_hero boolean not null default false,
+  add column if not exists case_hero_priority integer not null default 100,
   add column if not exists case_sort_order integer not null default 100,
   add column if not exists case_client_name text,
   add column if not exists case_venue text,
