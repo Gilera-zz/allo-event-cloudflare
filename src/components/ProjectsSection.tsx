@@ -118,7 +118,7 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
   })();
 
   return (
-    <section id="projects" className="mx-auto max-w-6xl px-6 py-24 scroll-mt-24">
+    <section id="projects" className="allo-anchor-section mx-auto max-w-6xl px-6 py-24">
       <SelectedCases cases={publishedCases} />
 
       <div className="allo-live-projects-heading flex items-end justify-between flex-wrap gap-4">

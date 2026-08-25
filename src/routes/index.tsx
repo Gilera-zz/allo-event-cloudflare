@@ -154,14 +154,18 @@ function Index() {
           </div>
         </section>
 
-        <section id="services" className="allo-light-section scroll-mt-24 py-20 md:py-24">
+        <section id="services" className="allo-anchor-section allo-light-section relative py-20 md:py-24">
+          <span id="service-event" className="allo-service-anchor" aria-hidden="true" />
+          <span id="service-staffing" className="allo-service-anchor" aria-hidden="true" />
+          <span id="service-expo" className="allo-service-anchor" aria-hidden="true" />
+          <span id="service-logistics" className="allo-service-anchor" aria-hidden="true" />
           <div className="mx-auto max-w-[1380px] px-5 md:px-8">
             <SectionHeading eyebrow={copy.servicesEyebrow} title={copy.servicesTitle} dark={false} />
             <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <ServiceCard id="service-event" icon={CalendarDays} title={copy.eventTitle} description={copy.eventBody} href="#about" />
-              <ServiceCard id="service-staffing" icon={Users} title={copy.staffingTitle} description={copy.staffingBody} onClick={() => setBemanningOpen(true)} />
-              <ServiceCard id="service-expo" icon={Cuboid} title={copy.expoTitle} description={copy.expoBody} href={BUILDER_URL} external />
-              <ServiceCard id="service-logistics" icon={Truck} title={copy.logisticsTitle} description={copy.logisticsBody} href="#booking" />
+              <ServiceCard icon={CalendarDays} title={copy.eventTitle} description={copy.eventBody} href="#booking" />
+              <ServiceCard icon={Users} title={copy.staffingTitle} description={copy.staffingBody} onClick={() => setBemanningOpen(true)} />
+              <ServiceCard icon={Cuboid} title={copy.expoTitle} description={copy.expoBody} href={BUILDER_URL} external />
+              <ServiceCard icon={Truck} title={copy.logisticsTitle} description={copy.logisticsBody} href="#booking" />
             </div>
           </div>
         </section>
@@ -223,7 +227,7 @@ function Index() {
           </div>
         </section>
 
-        <section id="about" className="allo-proof-strip scroll-mt-24">
+        <section className="allo-proof-strip">
           <div className="mx-auto grid max-w-[1380px] divide-y divide-white/10 px-5 md:grid-cols-4 md:divide-x md:divide-y-0 md:px-8">
             <ProofItem icon={PackageCheck} title={copy.proof1Title} body={copy.proof1Body} />
             <ProofItem icon={Cuboid} title={copy.proof2Title} body={copy.proof2Body} />
@@ -232,7 +236,7 @@ function Index() {
           </div>
         </section>
 
-        <section className="allo-about-panel py-20 md:py-28">
+        <section id="about" className="allo-anchor-section allo-about-panel py-20 md:py-28">
           <div className="mx-auto grid max-w-[1380px] gap-12 px-5 md:px-8 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
               <span className="allo-section-kicker text-white/55">{t.about.tag}</span>
@@ -256,7 +260,7 @@ function Index() {
           </div>
         </section>
 
-        <section id="partners" className="allo-light-section allo-partners-section py-16 md:py-20">
+        <section id="partners" className="allo-anchor-section allo-light-section allo-partners-section py-16 md:py-20">
           <div className="mx-auto max-w-[1180px] px-5 md:px-8">
             <div className="allo-partners-heading">
               <SectionHeading eyebrow={t.partners.kicker} title={t.partners.title} dark={false} centered />
@@ -290,7 +294,7 @@ function Index() {
           <BookingSection t={t.booking} />
         </div>
 
-        <section id="contact" className="allo-contact-section scroll-mt-24 py-20 md:py-24">
+        <section id="contact" className="allo-anchor-section allo-contact-section py-20 md:py-24">
           <div className="mx-auto max-w-[1180px] px-5 md:px-8">
             <SectionHeading eyebrow={t.contact.tag} title={copy.contactTitle} dark />
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -354,7 +358,7 @@ function SectionHeading({ eyebrow, title, dark, centered = false }: { eyebrow: s
   );
 }
 
-function ServiceCard({ id, icon: Icon, title, description, href, external, onClick }: { id: string; icon: typeof Users; title: string; description: string; href?: string; external?: boolean; onClick?: () => void }) {
+function ServiceCard({ icon: Icon, title, description, href, external, onClick }: { icon: typeof Users; title: string; description: string; href?: string; external?: boolean; onClick?: () => void }) {
   const content = (
     <>
       <div className="flex items-start justify-between gap-4">
@@ -366,8 +370,8 @@ function ServiceCard({ id, icon: Icon, title, description, href, external, onCli
     </>
   );
   const className = "group allo-service-card scroll-mt-28";
-  if (onClick) return <button id={id} type="button" onClick={onClick} className={`${className} text-left`}>{content}</button>;
-  return <a id={id} href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>{content}</a>;
+  if (onClick) return <button type="button" onClick={onClick} className={`${className} text-left`}>{content}</button>;
+  return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>{content}</a>;
 }
 
 function ProcessStep({ number, icon: Icon, title, body }: { number: string; icon: typeof Users; title: string; body: string }) {

@@ -1093,6 +1093,7 @@
 .allo-footer img { filter: brightness(0) invert(1); }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
   .allo-site *,
   .allo-site *::before,
   .allo-site *::after {
@@ -2890,4 +2891,31 @@
   .allo-case-empty-grid { background-size: 48px 48px; }
   .allo-case-empty-content h3 { max-width: 10ch; }
   .allo-case-empty-mark { right: -4vw; bottom: -1vw; font-size: 9rem; }
+}
+
+
+/* V5.2.2 — consistent in-page navigation beneath the sticky 74px header. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 94px;
+}
+.allo-anchor-section {
+  scroll-margin-top: 94px;
+}
+/* Service-specific hashes are aliases at the top of the services section.
+   This lets links say Eventproduktion/Bemanning/etc. while still landing on
+   the full section composition instead of cropping the heading away. */
+.allo-service-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  scroll-margin-top: 94px;
+}
+@media (max-width: 767px) {
+  html { scroll-padding-top: 82px; }
+  .allo-anchor-section,
+  .allo-service-anchor { scroll-margin-top: 82px; }
 }

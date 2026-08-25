@@ -178,8 +178,8 @@ export function BookingSection({ t }: { t: BookingT }) {
   return (
     <section
       id="booking"
-      className="relative py-24 scroll-mt-32 lg:scroll-mt-40"
-      style={{ backgroundColor: "var(--background)", scrollMarginTop: "8rem" }}
+      className="allo-anchor-section relative py-24"
+      style={{ backgroundColor: "var(--background)" }}
     >
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid lg:grid-cols-2 gap-10 items-stretch">
