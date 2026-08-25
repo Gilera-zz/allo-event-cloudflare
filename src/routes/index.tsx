@@ -293,9 +293,10 @@ function Index() {
         <section id="contact" className="allo-contact-section scroll-mt-24 py-20 md:py-24">
           <div className="mx-auto max-w-[1180px] px-5 md:px-8">
             <SectionHeading eyebrow={t.contact.tag} title={copy.contactTitle} dark />
-            <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               <PersonCard name="Jerry Fors" role={t.contact.ceo} email="Jerry@alloevent.se" phone="+46 (0) 702 23 96 80" />
               <PersonCard name="Jacob Karlestedt" role={t.contact.cofounder} email="Jacob@alloevent.se" phone="+46 (0) 707 30 96 27" />
+              <PersonCard name="Sanna Sigalit" role="Operations & Sales Manager" email="Sanna@alloevent.se" phone="+46 (0) 760 05 18 82" />
             </div>
             <div className="allo-company-card mt-5 grid gap-6 md:grid-cols-[1fr_1fr_auto] md:items-center">
               <div>
