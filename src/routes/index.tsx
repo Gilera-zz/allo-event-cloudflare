@@ -86,6 +86,80 @@ function Index() {
   }, []);
 
   useEffect(() => {
+    const aliases: Record<string, string> = {
+      "#service-event": "#services",
+      "#service-staffing": "#services",
+      "#service-expo": "#services",
+      "#service-logistics": "#services",
+    };
+
+    const prefersReducedMotion = () =>
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+    const scrollToHash = (hash: string, behavior: ScrollBehavior = "smooth") => {
+      if (!hash) return false;
+      const resolvedHash = aliases[hash] ?? hash;
+      if (resolvedHash === "#top") {
+        window.scrollTo({ top: 0, behavior });
+        return true;
+      }
+
+      const target = document.querySelector<HTMLElement>(resolvedHash);
+      if (!target) return false;
+
+      const header = document.querySelector<HTMLElement>(".allo-header");
+      const headerHeight = header?.getBoundingClientRect().height ?? 74;
+      const breathingRoom = window.innerWidth < 768 ? 16 : 24;
+      const targetTop = window.scrollY + target.getBoundingClientRect().top - headerHeight - breathingRoom;
+
+      window.scrollTo({ top: Math.max(0, targetTop), behavior });
+      return true;
+    };
+
+    const onDocumentClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) return;
+
+      const element = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a[href]") : null;
+      const href = element?.getAttribute("href");
+      if (!href?.startsWith("#")) return;
+
+      event.preventDefault();
+      const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth";
+      if (scrollToHash(href, behavior)) {
+        window.history.pushState(null, "", href);
+      }
+    };
+
+    const onHistoryNavigation = () => {
+      const hash = window.location.hash || "#top";
+      scrollToHash(hash, prefersReducedMotion() ? "auto" : "smooth");
+    };
+
+    document.addEventListener("click", onDocumentClick);
+    window.addEventListener("popstate", onHistoryNavigation);
+
+    // Correct native browser hash positioning after the homepage has mounted,
+    // including navigation back from /case/... to /#section.
+    if (window.location.hash) {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => scrollToHash(window.location.hash, "auto"));
+      });
+    }
+
+    return () => {
+      document.removeEventListener("click", onDocumentClick);
+      window.removeEventListener("popstate", onHistoryNavigation);
+    };
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
         const { data } = await supabase

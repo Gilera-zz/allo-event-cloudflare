@@ -2894,17 +2894,17 @@
 }
 
 
-/* V5.2.2 — consistent in-page navigation beneath the sticky 74px header. */
+/* V5.2.3 — CSS fallback only. Precise same-page navigation is handled in
+   index.tsx using the measured sticky-header height, avoiding double offsets
+   from scroll-padding + scroll-margin behaving differently across browsers. */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 94px;
 }
 .allo-anchor-section {
-  scroll-margin-top: 94px;
+  scroll-margin-top: 98px;
 }
-/* Service-specific hashes are aliases at the top of the services section.
-   This lets links say Eventproduktion/Bemanning/etc. while still landing on
-   the full section composition instead of cropping the heading away. */
+/* Legacy service hashes remain valid bookmarks, but JS resolves all four to
+   the top of #services so the full heading and cards are visible. */
 .allo-service-anchor {
   position: absolute;
   top: 0;
@@ -2912,10 +2912,9 @@ html {
   width: 1px;
   height: 1px;
   pointer-events: none;
-  scroll-margin-top: 94px;
+  scroll-margin-top: 98px;
 }
 @media (max-width: 767px) {
-  html { scroll-padding-top: 82px; }
   .allo-anchor-section,
-  .allo-service-anchor { scroll-margin-top: 82px; }
+  .allo-service-anchor { scroll-margin-top: 90px; }
 }
