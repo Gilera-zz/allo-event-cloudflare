@@ -25,7 +25,7 @@ import {
   caseGallery,
   caseServices,
   caseTimeline,
-  demoCasePayload,
+  casePresetPayload,
   PROJECT_CASE_SELECT,
   slugifyCaseTitle,
   type CaseCredit,
@@ -226,17 +226,17 @@ function CaseCmsView() {
     setSaving(false);
   };
 
-  const applyDemo = () => {
+  const applyPreset = () => {
     if (!draft.id) return;
-    const demo = demoCasePayload();
+    const preset = casePresetPayload();
     const next = normalizeProject({
       ...draft,
-      ...demo,
+      ...preset,
       id: draft.id,
       slug: draft.slug || slugifyCaseTitle(draft.title || "case"),
     } as ProjectCase);
     setDraft(next);
-    toast.success("Demo-innehåll laddat. Ingenting sparas förrän du klickar Spara.");
+    toast.success("Case-mall laddad. Ingenting sparas förrän du klickar Spara.");
   };
 
   return (
@@ -249,7 +249,7 @@ function CaseCmsView() {
             <p className="mt-3 max-w-2xl text-sm text-muted-foreground">Bygg publika case direkt ovanpå era befintliga projekt. Driftdata och bemanning ligger kvar – här styr ni presentationen på alloevent.se.</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={applyDemo} disabled={!draft.id} className="admin-case-secondary"><Sparkles className="h-4 w-4" />Fyll med demo-case</button>
+            <button type="button" onClick={applyPreset} disabled={!draft.id} className="admin-case-secondary"><Sparkles className="h-4 w-4" />Fyll med case-mall</button>
             {draft.slug ? <a href={`/case/${draft.slug}`} target="_blank" rel="noopener noreferrer" className="admin-case-secondary"><Eye className="h-4 w-4" />Förhandsvisa</a> : null}
             <button type="button" onClick={save} disabled={saving || !draft.id} className="admin-case-primary">{saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}Spara ändringar</button>
           </div>

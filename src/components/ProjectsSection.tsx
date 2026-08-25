@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, MapPin, Calendar, Users, X, Archive, ZoomIn } from "lucide-react";
 import { supabase, supabaseConfigError } from "@/integrations/supabase/client";
 import type { translations } from "@/lib/i18n";
-import { caseServices, demoCase, PROJECT_CASE_SELECT, type ProjectCase } from "@/lib/project-case";
+import { caseServices, PROJECT_CASE_SELECT, type ProjectCase } from "@/lib/project-case";
 
 type ProjectsT = {
   readonly [K in keyof (typeof translations)["sv"]["projectsSection"]]: string;
@@ -119,7 +119,7 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
 
   return (
     <section id="projects" className="mx-auto max-w-6xl px-6 py-24 scroll-mt-24">
-      <SelectedCases cases={publishedCases.length ? publishedCases : [demoCase]} demo={!publishedCases.length} />
+      <SelectedCases cases={publishedCases} />
 
       <div className="allo-live-projects-heading flex items-end justify-between flex-wrap gap-4">
         <div>
@@ -241,22 +241,40 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
   );
 }
 
-function SelectedCases({ cases, demo }: { cases: ProjectCase[]; demo: boolean }) {
+function SelectedCases({ cases }: { cases: ProjectCase[] }) {
   return (
     <div className="allo-selected-cases mb-20 md:mb-28">
       <div className="grid gap-6 lg:grid-cols-[.48fr_1.52fr] lg:items-end">
         <div>
           <span className="allo-selected-kicker">SELECTED WORK</span>
-          <h2 className="allo-selected-title mt-4">Case som visar jobbet bakom upplevelsen.</h2>
+          <h2 className="allo-selected-title mt-4">Jobbet bakom upplevelsen.</h2>
         </div>
-        <p className="allo-selected-intro">Från första load-in till öppnade dörrar. Här samlar vi utvalda produktioner och visar inte bara slutresultatet – utan hur vi faktiskt fick det att hända.</p>
+        <p className="allo-selected-intro">Från första load-in till öppnade dörrar. Här samlar vi utvalda produktioner och visar inte bara slutresultatet – utan människorna, logistiken och hantverket bakom.</p>
       </div>
 
-      {demo ? <div className="allo-demo-notice mt-7"><span>DEMO</span> Future Retail Summit är ett AI-genererat demonstrationscase. Publicerade projekt från Case CMS ersätter automatiskt demon.</div> : null}
+      {cases.length ? (
+        <div className="mt-10 grid gap-5">
+          {cases.map((project, index) => <SelectedCaseCard key={project.id} project={project} index={index} />)}
+        </div>
+      ) : (
+        <CaseArchiveComingSoon />
+      )}
+    </div>
+  );
+}
 
-      <div className="mt-10 grid gap-5">
-        {cases.map((project, index) => <SelectedCaseCard key={project.id} project={project} index={index} />)}
+function CaseArchiveComingSoon() {
+  return (
+    <div className="allo-case-empty mt-10">
+      <div className="allo-case-empty-grid" aria-hidden="true" />
+      <div className="allo-case-empty-index" aria-hidden="true">01</div>
+      <div className="allo-case-empty-content">
+        <span>CASE ARCHIVE / COMING SOON</span>
+        <h3>Vi dokumenterar det vi bygger.</h3>
+        <p>Vårt case-arkiv är på väg. Här kommer vi att visa riktiga produktioner från första plan och load-in till färdig leverans – med bilder, team, tidslinje och detaljerna som får eventet att fungera.</p>
+        <a href="#booking">Har ni något på gång? <ArrowRight className="h-4 w-4" /></a>
       </div>
+      <div className="allo-case-empty-mark" aria-hidden="true">ALLO</div>
     </div>
   );
 }

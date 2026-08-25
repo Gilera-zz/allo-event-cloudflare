@@ -22,8 +22,6 @@ import {
   caseGallery,
   caseServices,
   caseTimeline,
-  demoCase,
-  DEMO_CASE_SLUG,
   PROJECT_CASE_SELECT,
   type ProjectCase,
 } from "@/lib/project-case";
@@ -41,9 +39,9 @@ export const Route = createFileRoute("/case/$slug")({
 function ProjectCasePage() {
   const { slug } = Route.useParams();
   const [lang, setLang] = useState<Lang>("sv");
-  const [project, setProject] = useState<ProjectCase | null>(slug === DEMO_CASE_SLUG ? demoCase : null);
+  const [project, setProject] = useState<ProjectCase | null>(null);
   const [nextCase, setNextCase] = useState<ProjectCase | null>(null);
-  const [loading, setLoading] = useState(slug !== DEMO_CASE_SLUG);
+  const [loading, setLoading] = useState(true);
   const { theme, preference, setTheme } = useTheme();
 
   useEffect(() => {
@@ -61,8 +59,7 @@ function ProjectCasePage() {
         .maybeSingle();
 
       if (!cancelled) {
-        if (!error && data) setProject(data as ProjectCase);
-        else if (slug === DEMO_CASE_SLUG) setProject(demoCase);
+        if (!error && data && data.case_published) setProject(data as ProjectCase);
         else setProject(null);
         setLoading(false);
       }
