@@ -59,6 +59,7 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
           .from("projects")
           .select(PROJECT_CASE_SELECT)
           .eq("case_published", true)
+          .eq("public_visible", true)
           .order("case_featured", { ascending: false })
           .order("case_sort_order", { ascending: true })
           .limit(8);
@@ -81,20 +82,13 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
         const res1 = await supabase
           .from("projects")
           .select("id,title,category,location,starts_at,ends_at,positions_needed,image_url,description,status")
+          .eq("public_visible", true)
           .order("starts_at", { ascending: false, nullsFirst: false })
           .limit(60);
         if (res1.error) {
-          console.error("SUPABASE FETCH ERROR:", res1.error);
-          const res2 = await supabase
-            .from("projects")
-            .select("id,title,category,location,starts_at,ends_at,positions_needed,image_url,description")
-            .order("starts_at", { ascending: false, nullsFirst: false })
-            .limit(60);
-          if (res2.error) {
-            console.error("SUPABASE FETCH ERROR:", res2.error);
-          } else {
-            data = res2.data as Project[];
-          }
+          // Fail closed: if the visibility migration is missing, do not expose
+          // operational projects on the public website.
+          console.warn("Public project visibility is not configured yet:", res1.error.message);
         } else {
           data = res1.data as Project[];
         }
@@ -110,6 +104,7 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
   }, []);
 
   const total = ongoing.length;
+  const hasPublicProjects = ongoing.length + completed.length > 0;
   const next = () => setIndex((i) => (i + 1) % total);
   const prev = () => setIndex((i) => (i - 1 + total) % total);
   const visible = (() => {
@@ -121,6 +116,8 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
     <section id="projects" className="allo-anchor-section mx-auto max-w-6xl px-6 py-24">
       <SelectedCases cases={publishedCases} />
 
+      {hasPublicProjects ? (
+        <>
       <div className="allo-live-projects-heading flex items-end justify-between flex-wrap gap-4">
         <div>
           <span
@@ -237,6 +234,8 @@ export function ProjectsSection({ t }: { t: ProjectsT }) {
       )}
 
       {active && <ProjectModal p={active} onClose={() => setActive(null)} t={t} />}
+        </>
+      ) : null}
     </section>
   );
 }

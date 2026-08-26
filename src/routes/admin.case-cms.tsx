@@ -60,6 +60,7 @@ const EMPTY_DRAFT: Draft = {
   description: "",
   status: "",
   slug: "",
+  public_visible: false,
   case_published: false,
   case_featured: false,
   case_show_in_hero: false,
@@ -116,6 +117,7 @@ function CaseCmsView() {
   const [saving, setSaving] = useState(false);
   const [migrationMissing, setMigrationMissing] = useState(false);
   const [heroMigrationMissing, setHeroMigrationMissing] = useState(false);
+  const [visibilityMigrationMissing, setVisibilityMigrationMissing] = useState(false);
   const [filter, setFilter] = useState<"all" | "published" | "drafts">("all");
 
   const load = async (preferredId?: string) => {
@@ -125,12 +127,25 @@ function CaseCmsView() {
       .select(PROJECT_CASE_CMS_SELECT)
       .order("starts_at", { ascending: false, nullsFirst: false });
 
+    if (error && /public_visible/i.test(error.message)) {
+      setVisibilityMigrationMissing(true);
+      toast.warning("Publik projektvisning saknas. Kör 20260826_project_public_visibility.sql före live.");
+      const fallback = await supabase
+        .from("projects")
+        .select(PROJECT_CASE_CMS_SELECT.replace(",public_visible", ""))
+        .order("starts_at", { ascending: false, nullsFirst: false });
+      data = fallback.data;
+      error = fallback.error;
+    } else {
+      setVisibilityMigrationMissing(false);
+    }
+
     if (error && /case_show_in_hero|case_hero_priority/i.test(error.message)) {
       setHeroMigrationMissing(true);
       toast.warning("Hero-slideshowfält saknas. Kör 20260825_homepage_hero.sql när du vill aktivera hero-CMS.");
       const fallback = await supabase
         .from("projects")
-        .select(PROJECT_CASE_SELECT)
+        .select(visibilityMigrationMissing ? PROJECT_CASE_SELECT.replace(",public_visible", "") : PROJECT_CASE_SELECT)
         .order("starts_at", { ascending: false, nullsFirst: false });
       data = fallback.data;
       error = fallback.error;
@@ -198,6 +213,7 @@ function CaseCmsView() {
       description: draft.description?.trim() || null,
       status: draft.status?.trim() || null,
       slug: draft.slug?.trim() || null,
+      ...(!visibilityMigrationMissing ? { public_visible: !!draft.public_visible } : {}),
       case_published: !!draft.case_published,
       case_featured: !!draft.case_featured,
       ...(!heroMigrationMissing ? { case_show_in_hero: !!draft.case_show_in_hero, case_hero_priority: Number(draft.case_hero_priority ?? 100) } : {}),
@@ -244,6 +260,27 @@ function CaseCmsView() {
     setSaving(false);
   };
 
+  const hideFromWebsite = async () => {
+    if (!draft.id) return;
+    const ok = window.confirm("Ta bort projektet från alloevent.se? Projektet och all intern historik sparas i Operations.");
+    if (!ok) return;
+    setSaving(true);
+    const payload = {
+      ...(!visibilityMigrationMissing ? { public_visible: false } : {}),
+      case_published: false,
+      case_featured: false,
+      ...(!heroMigrationMissing ? { case_show_in_hero: false } : {}),
+      case_published_at: null,
+    };
+    const { error } = await supabase.from("projects").update(payload).eq("id", draft.id);
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Projektet är borttaget från hemsidan. Intern projektdata finns kvar.");
+      await load(draft.id);
+    }
+    setSaving(false);
+  };
+
   const applyPreset = () => {
     if (!draft.id) return;
     const preset = casePresetPayload();
@@ -268,6 +305,7 @@ function CaseCmsView() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={applyPreset} disabled={!draft.id} className="admin-case-secondary"><Sparkles className="h-4 w-4" />Fyll med case-mall</button>
+            {draft.id && (draft.public_visible || draft.case_published || draft.case_show_in_hero) ? <button type="button" onClick={hideFromWebsite} disabled={saving} className="admin-case-danger"><Trash2 className="h-4 w-4" />Dölj från hemsidan</button> : null}
             {draft.slug ? <a href={`/case/${draft.slug}`} target="_blank" rel="noopener noreferrer" className="admin-case-secondary"><Eye className="h-4 w-4" />Förhandsvisa</a> : null}
             <button type="button" onClick={save} disabled={saving || !draft.id} className="admin-case-primary">{saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}Spara ändringar</button>
           </div>
@@ -275,6 +313,7 @@ function CaseCmsView() {
 
         {migrationMissing ? <MigrationNotice /> : null}
         {heroMigrationMissing ? <div className="admin-homepage-migration mt-4"><strong>Hero-slideshow är inte aktiverat ännu.</strong><span>Kör <code>db/migrations/20260825_homepage_hero.sql</code>. Resten av Case CMS fungerar som vanligt tills dess.</span></div> : null}
+        {visibilityMigrationMissing ? <div className="admin-homepage-migration mt-4"><strong>Publik projektvisning är inte aktiverad ännu.</strong><span>Kör <code>db/migrations/20260826_project_public_visibility.sql</code>. Fram till dess failar hemsidan stängt och visar inga vanliga Operations-projekt.</span></div> : null}
 
         <div className="mt-6 grid gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
           <aside className="admin-case-project-list">
@@ -334,9 +373,10 @@ function ProjectEditor({ draft, update }: { draft: Draft; update: <K extends key
 
       <EditorSection eyebrow="02" title="Publicering & presentation" description="Styr om projektet syns som case och hur det presenteras i Selected Work.">
         <div className="grid gap-4 md:grid-cols-2">
-          <ToggleField label="Publicera som case" description="Gör projektet synligt publikt på hemsidan." checked={!!draft.case_published} onChange={(v) => update("case_published", v)} />
-          <ToggleField label="Featured case" description="Prioriteras i Selected Work på startsidan." checked={!!draft.case_featured} onChange={(v) => update("case_featured", v)} />
-          <ToggleField label="Visa i hero slideshow" description="Kan användas på startsidans hero när slideshow-läget är aktivt." checked={!!draft.case_show_in_hero} onChange={(v) => update("case_show_in_hero", v)} />
+          <ToggleField label="Tillåt på hemsidan" description="Master switch. Projektet får inte visas någonstans publikt när denna är av." checked={!!draft.public_visible} onChange={(v) => { update("public_visible", v); if (!v) { update("case_published", false); update("case_featured", false); update("case_show_in_hero", false); } }} />
+          <ToggleField label="Publicera som case" description="Publicerar den fulla case-sidan. Slår även på webbvisning." checked={!!draft.case_published} onChange={(v) => { update("case_published", v); if (v) update("public_visible", true); }} />
+          <ToggleField label="Featured case" description="Prioriteras i Selected Work på startsidan." checked={!!draft.case_featured} onChange={(v) => { update("case_featured", v); if (v) { update("case_published", true); update("public_visible", true); } }} />
+          <ToggleField label="Visa i hero slideshow" description="Kan användas på startsidans hero när slideshow-läget är aktivt." checked={!!draft.case_show_in_hero} onChange={(v) => { update("case_show_in_hero", v); if (v) { update("case_published", true); update("public_visible", true); } }} />
           <NumberField label="Hero-prioritet" value={draft.case_hero_priority ?? 100} onChange={(v) => update("case_hero_priority", v)} />
           <TextField label="Slug / URL" value={draft.slug ?? ""} onChange={(v) => update("slug", slugifyCaseTitle(v))} prefix="alloevent.se/case/" />
           <NumberField label="Visningsordning" value={draft.case_sort_order ?? 100} onChange={(v) => update("case_sort_order", v)} />

@@ -56,10 +56,12 @@ function ProjectCasePage() {
         .from("projects")
         .select(PROJECT_CASE_SELECT)
         .eq("slug", slug)
+        .eq("public_visible", true)
+        .eq("case_published", true)
         .maybeSingle();
 
       if (!cancelled) {
-        if (!error && data && data.case_published) setProject(data as ProjectCase);
+        if (!error && data) setProject(data as ProjectCase);
         else setProject(null);
         setLoading(false);
       }
@@ -69,6 +71,7 @@ function ProjectCasePage() {
           .from("projects")
           .select(PROJECT_CASE_SELECT)
           .eq("case_published", true)
+          .eq("public_visible", true)
           .neq("slug", slug)
           .order("case_featured", { ascending: false })
           .order("case_sort_order", { ascending: true })

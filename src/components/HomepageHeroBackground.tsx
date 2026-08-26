@@ -70,6 +70,7 @@ export function HomepageHeroBackground() {
             .from("projects")
             .select(HOMEPAGE_HERO_CASE_SELECT)
             .eq("case_published", true)
+            .eq("public_visible", true)
             .eq("case_show_in_hero", true)
             .order("case_hero_priority", { ascending: true })
             .order("case_published_at", { ascending: false, nullsFirst: false })

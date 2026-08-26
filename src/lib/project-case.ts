@@ -33,6 +33,7 @@ export type ProjectCase = {
   description?: string | null;
   status?: string | null;
   slug?: string | null;
+  public_visible?: boolean | null;
   case_published?: boolean | null;
   case_featured?: boolean | null;
   case_show_in_hero?: boolean | null;
@@ -87,6 +88,7 @@ export const PROJECT_CASE_SELECT = [
   "description",
   "status",
   "slug",
+  "public_visible",
   "case_published",
   "case_featured",
   "case_sort_order",
@@ -173,6 +175,7 @@ export function casePresetPayload() {
   // mistaken for a real project if someone previews it before filling it in.
   return {
     slug: null,
+    public_visible: false,
     case_published: false,
     case_featured: false,
     case_show_in_hero: false,
