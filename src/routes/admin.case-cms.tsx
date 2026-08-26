@@ -145,7 +145,7 @@ function CaseCmsView() {
       toast.warning("Hero-slideshowfält saknas. Kör 20260825_homepage_hero.sql när du vill aktivera hero-CMS.");
       const fallback = await supabase
         .from("projects")
-        .select(visibilityMigrationMissing ? PROJECT_CASE_SELECT.replace(",public_visible", "") : PROJECT_CASE_SELECT)
+        .select(PROJECT_CASE_SELECT)
         .order("starts_at", { ascending: false, nullsFirst: false });
       data = fallback.data;
       error = fallback.error;

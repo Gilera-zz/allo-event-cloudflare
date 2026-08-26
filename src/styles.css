@@ -2691,6 +2691,27 @@
 .admin-case-move-buttons button { border-color: var(--admin-border) !important; border-radius: 2px !important; }
 .admin-case-gallery-placeholder { background: var(--admin-bg-soft) !important; }
 
+/* Staff profile modal ------------------------------------------------------ */
+.admin-profile-modal-backdrop {
+  background: rgba(12, 12, 10, .46);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.dark .admin-profile-modal-backdrop { background: rgba(0, 0, 0, .72); }
+.admin-profile-modal-panel {
+  overflow: hidden;
+  border: 1px solid var(--admin-border-strong);
+  background: var(--admin-surface-solid);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .28);
+  isolation: isolate;
+}
+.dark .admin-profile-modal-panel { box-shadow: 0 34px 100px rgba(0, 0, 0, .72); }
+.admin-profile-lightbox-backdrop {
+  background: rgba(0, 0, 0, .9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 /* Existing schedule / staff / time views ---------------------------------- */
 .admin-app .ts-input {
   min-height: 40px;

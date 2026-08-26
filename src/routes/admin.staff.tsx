@@ -386,25 +386,24 @@ function ProfileModal({ profile: p, onClose }: { profile: Profile; onClose: () =
     <>
       <div
         role="dialog" aria-modal="true"
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style={{ backgroundColor: "var(--card)" }}
+        className="admin-profile-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4"
         onClick={onClose}
       >
         <div
-          className="relative w-full"
-          style={{ maxWidth: 520, backgroundColor: "var(--surface)", border: "1px solid var(--surface-line)", borderRadius: 14, maxHeight: "90vh", display: "flex", flexDirection: "column" }}
+          className="admin-profile-modal-panel relative w-full"
+          style={{ maxWidth: 520, borderRadius: 14, maxHeight: "90vh", display: "flex", flexDirection: "column" }}
           onClick={(e) => e.stopPropagation()}
         >
           <button
             onClick={onClose} aria-label="Stäng"
             className="absolute top-4 right-4 flex items-center justify-center"
-            style={{ width: 26, height: 26, borderRadius: 999, backgroundColor: "var(--surface)", border: "1px solid var(--surface-line)", color: "var(--muted-foreground)" }}
+            style={{ width: 26, height: 26, borderRadius: 999, backgroundColor: "var(--admin-bg-soft)", border: "1px solid var(--admin-border)", color: "var(--admin-muted)" }}
           >
             <X className="h-3.5 w-3.5" />
           </button>
 
           {/* Hero */}
-          <div style={{ padding: 20, backgroundColor: "var(--surface)", borderBottom: "1px solid var(--surface-line)", borderTopLeftRadius: 14, borderTopRightRadius: 14 }}>
+          <div style={{ padding: 20, backgroundColor: "var(--admin-surface-solid)", borderBottom: "1px solid var(--admin-border)", borderTopLeftRadius: 14, borderTopRightRadius: 14 }}>
             <div className="flex items-start gap-3.5">
               <button onClick={() => setLightbox(true)} style={{ cursor: "pointer", border: "none", padding: 0, background: "transparent" }}>
                 {p.avatar_url ? (
@@ -432,7 +431,7 @@ function ProfileModal({ profile: p, onClose }: { profile: Profile; onClose: () =
           </div>
 
           {/* Body */}
-          <div className="overflow-y-auto" style={{ maxHeight: 340, padding: "18px 20px" }}>
+          <div className="overflow-y-auto" style={{ maxHeight: 340, padding: "18px 20px", backgroundColor: "var(--admin-surface-solid)" }}>
             <Section title="KONTAKTUPPGIFTER">
               <ContactRows rows={[
                 { icon: Mail, value: p.email },
@@ -478,7 +477,7 @@ function ProfileModal({ profile: p, onClose }: { profile: Profile; onClose: () =
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2" style={{ padding: "12px 20px", borderTop: "1px solid var(--surface-line)" }}>
+          <div className="flex items-center justify-end gap-2" style={{ padding: "12px 20px", borderTop: "1px solid var(--admin-border)", backgroundColor: "var(--admin-surface-solid)", borderBottomLeftRadius: 14, borderBottomRightRadius: 14 }}>
             <button onClick={onClose} style={{ border: "1px solid var(--surface-line)", color: "var(--muted-foreground)", backgroundColor: "transparent", borderRadius: 7, padding: "7px 14px", fontSize: 12 }}>
               Stäng
             </button>
@@ -495,8 +494,7 @@ function ProfileModal({ profile: p, onClose }: { profile: Profile; onClose: () =
 
       {lightbox && (
         <div
-          className="fixed inset-0 z-[60] flex flex-col items-center justify-center cursor-pointer"
-          style={{ backgroundColor: "var(--card)" }}
+          className="admin-profile-lightbox-backdrop fixed inset-0 z-[60] flex flex-col items-center justify-center cursor-pointer"
           onClick={() => setLightbox(false)}
         >
           {p.avatar_url ? (
@@ -507,7 +505,7 @@ function ProfileModal({ profile: p, onClose }: { profile: Profile; onClose: () =
               backgroundColor: "var(--gold-surface)", border: "3px solid var(--gold)", color: "var(--gold)", fontSize: 72, fontWeight: 600,
             }}>{initials(p.full_name, p.email)}</div>
           )}
-          <p style={{ color: "var(--surface-line)", fontSize: 12, marginTop: 24 }}>Stäng</p>
+          <p style={{ color: "rgba(255,255,255,.72)", fontSize: 12, marginTop: 24 }}>Stäng</p>
         </div>
       )}
     </>
@@ -517,7 +515,7 @@ function ProfileModal({ profile: p, onClose }: { profile: Profile; onClose: () =
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-3.5">
-      <p style={{ color: "var(--surface-line)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{title}</p>
+      <p style={{ color: "var(--admin-faint)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{title}</p>
       {children}
     </div>
   );
@@ -547,7 +545,7 @@ function InsetBox({ label, text }: { label: string; text: string }) {
   return (
     <div>
       <p style={{ color: "var(--muted-foreground)", fontSize: 10, marginBottom: 4 }}>{label}</p>
-      <div style={{ backgroundColor: "var(--surface)", border: "1px solid var(--surface-line)", borderRadius: 8, padding: 11, color: "var(--muted-foreground)", fontSize: 12, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
+      <div style={{ backgroundColor: "var(--admin-bg-soft)", border: "1px solid var(--admin-border)", borderRadius: 8, padding: 11, color: "var(--admin-muted)", fontSize: 12, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
         {text}
       </div>
     </div>
