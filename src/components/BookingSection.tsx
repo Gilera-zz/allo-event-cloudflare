@@ -181,11 +181,11 @@ export function BookingSection({ t }: { t: BookingT }) {
       className="allo-anchor-section relative py-24"
       style={{ backgroundColor: "var(--background)" }}
     >
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="grid lg:grid-cols-2 gap-10 items-stretch">
+      <div className="mx-auto max-w-[1120px] px-5 md:px-8">
+        <div className="grid items-stretch gap-8 lg:grid-cols-[0.92fr_1.08fr]">
           {/* Left: brand panel */}
           <div
-            className="relative rounded-3xl overflow-hidden p-10 lg:p-12 flex flex-col justify-center items-start min-h-[520px]"
+            className="relative overflow-hidden rounded-[28px] p-8 md:p-10 lg:p-11 flex flex-col justify-center items-start min-h-[460px]"
             style={{
               background:
                 "linear-gradient(135deg, var(--gold-surface) 0%, var(--surface) 50%, var(--background) 100%)",
@@ -225,7 +225,7 @@ export function BookingSection({ t }: { t: BookingT }) {
           {/* Right: form */}
           <form
             onSubmit={onSubmit}
-            className="rounded-3xl p-8 lg:p-10"
+            className="rounded-[28px] p-7 md:p-8 lg:p-9"
             style={{
               backgroundColor: "var(--surface)",
               border: "1px solid var(--surface-line)",
@@ -362,7 +362,7 @@ export function BookingSection({ t }: { t: BookingT }) {
       {success && (
         <div
           className="fixed inset-0 z-[200] flex items-center justify-center p-4 animate-in fade-in duration-300"
-          style={{ backgroundColor: "var(--card)", backdropFilter: "blur(12px)" }}
+          style={{ backgroundColor: "rgba(5,5,5,0.84)", backdropFilter: "blur(12px)" }}
           onClick={() => setSuccess(false)}
         >
           <div
@@ -478,7 +478,7 @@ function PrivacyModal({ onClose }: { onClose: () => void }) {
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4 animate-in fade-in duration-200"
-      style={{ backgroundColor: "var(--card)", backdropFilter: "blur(10px)" }}
+      style={{ backgroundColor: "rgba(5,5,5,0.84)", backdropFilter: "blur(10px)" }}
       onClick={onClose}
     >
       <div

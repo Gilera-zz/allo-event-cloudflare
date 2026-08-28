@@ -36,7 +36,7 @@ const BEMANNING_ROLES = [
   "Butik", "Lager", "Städ", "Stagehand",
 ];
 
-const BUILDER_URL = "https://verktyg.alloevent.se";
+const BUILDER_URL = "https://beta.studio.alloevent.se";
 const PORTAL_URL = "https://personal.alloevent.se";
 
 export const Route = createFileRoute("/")({
@@ -303,7 +303,7 @@ function Index() {
         </section>
 
         <Dialog open={bemanningOpen} onOpenChange={setBemanningOpen}>
-          <DialogContent className="max-w-lg allo-dialog">
+          <DialogContent className="max-w-lg allo-dialog allo-dialog-solid">
             <DialogHeader>
               <DialogTitle>{sv ? "Bemanning – alla roller" : "Staffing – all roles"}</DialogTitle>
               <DialogDescription>{sv ? "Vi tillsätter personal inom följande områden:" : "We provide staff across the following areas:"}</DialogDescription>
