@@ -74,13 +74,70 @@ const NEED_TYPES = [
   "Annat",
 ];
 
-export function BookingSection({ t }: { t: BookingT }) {
+export function BookingSection({
+  t,
+  intent = "quote",
+  language = "sv",
+  onIntentChange,
+}: {
+  t: BookingT;
+  intent?: "staffing" | "quote";
+  language?: "sv" | "en";
+  onIntentChange?: (intent: "staffing" | "quote") => void;
+}) {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [completedCount, setCompletedCount] = useState<number>(COMPLETED_BASELINE);
+
+  const isStaffing = intent === "staffing";
+  const sv = language === "sv";
+  const presentation = isStaffing
+    ? {
+        badge: sv ? "Boka personal" : "Book staff",
+        headlineTop: "YOUR WORK.",
+        headlineBottom: "OUR PEOPLE.",
+        body: sv
+          ? "Behöver ni förstärkning till ett uppdrag? Berätta vilken kompetens, period och omfattning ni söker så återkommer vi inom 24 timmar."
+          : "Need extra crew for an assignment? Tell us the skills, dates and scale you need and we will get back to you within 24 hours.",
+        formTitle: sv ? "Boka personal" : "Book staff",
+        formSubtitle: sv ? "Beskriv bemanningsbehovet så återkommer vi med rätt upplägg." : "Describe your staffing need and we will return with the right setup.",
+        needLabel: sv ? "Typ av personal" : "Type of staff",
+        staffLabel: sv ? "Antal personal" : "Number of staff",
+        descriptionLabel: sv ? "Beskriv bemanningsbehovet" : "Describe the staffing need",
+        options: sv
+          ? ["Eventpersonal", "Bygg & Logistik", "Servering & Bartending", "Mässpersonal & Värdar", "Lager & Flytt", "Städ & Sanering", "Annat"]
+          : ["Event staff", "Build & logistics", "Hospitality & bartending", "Exhibition staff & hosts", "Warehouse & moving", "Cleaning", "Other"],
+        successBody: sv
+          ? "Vi har tagit emot er bemanningsförfrågan och återkommer inom 24 timmar."
+          : "We have received your staffing request and will get back to you within 24 hours.",
+      }
+    : {
+        badge: sv ? "Be om offert" : "Request a quote",
+        headlineTop: "YOUR EVENT.",
+        headlineBottom: "OUR DELIVERY.",
+        body: sv
+          ? "Planerar ni event, mässa, monter, rigg eller logistik? Ge oss ramarna så tar vi nästa steg tillsammans och återkommer inom 24 timmar."
+          : "Planning an event, exhibition, booth, rig or logistics delivery? Give us the outline and we will take the next step together within 24 hours.",
+        formTitle: sv ? "Berätta om projektet" : "Tell us about the project",
+        formSubtitle: sv ? "Ni behöver inte ha allt klart – börja med det ni vet." : "You do not need to have everything figured out – start with what you know.",
+        needLabel: sv ? "Vad gäller förfrågan?" : "What is the inquiry about?",
+        staffLabel: sv ? "Personalbehov, ungefär" : "Approx. staffing need",
+        descriptionLabel: sv ? "Beskriv projektet" : "Describe the project",
+        options: sv
+          ? ["Eventproduktion", "Mässa & monter", "Rigg & montage", "Logistik & transport", "Bemanning", "3D-monter / mässleverans", "Annat"]
+          : ["Event production", "Exhibition & booth", "Rigging & installation", "Logistics & transport", "Staffing", "3D booth / exhibition delivery", "Other"],
+        successBody: sv
+          ? "Vi har tagit emot er offertförfrågan och återkommer inom 24 timmar."
+          : "We have received your quote request and will get back to you within 24 hours.",
+      };
+
+  useEffect(() => {
+    setForm((current) => ({ ...current, need_type: "" }));
+    setError(null);
+  }, [intent]);
 
   useEffect(() => {
     (async () => {
@@ -178,14 +235,35 @@ export function BookingSection({ t }: { t: BookingT }) {
   return (
     <section
       id="booking"
-      className="allo-anchor-section relative py-24"
+      data-booking-intent={intent}
+      className="allo-anchor-section relative py-20 md:py-24"
       style={{ backgroundColor: "var(--background)" }}
     >
-      <div className="mx-auto max-w-[1120px] px-5 md:px-8">
-        <div className="grid items-stretch gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+      <div className="mx-auto max-w-[1080px] px-5 md:px-8">
+        <div className="allo-booking-intent-switch mb-7" role="tablist" aria-label={sv ? "Välj typ av förfrågan" : "Choose inquiry type"}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={isStaffing}
+            className={isStaffing ? "is-active" : ""}
+            onClick={() => onIntentChange?.("staffing")}
+          >
+            <span>01</span>{sv ? "Boka personal" : "Book staff"}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={!isStaffing}
+            className={!isStaffing ? "is-active" : ""}
+            onClick={() => onIntentChange?.("quote")}
+          >
+            <span>02</span>{sv ? "Be om offert" : "Request a quote"}
+          </button>
+        </div>
+        <div className="grid items-stretch gap-6 lg:grid-cols-[0.82fr_1.18fr]">
           {/* Left: brand panel */}
           <div
-            className="relative overflow-hidden rounded-[28px] p-8 md:p-10 lg:p-11 flex flex-col justify-center items-start min-h-[460px]"
+            className="allo-booking-brand-panel relative overflow-hidden rounded-[24px] p-8 md:p-9 flex flex-col justify-center items-start min-h-[430px]"
             style={{
               background:
                 "linear-gradient(135deg, var(--gold-surface) 0%, var(--surface) 50%, var(--background) 100%)",
@@ -206,18 +284,18 @@ export function BookingSection({ t }: { t: BookingT }) {
                   border: "1px solid color-mix(in srgb, var(--gold) 25%, transparent)",
                 }}
               >
-                <Sparkles className="h-3 w-3" /> {t.badge}
+                <Sparkles className="h-3 w-3" /> {presentation.badge}
               </span>
               <h2
-                className="mt-6 text-5xl lg:text-6xl font-bold leading-[0.95] tracking-tight"
+                className="mt-6 text-[clamp(2.8rem,4.3vw,4.7rem)] font-bold leading-[0.92] tracking-tight"
                 style={{ color: "var(--foreground)", fontFamily: "Urbanist, sans-serif" }}
               >
-                {t.headlineTop}
+                {presentation.headlineTop}
                 <br />
-                <span style={{ color: "var(--gold)" }}>{t.headlineBottom}</span>
+                <span style={{ color: "var(--gold)" }}>{presentation.headlineBottom}</span>
               </h2>
               <p className="mt-6 text-base leading-relaxed max-w-md" style={{ color: "var(--muted-foreground)" }}>
-                {t.brandDescription}
+                {presentation.body}
               </p>
             </div>
           </div>
@@ -225,7 +303,7 @@ export function BookingSection({ t }: { t: BookingT }) {
           {/* Right: form */}
           <form
             onSubmit={onSubmit}
-            className="rounded-[28px] p-7 md:p-8 lg:p-9"
+            className="allo-booking-form-panel rounded-[24px] p-6 md:p-7 lg:p-8"
             style={{
               backgroundColor: "var(--surface)",
               border: "1px solid var(--surface-line)",
@@ -233,13 +311,13 @@ export function BookingSection({ t }: { t: BookingT }) {
             }}
           >
             <h3 className="text-2xl font-semibold" style={{ color: "var(--foreground)" }}>
-              {t.formTitle}
+              {presentation.formTitle}
             </h3>
             <p className="text-sm mt-1" style={{ color: "var(--muted-foreground)" }}>
-              {t.formSubtitle}
+              {presentation.formSubtitle}
             </p>
 
-            <div className="mt-6 grid sm:grid-cols-2 gap-4">
+            <div className="mt-6 grid sm:grid-cols-2 gap-x-4 gap-y-3.5">
               <Field label={t.labels.company} value={form.company} onChange={(v) => update("company", v)} />
               <Field label={t.labels.org_number} value={form.org_number} onChange={(v) => update("org_number", v)} />
               <Field label={t.labels.first_name} value={form.first_name} onChange={(v) => update("first_name", v)} />
@@ -248,7 +326,7 @@ export function BookingSection({ t }: { t: BookingT }) {
               <Field label={t.labels.phone} type="tel" value={form.phone} onChange={(v) => update("phone", v)} />
               <Field label={t.labels.city} value={form.city} onChange={(v) => update("city", v)} />
               <Field
-                label={t.labels.staff_count}
+                label={presentation.staffLabel}
                 type="number"
                 value={form.staff_count}
                 onChange={(v) => update("staff_count", v)}
@@ -266,11 +344,11 @@ export function BookingSection({ t }: { t: BookingT }) {
                 onChange={(v) => update("end_date", v)}
               />
               <div className="sm:col-span-2">
-                <Label>{t.labels.need_type}</Label>
+                <Label>{presentation.needLabel}</Label>
                 <select
                   value={form.need_type}
                   onChange={(e) => update("need_type", e.target.value)}
-                  className="w-full h-11 px-3 rounded-lg text-sm outline-none transition-colors"
+                  className="w-full h-10 px-3 rounded-md text-sm outline-none transition-colors"
                   style={{
                     backgroundColor: "var(--background)",
                     border: "1px solid var(--surface-line)",
@@ -278,20 +356,20 @@ export function BookingSection({ t }: { t: BookingT }) {
                   }}
                 >
                   <option value="">{t.selectCategory}</option>
-                  {t.needTypes.map((n, i) => (
-                    <option key={n} value={NEED_TYPES[i] ?? n}>
+                  {presentation.options.map((n) => (
+                    <option key={n} value={n}>
                       {n}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <Label>{t.labels.description}</Label>
+                <Label>{presentation.descriptionLabel}</Label>
                 <textarea
                   value={form.description}
                   onChange={(e) => update("description", e.target.value)}
-                  rows={4}
-                  className="w-full px-3 py-2 rounded-lg text-sm outline-none resize-y transition-colors"
+                  rows={3}
+                  className="w-full px-3 py-2.5 rounded-md text-sm outline-none resize-y transition-colors"
                   style={{
                     backgroundColor: "var(--background)",
                     border: "1px solid var(--surface-line)",
@@ -301,7 +379,7 @@ export function BookingSection({ t }: { t: BookingT }) {
               </div>
             </div>
 
-            <div className="mt-6 space-y-3 text-sm" style={{ color: "var(--muted-foreground)" }}>
+            <div className="mt-5 space-y-2.5 text-sm" style={{ color: "var(--muted-foreground)" }}>
               <CheckboxRow
                 checked={form.consent_privacy}
                 onChange={(v) => update("consent_privacy", v)}
@@ -339,11 +417,11 @@ export function BookingSection({ t }: { t: BookingT }) {
             <button
               type="submit"
               disabled={submitting}
-              className="mt-6 w-full inline-flex items-center justify-center gap-2 h-13 rounded-full text-sm font-bold uppercase tracking-[0.2em] transition-all hover:opacity-90 disabled:opacity-60"
+              className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-md text-xs font-bold uppercase tracking-[0.2em] transition-all hover:opacity-90 disabled:opacity-60"
               style={{
                 backgroundColor: "var(--gold)",
                 color: "var(--background)",
-                height: "52px",
+                height: "48px",
                 boxShadow: "0 10px 30px color-mix(in srgb, var(--gold) 35%, transparent)",
               }}
             >
@@ -384,7 +462,7 @@ export function BookingSection({ t }: { t: BookingT }) {
               {t.successTitle}
             </h3>
             <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
-              {t.successBody}
+              {presentation.successBody}
             </p>
             <button
               type="button"
@@ -432,7 +510,7 @@ function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full h-11 px-3 rounded-lg text-sm outline-none transition-colors focus:border-gold"
+        className="w-full h-10 px-3 rounded-md text-sm outline-none transition-colors focus:border-gold"
         style={{
           backgroundColor: "var(--background)",
           border: "1px solid var(--surface-line)",

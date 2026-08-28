@@ -76,6 +76,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [lang, setLang] = useState<Lang>("sv");
   const [bemanningOpen, setBemanningOpen] = useState(false);
+  const [bookingIntent, setBookingIntent] = useState<"staffing" | "quote">("quote");
   const { theme, preference, setTheme } = useTheme();
   const { isAdmin, loading } = useAuth();
 
@@ -128,6 +129,11 @@ function Index() {
       const element = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a[href]") : null;
       const href = element?.getAttribute("href");
       if (!href?.startsWith("#")) return;
+
+      const intent = element?.dataset.bookingIntent;
+      if (intent === "staffing" || intent === "quote") {
+        setBookingIntent(intent);
+      }
 
       event.preventDefault();
       const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth";
@@ -210,7 +216,7 @@ function Index() {
                   <button type="button" onClick={() => setBemanningOpen(true)} className="allo-primary-button">
                     {copy.staffingCta}<Users className="h-4 w-4" />
                   </button>
-                  <a href="#booking" className="allo-hero-secondary">
+                  <a href="#booking" data-booking-intent="quote" className="allo-hero-secondary">
                     {copy.quoteCta}<ArrowRight className="h-4 w-4" />
                   </a>
                 </div>
@@ -262,6 +268,7 @@ function Index() {
                 bullets={copy.choiceProductionBullets}
                 cta={copy.quoteCta}
                 href="#booking"
+                bookingIntent="quote"
               />
             </div>
           </div>
@@ -279,10 +286,10 @@ function Index() {
           <div className="mx-auto max-w-[1380px] px-5 md:px-8">
             <SectionHeading eyebrow={copy.servicesEyebrow} title={copy.servicesTitle} dark={false} />
             <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <ServiceCard icon={CalendarDays} title={copy.eventTitle} description={copy.eventBody} href="#booking" />
+              <ServiceCard icon={CalendarDays} title={copy.eventTitle} description={copy.eventBody} href="#booking" bookingIntent="quote" />
               <ServiceCard icon={Users} title={copy.staffingTitle} description={copy.staffingBody} onClick={() => setBemanningOpen(true)} />
               <ServiceCard icon={Cuboid} title={copy.expoTitle} description={copy.expoBody} href="#builder" />
-              <ServiceCard icon={Truck} title={copy.logisticsTitle} description={copy.logisticsBody} href="#booking" />
+              <ServiceCard icon={Truck} title={copy.logisticsTitle} description={copy.logisticsBody} href="#booking" bookingIntent="quote" />
             </div>
           </div>
         </section>
@@ -314,17 +321,17 @@ function Index() {
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
               {sv ? "Söker ni något annat? Berätta vad ni behöver så sätter vi ihop rätt lösning." : "Looking for something else? Tell us what you need and we'll put together the right solution."}
             </p>
-            <a href="#booking" onClick={() => setBemanningOpen(false)} className="allo-primary-button mt-2 w-fit">{copy.staffingCta}</a>
+            <a href="#booking" data-booking-intent="staffing" onClick={() => { setBookingIntent("staffing"); setBemanningOpen(false); }} className="allo-primary-button mt-2 w-fit">{copy.staffingCta}</a>
           </DialogContent>
         </Dialog>
 
-        <section id="builder" className="allo-light-section py-20 md:py-28">
-          <div className="mx-auto grid max-w-[1380px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[0.78fr_1.22fr]">
+        <section id="builder" className="allo-studio-section py-20 md:py-24">
+          <div className="mx-auto grid max-w-[1380px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[0.72fr_1.28fr]">
             <div>
-              <span className="allo-section-kicker">{copy.builderKicker}</span>
-              <h2 className="allo-section-title allo-theme-heading mt-3">{copy.builderTitle}</h2>
-              <p className="allo-theme-muted mt-5 max-w-xl text-base leading-relaxed md:text-lg">{copy.builderBody}</p>
-              <ul className="allo-theme-copy mt-7 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <span className="allo-section-kicker allo-studio-kicker">{copy.builderKicker}</span>
+              <h2 className="allo-section-title allo-studio-heading mt-3">{copy.builderTitle}</h2>
+              <p className="allo-studio-muted mt-5 max-w-xl text-base leading-relaxed md:text-lg">{copy.builderBody}</p>
+              <ul className="allo-studio-copy mt-7 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {t.showcase.bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-2.5">
                     <span className="allo-check-dot flex h-6 w-6 items-center justify-center rounded-full"><Check className="h-3.5 w-3.5" /></span>
@@ -332,8 +339,8 @@ function Index() {
                   </li>
                 ))}
               </ul>
-              <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="allo-primary-button mt-8">
-                {t.showcase.cta}<ArrowUpRight className="h-4 w-4" />
+              <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="allo-studio-button mt-8">
+                {sv ? "Öppna Allo Studio" : "Open Allo Studio"}<ArrowUpRight className="h-4 w-4" />
               </a>
             </div>
             <BuilderPreview />
@@ -404,7 +411,7 @@ function Index() {
         </section>
 
         <div className="allo-booking-wrap">
-          <BookingSection t={t.booking} />
+          <BookingSection t={t.booking} intent={bookingIntent} language={lang} onIntentChange={setBookingIntent} />
         </div>
 
         <section id="contact" className="allo-anchor-section allo-contact-section py-20 md:py-24">
@@ -424,7 +431,7 @@ function Index() {
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/60" />
                 <span>Surbrunnsgatan 30<br />113 27 Stockholm</span>
               </div>
-              <a href="#booking" className="allo-primary-button justify-center">{copy.startProject}</a>
+              <a href="#booking" data-booking-intent="quote" className="allo-primary-button justify-center">{copy.startProject}</a>
             </div>
           </div>
         </section>
@@ -471,7 +478,7 @@ function SectionHeading({ eyebrow, title, dark, centered = false }: { eyebrow: s
   );
 }
 
-function ServiceCard({ icon: Icon, title, description, href, external, onClick }: { icon: typeof Users; title: string; description: string; href?: string; external?: boolean; onClick?: () => void }) {
+function ServiceCard({ icon: Icon, title, description, href, external, onClick, bookingIntent }: { icon: typeof Users; title: string; description: string; href?: string; external?: boolean; onClick?: () => void; bookingIntent?: "staffing" | "quote" }) {
   const content = (
     <>
       <div className="flex items-start justify-between gap-4">
@@ -484,7 +491,7 @@ function ServiceCard({ icon: Icon, title, description, href, external, onClick }
   );
   const className = "group allo-service-card scroll-mt-28";
   if (onClick) return <button type="button" onClick={onClick} className={`${className} text-left`}>{content}</button>;
-  return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>{content}</a>;
+  return <a href={href} data-booking-intent={bookingIntent} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>{content}</a>;
 }
 
 function NeedCard({
@@ -497,6 +504,7 @@ function NeedCard({
   cta,
   href,
   onClick,
+  bookingIntent,
 }: {
   number: string;
   icon: typeof Users;
@@ -507,6 +515,7 @@ function NeedCard({
   cta: string;
   href?: string;
   onClick?: () => void;
+  bookingIntent?: "staffing" | "quote";
 }) {
   const actionClass = "allo-choice-action mt-8 inline-flex items-center gap-2";
   return (
@@ -524,7 +533,7 @@ function NeedCard({
       {onClick ? (
         <button type="button" onClick={onClick} className={actionClass}>{cta}<ArrowRight className="h-4 w-4" /></button>
       ) : (
-        <a href={href} className={actionClass}>{cta}<ArrowRight className="h-4 w-4" /></a>
+        <a href={href} data-booking-intent={bookingIntent} className={actionClass}>{cta}<ArrowRight className="h-4 w-4" /></a>
       )}
     </article>
   );
@@ -622,33 +631,49 @@ function FooterColumn({ title, links }: { title: string; links: [string, string]
 
 function BuilderPreview() {
   return (
-    <div className="allo-builder-shell">
-      <div className="allo-builder-topbar">
-        <span className="flex items-center gap-2 text-xs font-extrabold tracking-[0.12em] text-white"><span className="h-2.5 w-2.5 rounded-sm bg-white/80" />ALLO EVENT</span>
-        <span className="text-[10px] text-white/40">3D BOOTH BUILDER</span>
+    <div className="allo-studio-shell">
+      <div className="allo-studio-topbar">
+        <div className="allo-studio-wordmark"><span>ALLO</span> <strong>STUDIO</strong></div>
+        <span>DESIGN · CALCULATION · PRODUCTION</span>
       </div>
-      <div className="grid min-h-[400px] md:grid-cols-[120px_1fr_150px]">
-        <div className="hidden border-r border-white/8 bg-[#0b0c11] p-4 md:block">
-          {['RUM','VÄGGAR','GOLV','MÖBLER','BELYSNING','DEKOR','VARUMÄRKE'].map((item, index) => <div key={item} className={`py-3 text-[9px] font-bold tracking-[.12em] ${index === 1 ? 'text-white' : 'text-white/38'}`}>{item}</div>)}
-        </div>
-        <div className="relative overflow-hidden bg-[radial-gradient(circle_at_50%_25%,rgba(255,255,255,.09),transparent_28%),linear-gradient(180deg,#151515_0%,#090909_100%)]">
-          <div className="absolute inset-x-[8%] bottom-[13%] h-[43%] [transform:perspective(700px)_rotateX(62deg)] border border-white/12 bg-white/[0.035]" />
-          <div className="absolute bottom-[32%] left-[18%] h-[36%] w-[64%] border border-white/18 bg-[#f1f1f2] shadow-[0_0_50px_rgba(255,255,255,.06)]">
-            <div className="absolute inset-x-[10%] top-[12%] flex h-[31%] items-center justify-center bg-[#171820] text-sm font-black tracking-[.14em] text-white">ALLO EVENT</div>
-            <div className="absolute bottom-0 left-[10%] h-[32%] w-[26%] bg-[#171717]" />
-            <div className="absolute bottom-0 right-[9%] h-[27%] w-[34%] border border-[#14151b]/20 bg-[#d8d8da]" />
+      <div className="allo-studio-workspace">
+        <aside className="allo-studio-rail">
+          <span className="is-active">01</span>
+          <div><strong>Designstudio</strong><small>2D, 3D & AI-layout</small></div>
+          <span>02</span>
+          <div><strong>Cloud workspace</strong><small>Projekt på alla enheter</small></div>
+          <span>03</span>
+          <div><strong>Produktion</strong><small>Offert & materialdata</small></div>
+        </aside>
+        <div className="allo-studio-canvas">
+          <span className="allo-studio-canvas-label">LIVE PREVIEW</span>
+          <div className="allo-studio-render allo-studio-render-back">
+            <div className="allo-studio-truss" />
+            <div className="allo-studio-screen">ALLO</div>
+            <div className="allo-studio-desk">STUDIO</div>
           </div>
-          <div className="absolute bottom-[17%] left-1/2 h-12 w-28 -translate-x-1/2 border border-white/15 bg-[#22242d] shadow-xl" />
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full border border-white/10 bg-black/50 px-4 py-2 text-[10px] text-white/45 backdrop-blur-md">↻　＋　−　◫　⌂</div>
-        </div>
-        <div className="hidden border-l border-white/8 bg-[#0b0c11] p-4 md:block">
-          <div className="text-[9px] font-bold uppercase tracking-[.14em] text-white/35">Offert</div>
-          <div className="mt-2 text-xl font-extrabold text-white">Livepris</div>
-          <div className="mt-5 space-y-3 text-[10px] text-white/44">
-            <div className="flex justify-between"><span>Väggar</span><span>—</span></div><div className="flex justify-between"><span>Golv</span><span>—</span></div><div className="flex justify-between"><span>Möbler</span><span>—</span></div><div className="flex justify-between"><span>Belysning</span><span>—</span></div>
+          <div className="allo-studio-render allo-studio-render-front">
+            <div className="allo-studio-lightbar" />
+            <div className="allo-studio-stage" />
+            <div className="allo-studio-led">ALLO</div>
           </div>
-          <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="mt-8 flex justify-center rounded-sm border border-white/20 bg-white px-3 py-2.5 text-[10px] font-bold text-black hover:bg-white/90">Öppna verktyget</a>
+          <div className="allo-studio-toolbar">↻　＋　−　□　⌂</div>
         </div>
+        <aside className="allo-studio-summary">
+          <span className="allo-studio-mini-label">OFFERT</span>
+          <strong>Livepris</strong>
+          <dl>
+            <div><dt>Väggar</dt><dd>—</dd></div>
+            <div><dt>Golv</dt><dd>—</dd></div>
+            <div><dt>Möbler</dt><dd>—</dd></div>
+            <div><dt>Belysning</dt><dd>—</dd></div>
+          </dl>
+          <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer">Öppna Studio <ArrowUpRight className="h-3.5 w-3.5" /></a>
+        </aside>
+      </div>
+      <div className="allo-studio-footerline">
+        <span><i /> beta.studio.alloevent.se</span>
+        <span>SUPABASE CLOUD · LIVE</span>
       </div>
     </div>
   );
@@ -715,9 +740,9 @@ const svCopy = {
   process4Title: "Leverans & avslut",
   process4Body: "Vi följer upp, river, lastar ut och ser till att projektet stängs ordentligt.",
   builderNav: "3D-monterverktyg",
-  builderKicker: "En del av vår mässleverans",
-  builderTitle: "Planera montern i 3D innan vi bygger den",
-  builderBody: "Vårt 3D-verktyg gör det enklare att visualisera väggar, golv, möbler och belysning innan produktionen startar. Verktyget är ett stöd i mässleveransen – inte ett separat erbjudande från resten av produktionen.",
+  builderKicker: "Allo Studio · En del av vår mässleverans",
+  builderTitle: "Designa, visualisera och planera innan vi bygger",
+  builderBody: "Allo Studio samlar design, visualisering, kalkyl och produktionsunderlag i samma arbetsflöde. Se montern i 3D, testa uttrycket och skapa ett tydligare underlag innan produktionen startar.",
   proof1Title: "Helhetsleverans",
   proof1Body: "Från första plan till sista utbärning",
   proof2Title: "3D som verktyg",
@@ -784,9 +809,9 @@ const enCopy = {
   process4Title: "Handover & close",
   process4Body: "We follow up, dismantle, load out and make sure the project is properly closed.",
   builderNav: "3D booth tool",
-  builderKicker: "Part of our exhibition delivery",
-  builderTitle: "Plan the booth in 3D before we build it",
-  builderBody: "Our 3D tool makes it easier to visualize walls, flooring, furniture and lighting before production starts. It supports the exhibition delivery rather than standing apart as a separate business.",
+  builderKicker: "Allo Studio · Part of our exhibition delivery",
+  builderTitle: "Design, visualize and plan before we build",
+  builderBody: "Allo Studio brings design, visualization, calculation and production data into one workflow. Explore the booth in 3D, test the expression and create a clearer production brief before the build starts.",
   proof1Title: "End-to-end delivery",
   proof1Body: "From first plan to final load-out",
   proof2Title: "3D as a tool",

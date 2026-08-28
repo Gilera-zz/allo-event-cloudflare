@@ -84,7 +84,7 @@ export function SiteHeader({ lang, setLang, theme, preference, setTheme, homeBas
             <UserRound className="h-4 w-4" />
             {labels.jobs}
           </a>
-          <a href={homeAnchor("#booking")} className="allo-primary-button h-10 px-5 text-[12px]">
+          <a href={homeAnchor("#booking")} data-booking-intent="quote" className="allo-primary-button h-10 px-5 text-[12px]">
             {labels.start}
           </a>
         </div>
@@ -122,7 +122,7 @@ export function SiteHeader({ lang, setLang, theme, preference, setTheme, homeBas
             </div>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <a href={PORTAL_URL} target="_blank" rel="noopener noreferrer" className="allo-secondary-button justify-center">{labels.jobs}</a>
-              <a onClick={() => setOpen(false)} href={homeAnchor("#booking")} className="allo-primary-button justify-center">{labels.start}</a>
+              <a onClick={() => setOpen(false)} href={homeAnchor("#booking")} data-booking-intent="quote" className="allo-primary-button justify-center">{labels.start}</a>
             </div>
           </div>
         </div>
