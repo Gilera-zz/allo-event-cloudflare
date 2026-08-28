@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Check, Loader2, Sparkles, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 type BookingT = {
   badge: string;
   headlineTop: string;
@@ -334,34 +335,38 @@ export function BookingSection({
               <Field
                 label={t.labels.start_date}
                 type="date"
+                inputClassName="allo-booking-date-input"
                 value={form.start_date}
                 onChange={(v) => update("start_date", v)}
               />
               <Field
                 label={t.labels.end_date}
                 type="date"
+                inputClassName="allo-booking-date-input"
                 value={form.end_date}
                 onChange={(v) => update("end_date", v)}
               />
               <div className="sm:col-span-2">
                 <Label>{presentation.needLabel}</Label>
-                <select
-                  value={form.need_type}
-                  onChange={(e) => update("need_type", e.target.value)}
-                  className="w-full h-10 px-3 rounded-md text-sm outline-none transition-colors"
-                  style={{
-                    backgroundColor: "var(--background)",
-                    border: "1px solid var(--surface-line)",
-                    color: "var(--foreground)",
-                  }}
-                >
-                  <option value="">{t.selectCategory}</option>
-                  {presentation.options.map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
+                <Select value={form.need_type || undefined} onValueChange={(value) => update("need_type", value)}>
+                  <SelectTrigger
+                    className="allo-booking-select-trigger h-10 w-full rounded-md px-3 text-sm shadow-none"
+                    aria-label={presentation.needLabel}
+                  >
+                    <SelectValue placeholder={t.selectCategory} />
+                  </SelectTrigger>
+                  <SelectContent
+                    position="popper"
+                    sideOffset={6}
+                    className="allo-booking-select-content"
+                  >
+                    {presentation.options.map((option) => (
+                      <SelectItem key={option} value={option} className="allo-booking-select-item">
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="sm:col-span-2">
                 <Label>{presentation.descriptionLabel}</Label>
@@ -497,11 +502,13 @@ function Field({
   value,
   onChange,
   type = "text",
+  inputClassName = "",
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
+  inputClassName?: string;
 }) {
   return (
     <div>
@@ -510,7 +517,7 @@ function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full h-10 px-3 rounded-md text-sm outline-none transition-colors focus:border-gold"
+        className={`w-full h-10 px-3 rounded-md text-sm outline-none transition-colors focus:border-gold ${inputClassName}`}
         style={{
           backgroundColor: "var(--background)",
           border: "1px solid var(--surface-line)",

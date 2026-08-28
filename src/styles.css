@@ -3947,3 +3947,75 @@ html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .all
   .allo-studio-render-back { width:78%; left:7%; }
   .allo-studio-render-front { width:72%; right:4%; }
 }
+
+
+/* V6.7 — browser-consistent public booking controls. */
+.allo-booking-select-trigger {
+  border-color: var(--allo-border) !important;
+  background: #111214 !important;
+  color: #f5f5f2 !important;
+  box-shadow: none !important;
+}
+.allo-booking-select-trigger[data-placeholder] {
+  color: rgba(245,245,242,.58) !important;
+}
+.allo-booking-select-trigger:focus {
+  border-color: rgba(245,245,242,.38) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 1px rgba(245,245,242,.08) !important;
+}
+.allo-booking-select-content {
+  z-index: 300 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.16) !important;
+  border-radius: 8px !important;
+  background: #0d0e10 !important;
+  color: #f5f5f2 !important;
+  box-shadow: 0 22px 55px rgba(0,0,0,.55) !important;
+}
+.allo-booking-select-content [data-radix-select-viewport] {
+  background: #0d0e10 !important;
+}
+.allo-booking-select-item {
+  min-height: 40px;
+  border-radius: 5px !important;
+  padding: 9px 34px 9px 11px !important;
+  color: rgba(245,245,242,.78) !important;
+  cursor: pointer !important;
+}
+.allo-booking-select-item[data-highlighted],
+.allo-booking-select-item:focus {
+  background: #f2f2ef !important;
+  color: #090909 !important;
+}
+.allo-booking-select-item[data-state="checked"] {
+  color: #fff !important;
+  font-weight: 700;
+}
+.allo-booking-select-item[data-state="checked"][data-highlighted] {
+  color: #090909 !important;
+}
+.allo-booking-date-input {
+  color-scheme: dark;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.allo-booking-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: .72;
+  filter: invert(1) grayscale(1);
+}
+html:not(.dark) .allo-booking-wrap .allo-booking-select-trigger {
+  background: #ffffff !important;
+  color: #111 !important;
+  border-color: rgba(0,0,0,.18) !important;
+}
+html:not(.dark) .allo-booking-wrap .allo-booking-select-trigger[data-placeholder] {
+  color: rgba(17,17,17,.52) !important;
+}
+html:not(.dark) .allo-booking-wrap .allo-booking-date-input {
+  color-scheme: light;
+}
+html:not(.dark) .allo-booking-wrap .allo-booking-date-input::-webkit-calendar-picker-indicator {
+  filter: none;
+}
