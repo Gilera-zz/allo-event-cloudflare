@@ -3703,3 +3703,59 @@ html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .all
   .allo-hero-v61-media-frame { min-height: 400px; }
   .allo-hero-v61-proof { min-height: 145px; padding: 24px 20px 20px; }
 }
+
+
+/* V6.3 — locked hero composition ---------------------------------------------
+   Keeps the approved editorial composition while guaranteeing that the large
+   headline never intrudes into the media column on desktop. */
+.allo-hero-v61-copy {
+  container-type: inline-size;
+}
+.allo-display-v61 {
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(3rem, 11.2cqw, 4.45rem);
+  line-height: .965;
+  letter-spacing: -.047em !important;
+}
+.allo-display-v61 span {
+  max-width: 100%;
+  white-space: nowrap;
+}
+@media (min-width: 1024px) {
+  .allo-hero-v61-grid {
+    grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr);
+    gap: clamp(38px, 3.4vw, 56px);
+  }
+  .allo-hero-v61-copy,
+  .allo-hero-v61-visual {
+    min-width: 0;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .allo-display-v61 { font-size: clamp(2.85rem, 10.7cqw, 3.85rem); }
+}
+@media (max-width: 1023px) {
+  .allo-hero-v61-copy { container-type: normal; }
+  .allo-display-v61 {
+    max-width: 760px;
+    font-size: clamp(3rem, 8.8vw, 5.3rem);
+  }
+}
+@media (max-width: 767px) {
+  .allo-display-v61 {
+    font-size: clamp(2.7rem, 12.2vw, 4.8rem);
+    line-height: .94;
+  }
+  .allo-display-v61 span { white-space: normal; }
+}
+
+/* A slightly more photographic treatment than the earlier cinematic fallback. */
+.allo-hero-v62-fallback-image {
+  filter: grayscale(1) contrast(1.015) brightness(.98);
+  transform: scale(1.004);
+}
+.allo-hero-v61-media-frame:has(.allo-hero-v62-fallback) .allo-hero-panel-overlay {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.06) 48%, rgba(0,0,0,.23) 100%) !important;
+}
