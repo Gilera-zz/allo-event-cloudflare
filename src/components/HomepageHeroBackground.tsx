@@ -20,7 +20,7 @@ type Slide = {
   isCase: boolean;
 };
 
-export function HomepageHeroBackground() {
+export function HomepageHeroBackground({ embedded = false }: { embedded?: boolean }) {
   const [settings, setSettings] = useState<HomepageHeroSettings>(DEFAULT_HOMEPAGE_HERO);
   const [slides, setSlides] = useState<Slide[]>([]);
   const [active, setActive] = useState(0);
@@ -132,9 +132,9 @@ export function HomepageHeroBackground() {
     background: `linear-gradient(90deg, rgba(0,0,0,${Math.min(.94, overlay + .13)}) 0%, rgba(0,0,0,${overlay}) 48%, rgba(0,0,0,${Math.max(.28, overlay - .24)}) 100%)`,
   }), [overlay]);
 
-  return (
+  const heroContent = (
     <>
-      <div className="allo-hero-media absolute inset-0 -z-20 overflow-hidden bg-[#050505]">
+      <div className={embedded ? "allo-hero-media allo-hero-media-panel" : "allo-hero-media absolute inset-0 -z-20 overflow-hidden bg-[#050505]"}>
         {slides.length ? slides.map((slide, index) => (
           <img
             key={slide.id}
@@ -149,7 +149,10 @@ export function HomepageHeroBackground() {
           />
         )) : <HeroGraphicFallback />}
       </div>
-      <div className={`absolute inset-0 -z-10 allo-hero-dynamic-overlay ${slides.length ? "has-media" : "is-fallback"}`} style={overlayStyle} />
+      <div
+        className={`${embedded ? "allo-hero-panel-overlay" : "absolute inset-0 -z-10"} allo-hero-dynamic-overlay ${slides.length ? "has-media" : "is-fallback"}`}
+        style={overlayStyle}
+      />
 
       {showMeta ? (
         <div className="allo-hero-case-meta">
@@ -180,6 +183,12 @@ export function HomepageHeroBackground() {
       ) : null}
     </>
   );
+
+  return embedded ? (
+    <div className={`allo-hero-panel-background ${slides.length ? "has-media" : "is-fallback"}`}>
+      {heroContent}
+    </div>
+  ) : heroContent;
 }
 
 function HeroGraphicFallback() {

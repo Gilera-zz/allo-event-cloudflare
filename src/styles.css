@@ -3351,3 +3351,243 @@ html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-
   font-size: clamp(2.7rem, 5vw, 5.4rem);
   line-height: .82;
 }
+
+/* V6.1 — editorial split hero -------------------------------------------------
+   Clearer first-screen offer, matching the approved mockup while preserving
+   the existing Allo Event logo/header and the controlled hero media system. */
+.allo-hero-v61 {
+  min-height: calc(100svh - 74px);
+  background: #050505;
+  color: #f7f7f4;
+}
+.allo-hero-v61-grid {
+  display: grid;
+  min-height: 650px;
+  align-items: center;
+  gap: clamp(36px, 5vw, 72px);
+}
+.allo-hero-v61-copy {
+  position: relative;
+  z-index: 3;
+  min-width: 0;
+}
+.allo-display-v61 {
+  display: grid;
+  max-width: 720px;
+  gap: 0;
+  font-size: clamp(3.2rem, 5.65vw, 6.45rem);
+  line-height: .94;
+  letter-spacing: -.063em !important;
+}
+.allo-display-v61 span { display: block; white-space: nowrap; }
+.allo-hero-v61-body {
+  color: rgba(255,255,255,.70);
+  letter-spacing: -.015em;
+}
+.allo-hero-capabilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 0;
+  color: rgba(255,255,255,.56);
+  font-size: 9px;
+  font-weight: 820;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.allo-hero-capabilities span {
+  display: inline-flex;
+  align-items: center;
+}
+.allo-hero-capabilities span:not(:last-child)::after {
+  content: "·";
+  margin: 0 10px;
+  color: rgba(255,255,255,.28);
+}
+.allo-hero-v61-visual {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.13);
+  background: #090909;
+}
+.allo-hero-v61-media-frame {
+  position: relative;
+  min-height: 455px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,.13);
+}
+.allo-hero-panel-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #050505;
+}
+.allo-hero-media-panel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #050505;
+}
+.allo-hero-panel-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.allo-hero-v61-media-frame::before {
+  content: "+";
+  position: absolute;
+  z-index: 4;
+  top: 22px;
+  left: 24px;
+  color: rgba(255,255,255,.5);
+  font-size: 28px;
+  font-weight: 200;
+  line-height: 1;
+}
+.allo-hero-v61-media-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 42%, rgba(0,0,0,.34) 100%);
+}
+.allo-hero-v61-signoff {
+  position: absolute;
+  z-index: 5;
+  right: clamp(24px, 4vw, 54px);
+  bottom: clamp(28px, 4vw, 52px);
+  display: grid;
+  width: min(290px, 48%);
+  gap: 2px;
+  padding: 22px 0 0;
+  border-top: 1px solid rgba(255,255,255,.36);
+  color: #fff;
+}
+.allo-hero-v61-signoff span,
+.allo-hero-v61-signoff strong {
+  font-family: "Urbanist", sans-serif;
+  font-size: clamp(1.65rem, 2.5vw, 2.55rem);
+  font-weight: 850;
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.allo-hero-v61-signoff small {
+  margin-top: 18px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,.16);
+  color: rgba(255,255,255,.58);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.allo-hero-v61-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: rgba(255,255,255,.11);
+  gap: 1px;
+}
+.allo-hero-v61-proof {
+  display: grid;
+  min-height: 142px;
+  align-content: start;
+  gap: 8px;
+  background: #090909;
+  padding: 22px 20px 18px;
+  color: #fff;
+}
+.allo-hero-v61-proof svg { color: rgba(255,255,255,.78); margin-bottom: 4px; }
+.allo-hero-v61-proof strong {
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.allo-hero-v61-proof span {
+  color: rgba(255,255,255,.46);
+  font-size: 9px;
+  line-height: 1.5;
+}
+.allo-hero-panel-background .allo-hero-case-meta {
+  right: auto;
+  left: 26px;
+  bottom: 28px;
+  width: min(260px, 42%);
+}
+
+@media (min-width: 1024px) {
+  .allo-hero-v61-grid { grid-template-columns: minmax(0,.88fr) minmax(0,1.12fr); }
+}
+
+@media (max-width: 1180px) and (min-width: 1024px) {
+  .allo-display-v61 { font-size: clamp(3rem, 5.2vw, 5.2rem); }
+  .allo-hero-v61-proof { padding-inline: 15px; }
+}
+
+@media (max-width: 1023px) {
+  .allo-hero-v61 { min-height: auto; }
+  .allo-hero-v61-grid { min-height: 0; }
+  .allo-display-v61 { max-width: 760px; }
+  .allo-hero-v61-visual { margin-top: 8px; }
+}
+
+@media (max-width: 767px) {
+  .allo-display-v61 {
+    font-size: clamp(2.8rem, 13.3vw, 5.15rem);
+    line-height: .93;
+  }
+  .allo-display-v61 span { white-space: normal; }
+  .allo-hero-v61-media-frame { min-height: 380px; }
+  .allo-hero-v61-signoff { width: min(250px, 66%); }
+  .allo-hero-v61-proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .allo-hero-v61-proof { min-height: 128px; }
+}
+
+@media (max-width: 480px) {
+  .allo-hero-v61-media-frame { min-height: 340px; }
+  .allo-hero-v61-signoff {
+    right: 20px;
+    bottom: 24px;
+    width: calc(100% - 40px);
+  }
+  .allo-hero-v61-signoff span,
+  .allo-hero-v61-signoff strong { font-size: 1.75rem; }
+}
+
+/* Light system/manual theme keeps the editorial split rather than falling back
+   to a full black slab when no real hero media is selected. */
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) {
+  background: #efefea;
+  color: #090909;
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback)::after {
+  background-image:
+    linear-gradient(rgba(10,10,10,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,10,10,.04) 1px, transparent 1px);
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-eyebrow,
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-hero-v61-body,
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-hero-capabilities {
+  color: rgba(10,10,10,.60);
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-eyebrow::before {
+  background: rgba(10,10,10,.48);
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-display-v61 {
+  color: #090909;
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-hero-capabilities span:not(:last-child)::after {
+  color: rgba(10,10,10,.25);
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-primary-button {
+  border-color: #090909;
+  background: #090909;
+  color: #f6f6f1;
+}
+html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .allo-hero-secondary {
+  border-color: rgba(10,10,10,.28);
+  color: #090909;
+  background: transparent;
+}

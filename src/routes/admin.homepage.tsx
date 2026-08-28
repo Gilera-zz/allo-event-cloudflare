@@ -178,7 +178,7 @@ function HomepageSettingsView() {
               <div className="admin-hero-preview-overlay" style={{ opacity: Math.max(0, Math.min(90, draft.hero_overlay)) / 100 }} />
               <div className="admin-hero-preview-copy">
                 <span>EVENT · MÄSSA · BEMANNING · PRODUKTION</span>
-                <strong>VI BYGGER.<br />VI BEMANNAR.<br />VI LEVERERAR.</strong>
+                <strong>FRÅN FÖRSTA<br />INBÄRNING TILL<br />SISTA UTLASTNING.</strong>
               </div>
               {draft.hero_mode === "cases" && selectedCases.length ? (
                 <div className="admin-hero-preview-case">

@@ -180,33 +180,56 @@ function Index() {
       )}
 
       <main>
-        <section className="allo-hero allo-hero-v6 relative isolate overflow-hidden">
-          <HomepageHeroBackground />
-
-          <div className="mx-auto flex min-h-[700px] max-w-[1380px] items-end px-5 pb-14 pt-24 md:min-h-[760px] md:px-8 md:pb-20 lg:pb-20">
-            <div className="allo-hero-v6-content w-full">
-              <div className="allo-eyebrow animate-in fade-in slide-in-from-bottom-2 duration-700">
-                {copy.heroEyebrow}
+        <section className="allo-hero allo-hero-v61 relative isolate overflow-hidden">
+          <div className="mx-auto max-w-[1380px] px-5 pb-12 pt-20 md:px-8 md:pb-16 md:pt-24 lg:pb-20 lg:pt-28">
+            <div className="allo-hero-v61-grid">
+              <div className="allo-hero-v61-copy">
+                <div className="allo-eyebrow animate-in fade-in slide-in-from-bottom-2 duration-700">
+                  {copy.heroEyebrow}
+                </div>
+                <h1 className="allo-display allo-display-v61 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  {sv ? (
+                    <>
+                      <span>FRÅN FÖRSTA</span>
+                      <span>INBÄRNING TILL</span>
+                      <span>SISTA UTLASTNING.</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>FROM FIRST</span>
+                      <span>LOAD-IN TO FINAL</span>
+                      <span>LOAD-OUT.</span>
+                    </>
+                  )}
+                </h1>
+                <p className="allo-hero-v61-body mt-7 max-w-[660px] text-base leading-relaxed md:text-lg">{copy.heroBody}</p>
+                <div className="allo-hero-capabilities mt-7" aria-label={sv ? "Våra kärntjänster" : "Our core services"}>
+                  {copy.heroCapabilities.map((item) => <span key={item}>{item}</span>)}
+                </div>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <button type="button" onClick={() => setBemanningOpen(true)} className="allo-primary-button">
+                    {copy.staffingCta}<Users className="h-4 w-4" />
+                  </button>
+                  <a href="#booking" className="allo-hero-secondary">
+                    {copy.quoteCta}<ArrowRight className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
-              <h1 className="allo-display allo-display-v6 mt-5 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                {sv ? <><span>VI BYGGER.</span><span>VI BEMANNAR.</span><span>VI LEVERERAR.</span></> : <><span>WE BUILD.</span><span>WE STAFF.</span><span>WE DELIVER.</span></>}
-              </h1>
-              <div className="allo-hero-v6-bottom mt-8">
-                <div>
-                  <p className="allo-hero-v6-line text-xl font-semibold md:text-2xl">{copy.heroLine}</p>
-                  <p className="allo-hero-v6-body mt-3 max-w-2xl text-base leading-relaxed md:text-lg">{copy.heroBody}</p>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <button type="button" onClick={() => setBemanningOpen(true)} className="allo-primary-button">
-                      {copy.staffingCta}<Users className="h-4 w-4" />
-                    </button>
-                    <a href="#booking" className="allo-hero-secondary">
-                      {copy.quoteCta}<ArrowRight className="h-4 w-4" />
-                    </a>
+
+              <div className="allo-hero-v61-visual">
+                <div className="allo-hero-v61-media-frame">
+                  <HomepageHeroBackground embedded />
+                  <div className="allo-hero-v61-signoff">
+                    <span>WE MAKE IT</span>
+                    <strong>HAPPEN.</strong>
+                    <small>{copy.heroLocation}</small>
                   </div>
                 </div>
-                <div className="allo-hero-signoff">
-                  <span>{copy.heroLocation}</span>
-                  <strong>WE MAKE IT HAPPEN.</strong>
+                <div className="allo-hero-v61-proof-grid">
+                  <HeroProof icon={Users} title={copy.heroProof1Title} body={copy.heroProof1Body} />
+                  <HeroProof icon={PackageCheck} title={copy.heroProof2Title} body={copy.heroProof2Body} />
+                  <HeroProof icon={MapPin} title={copy.heroProof3Title} body={copy.heroProof3Body} />
+                  <HeroProof icon={Check} title={copy.heroProof4Title} body={copy.heroProof4Body} />
                 </div>
               </div>
             </div>
@@ -631,11 +654,30 @@ function BuilderPreview() {
   );
 }
 
+function HeroProof({ icon: Icon, title, body }: { icon: typeof Users; title: string; body: string }) {
+  return (
+    <div className="allo-hero-v61-proof">
+      <Icon className="h-5 w-5" strokeWidth={1.5} />
+      <strong>{title}</strong>
+      <span>{body}</span>
+    </div>
+  );
+}
+
 const svCopy = {
   heroEyebrow: "EVENT · MÄSSA · BEMANNING · PRODUKTION",
-  heroLine: "Event, mässor och produktion – från första inbärning till sista utlastning.",
-  heroBody: "Allo Event hjälper företag, arrangörer och produktionsbolag med personal, monterbygg, rigg, logistik och genomförande. Ni kan boka ett team för en dag eller låta oss ta ett större ansvar för hela leveransen.",
+  heroLine: "Från första inbärning till sista utlastning.",
+  heroBody: "Vi bemannar, bygger och genomför event och mässor i hela Sverige. Personal, monterbygg, rigg och logistik – som enskild resurs eller helhetsleverans.",
+  heroCapabilities: ["Personal", "Monterbygg", "Rigg", "Logistik", "Projektledning"],
   heroLocation: "Stockholm · Uppdrag i hela Sverige",
+  heroProof1Title: "Erfaren personal",
+  heroProof1Body: "Rätt kompetens när du behöver den.",
+  heroProof2Title: "Hela kedjan",
+  heroProof2Body: "Från planering och bygg till sista utlastning.",
+  heroProof3Title: "Lokalt & nationellt",
+  heroProof3Body: "Stockholm som bas, uppdrag i hela Sverige.",
+  heroProof4Title: "Tryggt & säkert",
+  heroProof4Body: "Kvalitet, säkerhet och ansvar i varje steg.",
   staffingCta: "Boka personal",
   quoteCta: "Be om offert",
   startProject: "Be om offert",
@@ -693,9 +735,18 @@ const svCopy = {
 
 const enCopy = {
   heroEyebrow: "EVENTS · EXHIBITIONS · STAFFING · PRODUCTION",
-  heroLine: "Events, exhibitions and production – from first load-in to final load-out.",
-  heroBody: "Allo Event helps companies, organisers and production partners with staffing, booth builds, rigging, logistics and on-site delivery. Book a crew for a day or let us take wider responsibility for the production.",
+  heroLine: "From first load-in to final load-out.",
+  heroBody: "We staff, build and deliver events and exhibitions across Sweden. Staffing, booth builds, rigging and logistics – as individual resources or a complete delivery.",
+  heroCapabilities: ["Staffing", "Booth builds", "Rigging", "Logistics", "Project management"],
   heroLocation: "Stockholm · Projects across Sweden",
+  heroProof1Title: "Experienced crew",
+  heroProof1Body: "The right skills when you need them.",
+  heroProof2Title: "End-to-end",
+  heroProof2Body: "From planning and build to final load-out.",
+  heroProof3Title: "Local & nationwide",
+  heroProof3Body: "Stockholm based, projects across Sweden.",
+  heroProof4Title: "Safe & accountable",
+  heroProof4Body: "Quality, safety and ownership at every step.",
   staffingCta: "Book staff",
   quoteCta: "Request a quote",
   startProject: "Request a quote",
