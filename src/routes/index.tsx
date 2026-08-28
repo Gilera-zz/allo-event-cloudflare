@@ -181,7 +181,7 @@ function Index() {
 
       <main>
         <section className="allo-hero allo-hero-v61 relative isolate overflow-hidden">
-          <div className="mx-auto max-w-[1380px] px-5 pb-12 pt-20 md:px-8 md:pb-16 md:pt-24 lg:pb-20 lg:pt-28">
+          <div className="mx-auto max-w-[1510px] px-5 pb-12 pt-20 md:px-8 md:pb-16 md:pt-24 lg:pb-20 lg:pt-24">
             <div className="allo-hero-v61-grid">
               <div className="allo-hero-v61-copy">
                 <div className="allo-eyebrow animate-in fade-in slide-in-from-bottom-2 duration-700">

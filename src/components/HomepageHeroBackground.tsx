@@ -147,7 +147,7 @@ export function HomepageHeroBackground({ embedded = false }: { embedded?: boolea
               ["--hero-slide-duration" as string]: slideDuration,
             }}
           />
-        )) : <HeroGraphicFallback />}
+        )) : <HeroGraphicFallback embedded={embedded} />}
       </div>
       <div
         className={`${embedded ? "allo-hero-panel-overlay" : "absolute inset-0 -z-10"} allo-hero-dynamic-overlay ${slides.length ? "has-media" : "is-fallback"}`}
@@ -191,7 +191,20 @@ export function HomepageHeroBackground({ embedded = false }: { embedded?: boolea
   ) : heroContent;
 }
 
-function HeroGraphicFallback() {
+function HeroGraphicFallback({ embedded = false }: { embedded?: boolean }) {
+  if (embedded) {
+    return (
+      <div className="allo-hero-fallback allo-hero-v62-fallback absolute inset-0 overflow-hidden">
+        <img
+          src="/images/hero/editorial-event-production.webp"
+          alt=""
+          aria-hidden="true"
+          className="allo-hero-v62-fallback-image"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="allo-hero-fallback absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 allo-hero-fallback-grid" />

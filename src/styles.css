@@ -3591,3 +3591,115 @@ html:not(.dark) .allo-hero-v61:has(.allo-hero-panel-background.is-fallback) .all
   color: #090909;
   background: transparent;
 }
+
+/* V6.2 — approved mockup match ----------------------------------------------
+   Tightens the split hero to the approved reference: smaller editorial type,
+   wider media, taller image, deeper proof rail and a real visual fallback. */
+.allo-hero-v61-grid {
+  gap: clamp(28px, 3.2vw, 52px);
+  min-height: 690px;
+}
+.allo-display-v61 {
+  max-width: 650px;
+  font-size: clamp(3rem, 4.55vw, 5.35rem);
+  line-height: .965;
+  letter-spacing: -.052em !important;
+}
+.allo-hero-v61-body {
+  max-width: 610px;
+  font-size: clamp(.98rem, 1.03vw, 1.12rem) !important;
+  line-height: 1.62;
+}
+.allo-hero-v61-copy .allo-eyebrow {
+  margin-bottom: 2px;
+}
+.allo-hero-capabilities {
+  margin-top: 28px !important;
+  font-size: 8.5px;
+  letter-spacing: .19em;
+}
+.allo-hero-v61-copy > .mt-8 {
+  margin-top: 34px !important;
+}
+.allo-hero-v61-visual {
+  align-self: center;
+}
+.allo-hero-v61-media-frame {
+  min-height: 535px;
+}
+.allo-hero-v62-fallback-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  filter: grayscale(1) contrast(1.04) brightness(.92);
+  transform: scale(1.012);
+}
+.allo-hero-v61-media-frame:has(.allo-hero-v62-fallback) .allo-hero-panel-overlay {
+  background: linear-gradient(90deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.16) 48%, rgba(0,0,0,.34) 100%) !important;
+}
+.allo-hero-v61-media-frame::after {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.02) 0%, transparent 52%, rgba(0,0,0,.24) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.08), transparent 46%, rgba(0,0,0,.16));
+}
+.allo-hero-v61-signoff {
+  right: clamp(30px, 4.4vw, 64px);
+  bottom: clamp(34px, 4vw, 54px);
+  width: min(305px, 43%);
+  padding-top: 24px;
+}
+.allo-hero-v61-signoff span,
+.allo-hero-v61-signoff strong {
+  font-size: clamp(1.9rem, 2.35vw, 2.6rem);
+  line-height: .94;
+}
+.allo-hero-v61-signoff small {
+  margin-top: 22px;
+  padding-top: 14px;
+  font-size: 7.5px;
+}
+.allo-hero-v61-proof {
+  min-height: 176px;
+  padding: 31px 24px 24px;
+  gap: 10px;
+}
+.allo-hero-v61-proof svg {
+  width: 27px;
+  height: 27px;
+  margin-bottom: 8px;
+}
+.allo-hero-v61-proof strong {
+  font-size: 8.5px;
+  letter-spacing: .12em;
+}
+.allo-hero-v61-proof span {
+  max-width: 145px;
+  font-size: 9px;
+  line-height: 1.55;
+}
+@media (min-width: 1024px) {
+  .allo-hero-v61-grid {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  }
+}
+@media (max-width: 1240px) and (min-width: 1024px) {
+  .allo-display-v61 { font-size: clamp(3rem, 4.5vw, 4.9rem); }
+  .allo-hero-v61-media-frame { min-height: 500px; }
+  .allo-hero-v61-proof { min-height: 160px; padding-inline: 18px; }
+}
+@media (max-width: 1023px) {
+  .allo-hero-v61-grid { min-height: 0; }
+  .allo-display-v61 { max-width: 680px; }
+  .allo-hero-v61-media-frame { min-height: 470px; }
+}
+@media (max-width: 767px) {
+  .allo-display-v61 {
+    font-size: clamp(2.65rem, 12.2vw, 4.8rem);
+    line-height: .94;
+  }
+  .allo-hero-v61-media-frame { min-height: 400px; }
+  .allo-hero-v61-proof { min-height: 145px; padding: 24px 20px 20px; }
+}
