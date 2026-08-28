@@ -180,31 +180,73 @@ function Index() {
       )}
 
       <main>
-        <section className="allo-hero relative isolate overflow-hidden">
+        <section className="allo-hero allo-hero-v6 relative isolate overflow-hidden">
           <HomepageHeroBackground />
 
-          <div className="mx-auto flex min-h-[680px] max-w-[1380px] items-end px-5 pb-16 pt-24 md:min-h-[720px] md:px-8 md:pb-20 lg:pb-24">
-            <div className="max-w-4xl">
+          <div className="mx-auto flex min-h-[700px] max-w-[1380px] items-end px-5 pb-14 pt-24 md:min-h-[760px] md:px-8 md:pb-20 lg:pb-20">
+            <div className="allo-hero-v6-content w-full">
               <div className="allo-eyebrow animate-in fade-in slide-in-from-bottom-2 duration-700">
-                <Sparkles className="h-3.5 w-3.5" />
                 {copy.heroEyebrow}
               </div>
-              <h1 className="allo-display mt-5 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-                WE MAKE IT<br />HAPPEN<span className="text-white/45">.</span>
+              <h1 className="allo-display allo-display-v6 mt-5 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                {sv ? <><span>VI BYGGER.</span><span>VI BEMANNAR.</span><span>VI LEVERERAR.</span></> : <><span>WE BUILD.</span><span>WE STAFF.</span><span>WE DELIVER.</span></>}
               </h1>
-              <p className="mt-6 text-xl font-semibold text-white md:text-2xl">{copy.heroLine}</p>
-              <p className="mt-3 max-w-xl text-base leading-relaxed text-white/72 md:text-lg">{copy.heroBody}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#booking" className="allo-primary-button">
-                  {copy.startProject}<ArrowRight className="h-4 w-4" />
-                </a>
-                <a href="#projects" className="allo-hero-secondary">
-                  {copy.viewCases}<ArrowRight className="h-4 w-4" />
-                </a>
+              <div className="allo-hero-v6-bottom mt-8">
+                <div>
+                  <p className="allo-hero-v6-line text-xl font-semibold md:text-2xl">{copy.heroLine}</p>
+                  <p className="allo-hero-v6-body mt-3 max-w-2xl text-base leading-relaxed md:text-lg">{copy.heroBody}</p>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <button type="button" onClick={() => setBemanningOpen(true)} className="allo-primary-button">
+                      {copy.staffingCta}<Users className="h-4 w-4" />
+                    </button>
+                    <a href="#booking" className="allo-hero-secondary">
+                      {copy.quoteCta}<ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+                <div className="allo-hero-signoff">
+                  <span>{copy.heroLocation}</span>
+                  <strong>WE MAKE IT HAPPEN.</strong>
+                </div>
               </div>
             </div>
           </div>
         </section>
+
+        <section id="choose" className="allo-choice-section allo-anchor-section py-20 md:py-24">
+          <div className="mx-auto max-w-[1380px] px-5 md:px-8">
+            <div className="grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
+              <SectionHeading eyebrow={copy.choiceEyebrow} title={copy.choiceTitle} dark={false} />
+              <p className="allo-section-lead max-w-2xl text-base leading-relaxed md:text-lg">{copy.choiceIntro}</p>
+            </div>
+            <div className="allo-choice-grid mt-10 grid gap-px lg:grid-cols-2">
+              <NeedCard
+                number="01"
+                icon={Users}
+                title={copy.choiceStaffingTitle}
+                lead={copy.choiceStaffingLead}
+                body={copy.choiceStaffingBody}
+                bullets={copy.choiceStaffingBullets}
+                cta={copy.staffingCta}
+                onClick={() => setBemanningOpen(true)}
+              />
+              <NeedCard
+                number="02"
+                icon={Hammer}
+                title={copy.choiceProductionTitle}
+                lead={copy.choiceProductionLead}
+                body={copy.choiceProductionBody}
+                bullets={copy.choiceProductionBullets}
+                cta={copy.quoteCta}
+                href="#booking"
+              />
+            </div>
+          </div>
+        </section>
+
+        <div className="allo-dark-section allo-work-first">
+          <ProjectsSection t={t.projectsSection} />
+        </div>
 
         <section id="services" className="allo-anchor-section allo-light-section relative py-20 md:py-24">
           <span id="service-event" className="allo-service-anchor" aria-hidden="true" />
@@ -216,13 +258,13 @@ function Index() {
             <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <ServiceCard icon={CalendarDays} title={copy.eventTitle} description={copy.eventBody} href="#booking" />
               <ServiceCard icon={Users} title={copy.staffingTitle} description={copy.staffingBody} onClick={() => setBemanningOpen(true)} />
-              <ServiceCard icon={Cuboid} title={copy.expoTitle} description={copy.expoBody} href={BUILDER_URL} external />
+              <ServiceCard icon={Cuboid} title={copy.expoTitle} description={copy.expoBody} href="#builder" />
               <ServiceCard icon={Truck} title={copy.logisticsTitle} description={copy.logisticsBody} href="#booking" />
             </div>
           </div>
         </section>
 
-        <section className="allo-process-section py-20 md:py-24">
+        <section id="process" className="allo-anchor-section allo-process-section py-20 md:py-24">
           <div className="mx-auto max-w-[1380px] px-5 md:px-8">
             <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
               <SectionHeading eyebrow={copy.processEyebrow} title={copy.processTitle} dark={false} />
@@ -249,20 +291,16 @@ function Index() {
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
               {sv ? "Söker ni något annat? Berätta vad ni behöver så sätter vi ihop rätt lösning." : "Looking for something else? Tell us what you need and we'll put together the right solution."}
             </p>
-            <a href="#booking" onClick={() => setBemanningOpen(false)} className="allo-primary-button mt-2 w-fit">{copy.startProject}</a>
+            <a href="#booking" onClick={() => setBemanningOpen(false)} className="allo-primary-button mt-2 w-fit">{copy.staffingCta}</a>
           </DialogContent>
         </Dialog>
-
-        <div className="allo-dark-section">
-          <ProjectsSection t={t.projectsSection} />
-        </div>
 
         <section id="builder" className="allo-light-section py-20 md:py-28">
           <div className="mx-auto grid max-w-[1380px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[0.78fr_1.22fr]">
             <div>
               <span className="allo-section-kicker">{copy.builderKicker}</span>
               <h2 className="allo-section-title allo-theme-heading mt-3">{copy.builderTitle}</h2>
-              <p className="allo-theme-muted mt-5 max-w-xl text-base leading-relaxed md:text-lg">{t.about.techDesc}</p>
+              <p className="allo-theme-muted mt-5 max-w-xl text-base leading-relaxed md:text-lg">{copy.builderBody}</p>
               <ul className="allo-theme-copy mt-7 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {t.showcase.bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-2.5">
@@ -379,7 +417,7 @@ function Index() {
             [copy.eventTitle, "#service-event"], [copy.staffingTitle, "#service-staffing"], [copy.expoTitle, "#service-expo"], [copy.logisticsTitle, "#service-logistics"],
           ]} />
           <FooterColumn title={copy.companyTitle} links={[
-            [copy.viewCases, "#projects"], [copy.builderTitle, BUILDER_URL], [copy.aboutNav, "#about"], [copy.jobsNav, PORTAL_URL],
+            [copy.viewCases, "#projects"], [copy.builderNav, "#builder"], [copy.aboutNav, "#about"], [copy.jobsNav, PORTAL_URL],
           ]} />
           <div>
             <h3 className="text-sm font-bold text-white">{t.contact.tag}</h3>
@@ -424,6 +462,49 @@ function ServiceCard({ icon: Icon, title, description, href, external, onClick }
   const className = "group allo-service-card scroll-mt-28";
   if (onClick) return <button type="button" onClick={onClick} className={`${className} text-left`}>{content}</button>;
   return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>{content}</a>;
+}
+
+function NeedCard({
+  number,
+  icon: Icon,
+  title,
+  lead,
+  body,
+  bullets,
+  cta,
+  href,
+  onClick,
+}: {
+  number: string;
+  icon: typeof Users;
+  title: string;
+  lead: string;
+  body: string;
+  bullets: readonly string[];
+  cta: string;
+  href?: string;
+  onClick?: () => void;
+}) {
+  const actionClass = "allo-choice-action mt-8 inline-flex items-center gap-2";
+  return (
+    <article className="allo-choice-card">
+      <div className="flex items-start justify-between gap-6">
+        <span className="allo-choice-number">{number}</span>
+        <span className="allo-choice-icon"><Icon className="h-6 w-6" /></span>
+      </div>
+      <p className="allo-choice-lead mt-10">{lead}</p>
+      <h3 className="allo-choice-title mt-2">{title}</h3>
+      <p className="allo-choice-body mt-5">{body}</p>
+      <div className="allo-choice-bullets mt-7">
+        {bullets.map((item) => <span key={item}>{item}</span>)}
+      </div>
+      {onClick ? (
+        <button type="button" onClick={onClick} className={actionClass}>{cta}<ArrowRight className="h-4 w-4" /></button>
+      ) : (
+        <a href={href} className={actionClass}>{cta}<ArrowRight className="h-4 w-4" /></a>
+      )}
+    </article>
+  );
 }
 
 function ProcessStep({ number, icon: Icon, title, body }: { number: string; icon: typeof Users; title: string; body: string }) {
@@ -551,21 +632,35 @@ function BuilderPreview() {
 }
 
 const svCopy = {
-  heroEyebrow: "Eventproduktion · Bemanning · Mässor",
-  heroLine: "Eventproduktion. Bemanning. Mässor.",
-  heroBody: "Vi bygger, bemannar och genomför event från idé till färdig leverans – med rätt människor, rätt struktur och varje detalj på plats.",
-  startProject: "Starta ett projekt",
+  heroEyebrow: "EVENT · MÄSSA · BEMANNING · PRODUKTION",
+  heroLine: "Event, mässor och produktion – från första inbärning till sista utlastning.",
+  heroBody: "Allo Event hjälper företag, arrangörer och produktionsbolag med personal, monterbygg, rigg, logistik och genomförande. Ni kan boka ett team för en dag eller låta oss ta ett större ansvar för hela leveransen.",
+  heroLocation: "Stockholm · Uppdrag i hela Sverige",
+  staffingCta: "Boka personal",
+  quoteCta: "Be om offert",
+  startProject: "Be om offert",
   viewCases: "Se våra case",
-  servicesEyebrow: "Vad vi gör",
-  servicesTitle: "Allt som krävs för att få eventet på plats",
+  choiceEyebrow: "Två vägar in",
+  choiceTitle: "Vad behöver ni hjälp med?",
+  choiceIntro: "Ni behöver inte veta exakt vilken tjänst ni ska beställa. Börja med behovet: fler händer till ett uppdrag, eller en partner som tar ansvar för en större del av produktionen.",
+  choiceStaffingTitle: "Bemanning",
+  choiceStaffingLead: "Behöver ni folk till ett uppdrag?",
+  choiceStaffingBody: "Vi tillsätter pålitlig personal efter uppdragets krav, tid och plats – från enstaka förstärkning till större team.",
+  choiceStaffingBullets: ["Eventpersonal", "Byggare & montörer", "Stagehands", "Servering & värdar", "Lager & flytt"],
+  choiceProductionTitle: "Produktion",
+  choiceProductionLead: "Behöver ni någon som tar ansvar för genomförandet?",
+  choiceProductionBody: "Vi planerar och driver event- och mässleveranser där människor, material, tider och logistik behöver fungera tillsammans.",
+  choiceProductionBullets: ["Event & aktivering", "Mässor & monter", "Rigg & montage", "Logistik & transport", "Projektledning"],
+  servicesEyebrow: "Våra leveranser",
+  servicesTitle: "Från extra händer till komplett genomförande",
   eventTitle: "Eventproduktion",
-  eventBody: "Helhetsproduktion för event, konferenser och aktiveringar – från planering till genomförande.",
+  eventBody: "Planering och genomförande för event, konferenser och aktiveringar – med en tydlig ansvarig väg från brief till leverans.",
   staffingTitle: "Bemanning",
-  staffingBody: "Flexibel och erfaren personal för event, mässor, service, bygg, lager och logistik.",
+  staffingBody: "Flexibel och erfaren personal för event, mässor, service, bygg, lager och logistik – anpassat efter pass, kompetens och volym.",
   expoTitle: "Mässor & Monter",
-  expoBody: "Monterplanering, byggnation och digital 3D-visualisering för en smidigare mässleverans.",
+  expoBody: "Monterplanering, byggnation, montage och digital 3D-visualisering som en del av en sammanhållen mässleverans.",
   logisticsTitle: "Rigg & Logistik",
-  logisticsBody: "Inbärning, utbärning, montage, rivning, transport och stagehands när allt måste fungera i tid.",
+  logisticsBody: "Inbärning, utbärning, montage, rivning, transport och stagehands när flödet på plats måste hålla tiden.",
   processEyebrow: "Så arbetar vi",
   processTitle: "En tydlig väg från brief till leverans",
   processBody: "Event blir bättre när ansvar, timing och nästa steg är tydliga. Därför arbetar vi i ett enkelt flöde som binder ihop kund, produktion, personal och logistik.",
@@ -577,39 +672,55 @@ const svCopy = {
   process3Body: "Vi bygger, bemannar, riggar och driver genomförandet på plats.",
   process4Title: "Leverans & avslut",
   process4Body: "Vi följer upp, river, lastar ut och ser till att projektet stängs ordentligt.",
-  builderKicker: "Digital monterplanering",
-  builderTitle: "Bygg din monter innan den finns",
+  builderNav: "3D-monterverktyg",
+  builderKicker: "En del av vår mässleverans",
+  builderTitle: "Planera montern i 3D innan vi bygger den",
+  builderBody: "Vårt 3D-verktyg gör det enklare att visualisera väggar, golv, möbler och belysning innan produktionen startar. Verktyget är ett stöd i mässleveransen – inte ett separat erbjudande från resten av produktionen.",
   proof1Title: "Helhetsleverans",
   proof1Body: "Från första plan till sista utbärning",
-  proof2Title: "3D i realtid",
-  proof2Body: "Visualisering och offert direkt i verktyget",
+  proof2Title: "3D som verktyg",
+  proof2Body: "Visualisering som förenklar mässplaneringen",
   proof3Title: "Flexibla team",
   proof3Body: "Bemanning som skalar efter uppdraget",
   proof4Title: "Stockholm",
-  proof4Body: "Med projekt och partnerskap över Sverige",
+  proof4Body: "Med uppdrag och partnerskap över hela Sverige",
   contactTitle: "Människorna bakom leveransen",
-  footerBody: "Allo Event kombinerar eventproduktion, bemanning och smarta digitala verktyg för att göra komplexa leveranser enklare.",
+  footerBody: "Allo Event bygger, bemannar och genomför event och mässor – från enstaka personalbehov till större produktions- och logistikleveranser.",
   companyTitle: "Allo Event",
   aboutNav: "Om oss",
   jobsNav: "Jobba hos oss",
 };
 
 const enCopy = {
-  heroEyebrow: "Event production · Staffing · Exhibitions",
-  heroLine: "Event production. Staffing. Exhibitions.",
-  heroBody: "We build, staff and deliver events from first idea to final handover – with the right people, clear structure and every detail in place.",
-  startProject: "Start a project",
+  heroEyebrow: "EVENTS · EXHIBITIONS · STAFFING · PRODUCTION",
+  heroLine: "Events, exhibitions and production – from first load-in to final load-out.",
+  heroBody: "Allo Event helps companies, organisers and production partners with staffing, booth builds, rigging, logistics and on-site delivery. Book a crew for a day or let us take wider responsibility for the production.",
+  heroLocation: "Stockholm · Projects across Sweden",
+  staffingCta: "Book staff",
+  quoteCta: "Request a quote",
+  startProject: "Request a quote",
   viewCases: "View our cases",
-  servicesEyebrow: "What we do",
-  servicesTitle: "Everything required to make the event happen",
+  choiceEyebrow: "Two ways in",
+  choiceTitle: "What do you need help with?",
+  choiceIntro: "You do not need to know the exact service to order. Start with the need: extra hands for an assignment, or a partner who takes responsibility for a larger part of the production.",
+  choiceStaffingTitle: "Staffing",
+  choiceStaffingLead: "Need people for an assignment?",
+  choiceStaffingBody: "We provide reliable staff based on the assignment, schedule and location – from individual reinforcement to larger teams.",
+  choiceStaffingBullets: ["Event staff", "Builders & installers", "Stagehands", "Hospitality & hosts", "Warehouse & moving"],
+  choiceProductionTitle: "Production",
+  choiceProductionLead: "Need someone to own the delivery?",
+  choiceProductionBody: "We plan and run event and exhibition deliveries where people, materials, schedules and logistics need to work as one.",
+  choiceProductionBullets: ["Events & activations", "Exhibitions & booths", "Rigging & installation", "Logistics & transport", "Project management"],
+  servicesEyebrow: "Our delivery",
+  servicesTitle: "From extra hands to full execution",
   eventTitle: "Event Production",
-  eventBody: "Full-service production for events, conferences and activations – from planning to execution.",
+  eventBody: "Planning and delivery for events, conferences and activations – with a clear line of responsibility from brief to handover.",
   staffingTitle: "Staffing",
-  staffingBody: "Flexible, experienced staff for events, exhibitions, service, construction, warehouse and logistics.",
+  staffingBody: "Flexible, experienced staff for events, exhibitions, service, construction, warehouse and logistics – matched to shift, skill and scale.",
   expoTitle: "Fairs & Booths",
-  expoBody: "Booth planning, construction and digital 3D visualization for a smoother exhibition delivery.",
+  expoBody: "Booth planning, construction, installation and digital 3D visualization as part of one coordinated exhibition delivery.",
   logisticsTitle: "Rigging & Logistics",
-  logisticsBody: "Load-in, load-out, assembly, dismantling, transport and stagehands when timing matters.",
+  logisticsBody: "Load-in, load-out, assembly, dismantling, transport and stagehands when the on-site flow has to stay on schedule.",
   processEyebrow: "How we work",
   processTitle: "A clear path from brief to delivery",
   processBody: "Events work better when ownership, timing and next steps are clear. Our process connects the client, production, staffing and logistics in one delivery flow.",
@@ -621,18 +732,20 @@ const enCopy = {
   process3Body: "We build, staff, rig and run the execution on site.",
   process4Title: "Handover & close",
   process4Body: "We follow up, dismantle, load out and make sure the project is properly closed.",
-  builderKicker: "Digital booth planning",
-  builderTitle: "Build your booth before it exists",
+  builderNav: "3D booth tool",
+  builderKicker: "Part of our exhibition delivery",
+  builderTitle: "Plan the booth in 3D before we build it",
+  builderBody: "Our 3D tool makes it easier to visualize walls, flooring, furniture and lighting before production starts. It supports the exhibition delivery rather than standing apart as a separate business.",
   proof1Title: "End-to-end delivery",
   proof1Body: "From first plan to final load-out",
-  proof2Title: "Real-time 3D",
-  proof2Body: "Visualization and quote inside the tool",
+  proof2Title: "3D as a tool",
+  proof2Body: "Visualization that simplifies exhibition planning",
   proof3Title: "Flexible teams",
   proof3Body: "Staffing that scales with the assignment",
   proof4Title: "Stockholm",
   proof4Body: "Projects and partnerships across Sweden",
   contactTitle: "The people behind the delivery",
-  footerBody: "Allo Event combines event production, staffing and smart digital tools to make complex deliveries easier.",
+  footerBody: "Allo Event builds, staffs and delivers events and exhibitions – from individual staffing needs to larger production and logistics assignments.",
   companyTitle: "Allo Event",
   aboutNav: "About us",
   jobsNav: "Work with us",

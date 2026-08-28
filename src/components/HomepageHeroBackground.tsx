@@ -149,7 +149,7 @@ export function HomepageHeroBackground() {
           />
         )) : <HeroGraphicFallback />}
       </div>
-      <div className="absolute inset-0 -z-10" style={overlayStyle} />
+      <div className={`absolute inset-0 -z-10 allo-hero-dynamic-overlay ${slides.length ? "has-media" : "is-fallback"}`} style={overlayStyle} />
 
       {showMeta ? (
         <div className="allo-hero-case-meta">
@@ -184,7 +184,7 @@ export function HomepageHeroBackground() {
 
 function HeroGraphicFallback() {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#050505]">
+    <div className="allo-hero-fallback absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 allo-hero-fallback-grid" />
       <div className="absolute left-[10%] top-[13%] h-px w-[80%] bg-white/10" />
       <div className="absolute left-[13%] top-[13%] h-[55%] w-px rotate-[14deg] bg-white/[0.08]" />

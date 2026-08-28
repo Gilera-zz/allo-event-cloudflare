@@ -17,7 +17,6 @@ interface Props {
   activeNav?: "home" | "cases";
 }
 
-const BUILDER_URL = "https://verktyg.alloevent.se";
 const PORTAL_URL = "https://personal.alloevent.se";
 
 export function SiteHeader({ lang, setLang, theme, preference, setTheme, homeBase = "", activeNav = "home" }: Props) {
@@ -29,11 +28,12 @@ export function SiteHeader({ lang, setLang, theme, preference, setTheme, homeBas
     home: sv ? "Hem" : "Home",
     services: sv ? "Tjänster" : "Services",
     cases: sv ? "Case" : "Cases",
-    builder: sv ? "Bygg din monter" : "Build your booth",
+    builder: sv ? "3D-monterverktyg" : "3D booth tool",
+    process: sv ? "Så arbetar vi" : "How we work",
     about: sv ? "Om Allo" : "About Allo",
     contact: sv ? "Kontakt" : "Contact",
     jobs: sv ? "Jobba hos oss" : "Work with us",
-    start: sv ? "Starta projekt" : "Start a project",
+    start: sv ? "Be om offert" : "Request a quote",
     event: sv ? "Eventproduktion" : "Event production",
     staffing: sv ? "Bemanning" : "Staffing",
     expo: sv ? "Mässor & monter" : "Fairs & booths",
@@ -59,11 +59,12 @@ export function SiteHeader({ lang, setLang, theme, preference, setTheme, homeBas
                 <a href={homeAnchor("#service-staffing")} className="allo-menu-item">{labels.staffing}</a>
                 <a href={homeAnchor("#service-expo")} className="allo-menu-item">{labels.expo}</a>
                 <a href={homeAnchor("#service-logistics")} className="allo-menu-item">{labels.logistics}</a>
+                <a href={homeAnchor("#builder")} className="allo-menu-item">{labels.builder}</a>
               </div>
             </div>
           </div>
           <a href={homeAnchor("#projects")} className={`allo-nav-link ${activeNav === "cases" ? "allo-nav-link-active" : ""}`}>{labels.cases}</a>
-          <a href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="allo-nav-link">{labels.builder}</a>
+          <a href={homeAnchor("#process")} className="allo-nav-link">{labels.process}</a>
           <a href={homeAnchor("#about")} className="allo-nav-link">{labels.about}</a>
           <a href={homeAnchor("#contact")} className="allo-nav-link">{labels.contact}</a>
         </nav>
@@ -104,7 +105,8 @@ export function SiteHeader({ lang, setLang, theme, preference, setTheme, homeBas
             <a onClick={() => setOpen(false)} href={homeAnchor("#top")} className="allo-mobile-link">{labels.home}</a>
             <a onClick={() => setOpen(false)} href={homeAnchor("#services")} className="allo-mobile-link">{labels.services}</a>
             <a onClick={() => setOpen(false)} href={homeAnchor("#projects")} className="allo-mobile-link">{labels.cases}</a>
-            <a onClick={() => setOpen(false)} href={BUILDER_URL} target="_blank" rel="noopener noreferrer" className="allo-mobile-link">{labels.builder}</a>
+            <a onClick={() => setOpen(false)} href={homeAnchor("#process")} className="allo-mobile-link">{labels.process}</a>
+            <a onClick={() => setOpen(false)} href={homeAnchor("#builder")} className="allo-mobile-link">{labels.builder}</a>
             <a onClick={() => setOpen(false)} href={homeAnchor("#about")} className="allo-mobile-link">{labels.about}</a>
             <a onClick={() => setOpen(false)} href={homeAnchor("#contact")} className="allo-mobile-link">{labels.contact}</a>
             <div className="mt-4 flex items-center justify-between gap-3 border-b border-current/10 pb-4">

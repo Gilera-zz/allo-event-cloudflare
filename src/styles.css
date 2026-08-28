@@ -2226,6 +2226,22 @@
   min-width: 0;
   color: var(--admin-text);
 }
+.admin-brand-home-link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+.admin-brand-copy {
+  color: inherit;
+  text-decoration: none;
+}
+.admin-brand-home-link:focus-visible,
+.admin-brand-copy:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
 .admin-brand-logo {
   width: 72px;
   height: 42px;
@@ -3082,3 +3098,256 @@ html {
   font-size:12px; font-weight:750; transition:.2s ease;
 }
 .admin-case-danger:hover { background:color-mix(in srgb, var(--destructive) 13%, transparent); }
+
+/* V6 — clearer offer architecture -------------------------------------------
+   The visual language stays editorial/monochrome; the first screen now explains
+   the business before the brand payoff. */
+.allo-hero-v6 {
+  color: #f7f7f4;
+}
+.allo-hero-v6-content {
+  position: relative;
+  z-index: 1;
+}
+.allo-display-v6 {
+  display: grid;
+  max-width: 1180px;
+  gap: 0;
+  font-size: clamp(3.35rem, 7.7vw, 8.25rem);
+  line-height: .84;
+  letter-spacing: -.075em !important;
+}
+.allo-display-v6 span {
+  display: block;
+}
+.allo-hero-v6-bottom {
+  display: grid;
+  gap: 32px;
+  align-items: end;
+}
+.allo-hero-v6-line {
+  max-width: 780px;
+  color: #fff;
+  letter-spacing: -.025em;
+}
+.allo-hero-v6-body {
+  color: rgba(255,255,255,.68);
+}
+.allo-hero-signoff {
+  display: grid;
+  gap: 12px;
+  align-self: end;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.22);
+  color: #fff;
+}
+.allo-hero-signoff span {
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.52);
+}
+.allo-hero-signoff strong {
+  font-family: "Urbanist", sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.9rem);
+  font-weight: 820;
+  letter-spacing: -.035em;
+}
+
+/* Light-mode fallback: when no real hero media is configured, the opening
+   canvas becomes paper instead of a giant black rectangle. Real photography
+   remains dark-overlayed in both themes for legibility. */
+.allo-hero-fallback {
+  background: #050505;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) {
+  background: #eeeee9;
+  color: #090909;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback)::after {
+  background-image:
+    linear-gradient(rgba(10,10,10,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,10,10,.04) 1px, transparent 1px);
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-fallback {
+  background: #eeeee9;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-fallback-grid {
+  background-image:
+    linear-gradient(rgba(10,10,10,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,10,10,.045) 1px, transparent 1px),
+    radial-gradient(circle at 68% 18%, rgba(10,10,10,.05), transparent 25%);
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-fallback > div:not(.allo-hero-fallback-grid) {
+  border-color: rgba(10,10,10,.10) !important;
+  background-color: rgba(10,10,10,.06) !important;
+  color: rgba(10,10,10,.035) !important;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-dynamic-overlay.is-fallback {
+  background: linear-gradient(90deg, rgba(238,238,233,.97) 0%, rgba(238,238,233,.91) 55%, rgba(238,238,233,.72) 100%) !important;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-eyebrow,
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-v6-body,
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-signoff span {
+  color: rgba(10,10,10,.56) !important;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-eyebrow::before {
+  background: rgba(10,10,10,.48);
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-display-v6,
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-v6-line,
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-signoff {
+  color: #090909 !important;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-signoff {
+  border-top-color: rgba(10,10,10,.22);
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-primary-button {
+  border-color: #090909;
+  background: #090909;
+  color: #f5f5f1;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-secondary {
+  border-color: rgba(10,10,10,.28);
+  background: transparent;
+  color: #090909;
+}
+html:not(.dark) .allo-hero-v6:has(.allo-hero-dynamic-overlay.is-fallback) .allo-hero-secondary:hover {
+  background: rgba(10,10,10,.055);
+}
+
+/* Two immediate buying paths. */
+.allo-choice-section {
+  background: var(--allo-bg-soft);
+  color: var(--allo-text);
+  border-top: 1px solid var(--allo-border);
+  border-bottom: 1px solid var(--allo-border);
+}
+.allo-choice-grid {
+  overflow: hidden;
+  border: 1px solid var(--allo-border-strong);
+  background: var(--allo-border);
+}
+.allo-choice-card {
+  min-height: 520px;
+  padding: clamp(28px, 4vw, 52px);
+  background: var(--allo-bg);
+  color: var(--allo-text);
+  transition: background .22s ease;
+}
+.allo-choice-card:hover {
+  background: var(--allo-surface-2);
+}
+.allo-choice-number {
+  color: var(--allo-faint);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .22em;
+}
+.allo-choice-icon {
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--allo-border-strong);
+  border-radius: 50%;
+  color: var(--allo-text);
+}
+.allo-choice-lead {
+  max-width: 520px;
+  color: var(--allo-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.allo-choice-title {
+  font-size: clamp(3.2rem, 6vw, 6.8rem);
+  line-height: .88;
+  font-weight: 860;
+  letter-spacing: -.065em !important;
+}
+.allo-choice-body {
+  max-width: 610px;
+  color: var(--allo-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.allo-choice-bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.allo-choice-bullets span {
+  border: 1px solid var(--allo-border);
+  padding: 7px 9px;
+  color: var(--allo-muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.allo-choice-action {
+  border-bottom: 1px solid var(--allo-border-strong);
+  padding-bottom: 5px;
+  color: var(--allo-text);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  transition: gap .2s ease, border-color .2s ease;
+}
+.allo-choice-action:hover {
+  gap: 12px;
+  border-color: var(--allo-text);
+}
+
+/* Cases intentionally arrive before the service catalogue in V6. */
+.allo-work-first {
+  border-top: 0;
+}
+.allo-work-first #projects {
+  padding-top: clamp(78px, 9vw, 126px);
+}
+
+/* 3D is positioned as a production tool, not a third company identity. */
+#builder {
+  border-top: 1px solid var(--allo-border);
+}
+
+@media (min-width: 900px) {
+  .allo-hero-v6-bottom {
+    grid-template-columns: minmax(0, 1.35fr) minmax(270px, .65fr);
+    gap: 64px;
+  }
+  .allo-hero-signoff {
+    justify-self: end;
+    width: min(100%, 330px);
+  }
+}
+
+@media (max-width: 767px) {
+  .allo-display-v6 {
+    font-size: clamp(3.15rem, 14.6vw, 5.8rem);
+    line-height: .87;
+  }
+  .allo-hero-v6-bottom {
+    margin-top: 28px;
+  }
+  .allo-hero-signoff {
+    margin-top: 10px;
+  }
+  .allo-choice-card {
+    min-height: 0;
+    padding: 30px 22px 34px;
+  }
+  .allo-choice-title {
+    font-size: clamp(3rem, 15vw, 4.8rem);
+  }
+}
+
+/* Keep the admin hero preview in sync with the three-line V6 headline. */
+.admin-hero-preview-copy strong {
+  font-size: clamp(2.7rem, 5vw, 5.4rem);
+  line-height: .82;
+}

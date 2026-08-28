@@ -176,13 +176,15 @@ function Navigation({ onNavigate }: { onNavigate?: () => void }) {
 
 function Brand() {
   return (
-    <Link to="/admin" className="admin-brand" aria-label="Allo Event Admin">
-      <img src={logo} alt="Allo Event" className="admin-brand-logo" />
-      <div className="admin-brand-copy">
+    <div className="admin-brand">
+      <Link to="/" aria-label="Till Allo Events startsida" className="admin-brand-home-link">
+        <img src={logo} alt="Allo Event" className="admin-brand-logo" />
+      </Link>
+      <Link to="/admin" className="admin-brand-copy" aria-label="Till Operations översikt">
         <strong>Operations</strong>
         <span>Admin workspace</span>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

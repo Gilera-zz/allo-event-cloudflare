@@ -177,8 +177,8 @@ function HomepageSettingsView() {
               {previewImage ? <img src={previewImage} alt="Hero preview" style={{ objectPosition: draft.hero_image_position }} /> : <div className="admin-hero-preview-fallback">ALLO</div>}
               <div className="admin-hero-preview-overlay" style={{ opacity: Math.max(0, Math.min(90, draft.hero_overlay)) / 100 }} />
               <div className="admin-hero-preview-copy">
-                <span>EVENTPRODUKTION · BEMANNING · MÄSSOR</span>
-                <strong>WE MAKE IT<br />HAPPEN.</strong>
+                <span>EVENT · MÄSSA · BEMANNING · PRODUKTION</span>
+                <strong>VI BYGGER.<br />VI BEMANNAR.<br />VI LEVERERAR.</strong>
               </div>
               {draft.hero_mode === "cases" && selectedCases.length ? (
                 <div className="admin-hero-preview-case">
