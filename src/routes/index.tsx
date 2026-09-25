@@ -36,7 +36,7 @@ const BEMANNING_ROLES = [
   "Butik", "Lager", "Städ", "Stagehand",
 ];
 
-const BUILDER_URL = "https://beta.studio.alloevent.se";
+const BUILDER_URL = "https://studio.alloevent.se";
 const PORTAL_URL = "https://personal.alloevent.se";
 
 export const Route = createFileRoute("/")({
@@ -672,7 +672,7 @@ function BuilderPreview() {
         </aside>
       </div>
       <div className="allo-studio-footerline">
-        <span><i /> beta.studio.alloevent.se</span>
+        <span><i /> studio.alloevent.se</span>
         <span>SUPABASE CLOUD · LIVE</span>
       </div>
     </div>
