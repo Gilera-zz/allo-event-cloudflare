@@ -60,11 +60,14 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
     `20260826_project_public_visibility.sql` i den rekommenderade ordningen.
 11. **Ingen genererad Supabase-typfil** och ingen `Database`-generic. Felaktiga kolumnnamn fångas
     inte vid kompilering; flera `as X[]`-casts ger typecheck-fel (se Kodkvalitet).
-11a. **Statusändring av leads i admin sparas troligen inte** **(bekräftat i DB: ingen policy)**.
-    `admin.leads.tsx:97-103` gör `update({ status })` på `leads`, men exporten visar ingen
-    UPDATE-policy på `leads`. RLS ger då 0 uppdaterade rader utan fel, och vyn uppdaterar ändå
-    den lokala listan. Efter omladdning är statusen tillbaka. Det finns ingen DELETE i koden.
-    En admin-policy för UPDATE behöver beslutas separat.
+11a. **Statusändring och borttagning av leads i admin** **(kod klar, SQL-fil skriven, väntar på
+    körning)**. Enligt RLS-exporten finns ingen UPDATE- eller DELETE-policy på `leads`, så RLS
+    stoppar ändringar tyst (0 rader, inget fel). `admin.leads.tsx` kör nu
+    `update(...).eq("id", id).select("id")` och `delete().eq("id", id).select("id")` och visar
+    ett fel ("Kunde inte spara status" / "Kunde inte ta bort förfrågan") när inga rader kommer
+    tillbaka. Det lokala statet ändras bara när ändringen sparades (2026-09-25). Tills
+    `db/migrations/20260925_leads_admin_update_delete.sql` ("Admins update leads",
+    "Admins delete leads") är körd ger båda knapparna felmeddelandet.
 
 ## Projekt och admin
 

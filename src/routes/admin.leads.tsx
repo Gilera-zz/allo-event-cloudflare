@@ -1,6 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Inbox, Mail, Phone, Building2, Calendar, Filter, RefreshCw, ChevronRight } from "lucide-react";
+import {
+  Inbox,
+  Mail,
+  Phone,
+  Building2,
+  Calendar,
+  Filter,
+  RefreshCw,
+  ChevronRight,
+  Trash2,
+} from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/leads")({
@@ -80,6 +91,7 @@ function LeadsInbox() {
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState<Lead | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -95,11 +107,34 @@ function LeadsInbox() {
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [filter]);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("leads").update({ status }).eq("id", id);
-    if (!error) {
-      setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status } : l)));
-      if (selected?.id === id) setSelected({ ...selected, status });
+    const { data, error } = await supabase
+      .from("leads")
+      .update({ status })
+      .eq("id", id)
+      .select("id");
+    if (error || !data || data.length === 0) {
+      if (error) console.error("Lead status update failed:", error);
+      toast.error("Kunde inte spara status");
+      return;
     }
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status } : l)));
+    setSelected((prev) => (prev?.id === id ? { ...prev, status } : prev));
+  };
+
+  const deleteLead = async (lead: Lead) => {
+    const label = leadCompany(lead) || leadName(lead);
+    if (!window.confirm(`Ta bort förfrågan från ${label}? Det går inte att ångra.`)) return;
+    setDeletingId(lead.id);
+    const { data, error } = await supabase.from("leads").delete().eq("id", lead.id).select("id");
+    setDeletingId(null);
+    if (error || !data || data.length === 0) {
+      if (error) console.error("Lead delete failed:", error);
+      toast.error("Kunde inte ta bort förfrågan");
+      return;
+    }
+    setLeads((prev) => prev.filter((l) => l.id !== lead.id));
+    setSelected((prev) => (prev?.id === lead.id ? null : prev));
+    toast.success("Förfrågan borttagen");
   };
 
   return (
@@ -258,6 +293,19 @@ function LeadsInbox() {
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider pt-2 border-t" style={{ borderColor: "var(--surface-line)" }}>
                 Mottagen {new Date(selected.created_at).toLocaleString("sv-SE")}
               </p>
+
+              <button
+                onClick={() => deleteLead(selected)}
+                disabled={deletingId === selected.id}
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs uppercase tracking-wider rounded-full border hover:bg-red-500/10 disabled:opacity-50"
+                style={{
+                  borderColor: "color-mix(in srgb, var(--destructive) 30%, transparent)",
+                  color: "var(--destructive)",
+                }}
+              >
+                <Trash2 className="h-3.5 w-3.5" />{" "}
+                {deletingId === selected.id ? "Tar bort..." : "Ta bort"}
+              </button>
             </div>
           ) : (
             <div className="text-center py-12">
