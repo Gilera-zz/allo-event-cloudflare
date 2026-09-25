@@ -1,24 +1,47 @@
-# Hello Landing World
+# alloevent.se
 
-Create a new project called hello-landing-world-30 with this zip.
+Allo Events webbplats och adminpanel. Byggd med TanStack Start, React 19 och Tailwind v4, med
+Supabase som databas och inloggning. Driftsätts på Cloudflare Workers som `allo-event-web`.
 
-This project was built with [Lovable](https://lovable.dev).
+- **Publik sajt:** `/` (startsida) och `/case/$slug` (case-sidor).
+- **Admin:** `/admin` – personal, schema, tidrapporter, massutskick, leads, Case CMS och
+  Hemsida & hero. Delar Supabase-databas med personalsystemet.
 
-## Build with Lovable
+> Push till `main` går live på alloevent.se via Cloudflare Workers Builds. Läs
+> [CLAUDE.md](CLAUDE.md) innan du ändrar något.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/b1039a0d-5c48-47e0-a418-fce2722af14e).
+## Kom igång lokalt
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Kräver [Bun](https://bun.sh).
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+bun install
+bun run dev
 ```
+
+Dev-servern startar på <http://localhost:8080> och går mot den riktiga Supabase-databasen
+(publik URL och publishable key finns som fallback i `src/integrations/supabase/client.ts`, eller
+sätts med `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY`).
+
+## Skript
+
+| Kommando | Vad det gör |
+| --- | --- |
+| `bun run dev` | Startar utvecklingsservern |
+| `bun run build` | Produktionsbygge till `.output/` (samma som Cloudflare kör) |
+| `bun run preview` | Förhandsgranskar bygget lokalt |
+| `bun run typecheck` | Typkontroll med `tsc --noEmit` |
+| `bun run lint` | ESLint (inklusive Prettier) |
+| `bun run format` | Formaterar med Prettier |
+
+## Driftsättning
+
+Cloudflare Workers Builds kör `bun run build` och `npx wrangler deploy` vid varje push till
+`main`. Se [CLOUDFLARE_DEPLOY.md](CLOUDFLARE_DEPLOY.md) för detaljer.
+
+## Mer dokumentation
+
+- [CLAUDE.md](CLAUDE.md) – regler för arbete i repot
+- [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) – kända problem och risker
+- [DATABASE_MIGRATIONS.md](DATABASE_MIGRATIONS.md) – migrationer i `db/migrations/`
+- [CASE_CMS_SETUP.md](CASE_CMS_SETUP.md) – Case CMS
