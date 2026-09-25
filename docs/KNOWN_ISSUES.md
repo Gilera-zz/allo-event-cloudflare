@@ -15,9 +15,9 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
    klienten (`ProjectsSection.tsx`, `case.$slug.tsx`, `HomepageHeroBackground.tsx`), men det
    skyddar ingenting. `BookingSection.tsx:148-163` räknar anonymt över alla projekt (räknaren
    renderas inte).
-   **Rättning förberedd, inte körd:** `db/migrations/20260925_projects_restrict_anon_read.sql`
-   ersätter de två policyerna med "Anon reads public projects" (`anon`, `public_visible = true`).
-   Körs inte förrän det är bekräftat att personalportalen inte läser projekt utan inloggning.
+   **Åtgärdad 2026-09-25.** `db/migrations/20260925_projects_restrict_anon_read.sql` är körd.
+   De två öppna policyerna är ersatta med "Anon reads public projects", så anon läser nu bara
+   projekt med `public_visible = true`.
 2. **Alla kundförfrågningar (`leads`) är läsbara för vem som helst** **(bekräftat i DB)**.
    Formuläret fungerade tack vare policyn "Allow anon select" (SELECT, `public`, `USING true`),
    eftersom det gjorde `.insert(...).select("id").single()`. Läsrätten är en läcka: alla leads med
@@ -25,10 +25,10 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
    SELECT-policy, så admin läser via samma öppna policy. "Allow anon insert" (INSERT, `public`,
    `WITH CHECK true`) finns också. Policyn "Public can submit booking requests" från
    `20260611_leads_public_insert.sql` finns inte i exporten.
-   **Rättning:** formuläret sparar nu utan att läsa tillbaka (`.select("id").single()` borttaget,
-   2026-09-25). `db/migrations/20260925_leads_close_public_read.sql` (inte körd) lägger till
-   "Admins read leads" (`has_role(auth.uid(), 'admin')`) och tar bort "Allow anon select". Körs
-   manuellt efter att formuläret utan `.select()` är live och testat.
+   **Åtgärdad 2026-09-25.** Formuläret sparar utan att läsa tillbaka (`.select("id").single()`
+   borttaget), och `db/migrations/20260925_leads_close_public_read.sql` är körd: "Allow anon
+   select" är borttagen och "Admins read leads" (`has_role(auth.uid(), 'admin')`) tillagd. Bara
+   admin kan läsa leads.
    Kvar **(verifiera i DB)**: tomma datum- och antalsfält skickas som `""` till kolumner av typen
    `date`/`integer`, vilket kan ge typfel.
 3. **`profiles_self_update_notice_pref` är för bred** (`20260626_receive_job_notices.sql:18-23`).
@@ -60,14 +60,14 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
     `20260826_project_public_visibility.sql` i den rekommenderade ordningen.
 11. **Ingen genererad Supabase-typfil** och ingen `Database`-generic. Felaktiga kolumnnamn fångas
     inte vid kompilering; flera `as X[]`-casts ger typecheck-fel (se Kodkvalitet).
-11a. **Statusändring och borttagning av leads i admin** **(kod klar, SQL-fil skriven, väntar på
-    körning)**. Enligt RLS-exporten finns ingen UPDATE- eller DELETE-policy på `leads`, så RLS
-    stoppar ändringar tyst (0 rader, inget fel). `admin.leads.tsx` kör nu
-    `update(...).eq("id", id).select("id")` och `delete().eq("id", id).select("id")` och visar
-    ett fel ("Kunde inte spara status" / "Kunde inte ta bort förfrågan") när inga rader kommer
-    tillbaka. Det lokala statet ändras bara när ändringen sparades (2026-09-25). Tills
+11a. **Statusändring och borttagning av leads i admin** **(åtgärdad 2026-09-25)**. Tidigare
+    fanns ingen UPDATE- eller DELETE-policy på `leads`, så RLS stoppade ändringar tyst (0 rader,
+    inget fel). `admin.leads.tsx` kör `update(...).eq("id", id).select("id")` och
+    `delete().eq("id", id).select("id")` och visar ett fel ("Kunde inte spara status" /
+    "Kunde inte ta bort förfrågan") när inga rader kommer tillbaka.
     `db/migrations/20260925_leads_admin_update_delete.sql` ("Admins update leads",
-    "Admins delete leads") är körd ger båda knapparna felmeddelandet.
+    "Admins delete leads") är körd, och det är testat att status sparas och att borttagning
+    fungerar.
 
 ## Projekt och admin
 
