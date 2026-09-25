@@ -202,11 +202,9 @@ export function BookingSection({
         description: form.description.trim(),
       };
 
-      const { data: inserted, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from("leads")
-        .insert(payload)
-        .select("id")
-        .single();
+        .insert(payload);
       if (insertError) {
         console.error("SUPABASE BOOKING ERROR:", insertError);
         const parts = [

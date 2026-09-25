@@ -1,39 +1,57 @@
 # Kända problem och risker
 
-Sammanställt vid grundarbetet 2026-09-25 (kartläggning utan ändringar). Inget av detta är rättat.
+Sammanställt vid grundarbetet 2026-09-25 (kartläggning utan ändringar).
 Punkter markerade **(verifiera i DB)** bygger på koden och migrationerna i repot. Den faktiska
 databasen har inte kontrollerats, eftersom `projects`, `profiles`, `leads`, `user_roles` och
-`project_assignments` skapades utanför repot.
+`project_assignments` skapades utanför repot. Punkter markerade **(bekräftat i DB)** har
+kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
 
 ## Säkerhet och databas
 
-1. **`projects` kan vara fullt läsbar för anonyma** **(verifiera i DB)**. Den publika sajten
-   filtrerar på `public_visible=true` i klienten (`ProjectsSection.tsx`, `case.$slug.tsx`,
-   `HomepageHeroBackground.tsx`). Ingen migration här slår på RLS på `projects` eller definierar
-   läspolicyn (`20260823_project_case_cms.sql:61-68` säger uttryckligen att den befintliga lämnas
-   orörd). Är policyn `using (true)` kan vem som helst med publishable key läsa alla operativa
-   projekt och alla kolumner. `BookingSection.tsx:148-163` räknar redan anonymt över alla projekt.
-2. **Lead-formuläret kan fallera för anonyma besökare** **(verifiera i DB)**.
-   `BookingSection.tsx:205-209` gör `.insert(...).select("id").single()`, vilket kräver
-   SELECT-rättighet. `20260611_leads_public_insert.sql` ger `anon` bara `insert` och har bara en
-   insert-policy. Tomma datum- och antalsfält skickas dessutom som `""` till kolumner av typen
+1. **`projects` är fullt läsbar för anonyma** **(bekräftat i DB)**. Policyerna
+   "Allow public read access on projects" och "Public can read projects" (SELECT, `anon` och
+   `authenticated`, `USING true`) gör att vem som helst med publishable key kan läsa alla
+   operativa projekt och alla kolumner. Den publika sajten filtrerar på `public_visible=true` i
+   klienten (`ProjectsSection.tsx`, `case.$slug.tsx`, `HomepageHeroBackground.tsx`), men det
+   skyddar ingenting. `BookingSection.tsx:148-163` räknar anonymt över alla projekt (räknaren
+   renderas inte).
+   **Rättning förberedd, inte körd:** `db/migrations/20260925_projects_restrict_anon_read.sql`
+   ersätter de två policyerna med "Anon reads public projects" (`anon`, `public_visible = true`).
+   Körs inte förrän det är bekräftat att personalportalen inte läser projekt utan inloggning.
+2. **Alla kundförfrågningar (`leads`) är läsbara för vem som helst** **(bekräftat i DB)**.
+   Formuläret fungerade tack vare policyn "Allow anon select" (SELECT, `public`, `USING true`),
+   eftersom det gjorde `.insert(...).select("id").single()`. Läsrätten är en läcka: alla leads med
+   namn, e-post, telefon och meddelande kan läsas med publishable key. Det finns ingen annan
+   SELECT-policy, så admin läser via samma öppna policy. "Allow anon insert" (INSERT, `public`,
+   `WITH CHECK true`) finns också. Policyn "Public can submit booking requests" från
+   `20260611_leads_public_insert.sql` finns inte i exporten.
+   **Rättning:** formuläret sparar nu utan att läsa tillbaka (`.select("id").single()` borttaget,
+   2026-09-25). `db/migrations/20260925_leads_close_public_read.sql` (inte körd) lägger till
+   "Admins read leads" (`has_role(auth.uid(), 'admin')`) och tar bort "Allow anon select". Körs
+   manuellt efter att formuläret utan `.select()` är live och testat.
+   Kvar **(verifiera i DB)**: tomma datum- och antalsfält skickas som `""` till kolumner av typen
    `date`/`integer`, vilket kan ge typfel.
 3. **`profiles_self_update_notice_pref` är för bred** (`20260626_receive_job_notices.sql:18-23`).
    Den tillåter UPDATE av alla kolumner i den egna profilen (t.ex. `is_admin`, `personal_id`) om
-   inget annat hindrar det. Påverkar främst personalsystemet.
+   inget annat hindrar det. **(bekräftat i DB, delvis):** `has_role(uid, role)` läser bara
+   `public.user_roles`, så `is_admin` i `profiles` ger ingen behörighet i RLS i den här databasen.
+   Sajten använder `profiles.is_admin` bara för visning och målgruppen "admins" i massutskick
+   (punkt 5). Kvar att kontrollera: om personalportalen använder `is_admin` för behörighet.
 4. **All behörighetskontroll i admin sker i klienten** (`src/routes/admin.tsx:11-20`,
    `use-auth.tsx`). Säkerheten vilar helt på RLS, som för `projects`, `profiles`, `leads`,
    `user_roles` och `project_assignments` inte syns i repot.
 5. **Två sanningskällor för admin:** `user_roles` (auth, massutskick) och `profiles.is_admin`
    (`admin.staff.tsx`, målgruppen "admins" i `admin.massutskick.tsx`).
-6. **`time_sheets`-policyn** låter personal göra insert med valfri `status` (t.ex. "Fakturerad")
-   och `paid_hours` (`20260608_time_tracking.sql:71-73`). `admin.min-tidrapport.tsx` gör update
-   och delete som RLS bara tillåter för admins; delete-fel ignoreras där och i
-   `admin.schema.tsx:138`, `admin.timesheets.tsx:204`.
-7. **`clients` är läsbar för alla inloggade**, inklusive `org_number` och `billing_email`
-   (`20260608_time_tracking.sql:25-27`).
+6. **`time_sheets`-policyn: stämmer inte** **(bekräftat i DB)**. Den faktiska policyn kräver att
+   `status` förblir 'Väntar på godkännande' vid uppdatering, så personal kan inte sätta t.ex.
+   "Fakturerad" själv. (Beskrivningen byggde på `20260608_time_tracking.sql:71-73`, som inte
+   motsvarar databasen.) Kvar: delete-fel ignoreras i `admin.min-tidrapport.tsx`,
+   `admin.schema.tsx:138` och `admin.timesheets.tsx:204`.
+7. **`clients` är läsbar för all inloggad personal** **(bekräftat i DB)**, inklusive
+   `org_number` och `billing_email` (`20260608_time_tracking.sql:25-27`). Troligen avsiktligt
+   (personal väljer kund i tidrapporter och schema), men ska bekräftas.
 8. **`public.has_role()` definieras inte i repot** men alla admin-policies i migrationerna
-   använder den.
+   använder den. Enligt exporten finns den i databasen och läser bara `public.user_roles`.
 9. **Case CMS skriver över operativa fält** i den delade tabellen `projects`
    (`admin.case-cms.tsx:205-214`: `title, category, location, starts_at, ends_at,
    positions_needed, image_url, description, status`). Tomma fält blir `null`, och `status` är
@@ -42,6 +60,11 @@ databasen har inte kontrollerats, eftersom `projects`, `profiles`, `leads`, `use
     `20260826_project_public_visibility.sql` i den rekommenderade ordningen.
 11. **Ingen genererad Supabase-typfil** och ingen `Database`-generic. Felaktiga kolumnnamn fångas
     inte vid kompilering; flera `as X[]`-casts ger typecheck-fel (se Kodkvalitet).
+11a. **Statusändring av leads i admin sparas troligen inte** **(bekräftat i DB: ingen policy)**.
+    `admin.leads.tsx:97-103` gör `update({ status })` på `leads`, men exporten visar ingen
+    UPDATE-policy på `leads`. RLS ger då 0 uppdaterade rader utan fel, och vyn uppdaterar ändå
+    den lokala listan. Efter omladdning är statusen tillbaka. Det finns ingen DELETE i koden.
+    En admin-policy för UPDATE behöver beslutas separat.
 
 ## Projekt och admin
 
