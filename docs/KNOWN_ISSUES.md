@@ -98,8 +98,10 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
 23. **Språket väljs bara i klienten** (`localStorage["lang"]`). Servern renderar alltid svenska,
     `<html lang="sv">` ändras aldrig, inga `hreflang`, ingen engelsk URL.
 24. **Ingen `og:image`** på någon sida trots `twitter:card=summary_large_image`.
-25. **Ingen favicon-länk i `<head>`** trots att `public/favicon*.png`, `favicon.ico` och
-    `apple-touch-icon.png` finns (bara `/favicon.ico` hittas automatiskt).
+25. **Ingen favicon-länk i `<head>`** – **åtgärdad på grenen `ombyggnad` (2026-09-25)**. Nya
+    ikoner från `design-assets/allospiral.png` (`favicon.ico` 16/32/48, `favicon-32x32.png`,
+    `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) och länkar i `__root.tsx`. Gäller även
+    admin. Den gamla `public/icon.png` är borttagen.
 
 ## Innehåll
 
@@ -109,8 +111,11 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
 27. **Integritetspolicyn** (`BookingSection.tsx`, PrivacyModal) har adressen Bjursätragatan 77,
     Bandhagen (sajten anger Surbrunnsgatan 30), nämner Netlify fast sajten ligger på Cloudflare, och
     "Senast uppdaterad" genereras från dagens datum.
-28. **`tel:`-länkar innehåller "(0)"** (`tel:+46(0)702239680`) i kontaktkorten.
-29. **"Jobba hos oss" i footern öppnas i samma flik**, i headern i ny flik.
+28. **`tel:`-länkar innehåller "(0)"** (`tel:+46(0)702239680`) i kontaktkorten. **Rättat på den
+    nya startsidan** (`tel:+46702239680`, gren `ombyggnad`). Kvar i `LegacyHome.tsx`
+    (`PersonCard`), som återanvänds på de nya undersidorna.
+29. **"Jobba hos oss" i footern öppnas i samma flik**, i headern i ny flik. Nya startsidan öppnar
+    i ny flik på båda ställena. Kvar i `LegacyHome.tsx`.
 30. **"Kundens ord" i projektmodalen visas aldrig**, eftersom `client_notes` inte hämtas.
 31. **Död kod och oanvända texter:** `completedCount` och `NEED_TYPES` i `BookingSection.tsx`,
     `svCopy.heroLine`, stora delar av `i18n.nav/hero/services/showcase/contact/booking`,
@@ -165,3 +170,35 @@ kontrollerats mot en export av RLS-reglerna i Supabase (2026-09-25).
 47. **Admin-block insprängda i publika delar** (r. 3015–3101, 3349–3353) och stora mängder död
     kaskad (V1 r. 144–490, V6-hero r. 3105–3217/3318–3340, `.allo-builder-*`, `.allo-demo-notice`).
     `allo-section-kicker-dark` och `allo-theme-heading-dark` används i TSX men saknar CSS.
+
+## Ombyggnaden (gren `ombyggnad`, 2026-09-25)
+
+48. **Nya startsidan länkar till sidor som inte finns ännu.** `/eventproduktion`, `/bemanning`,
+    `/case` och `/bemanning#formular` ger 404 tills nästa steg bygger dem. Avsiktligt enligt
+    uppgiften.
+49. **Den gamla startsidan ligger kvar som `src/components/legacy/LegacyHome.tsx`** (utan route).
+    Bemanningsdialogen, `ServiceCard`, `ProcessStep`, `BuilderPreview`, `svCopy`/`enCopy` m.m.
+    exporteras därifrån för de nya undersidorna. Den delar fortfarande `src/styles.css` och de
+    gamla klasserna. `ProjectsSection`, `BookingSection` och `HomepageHeroBackground` är orörda.
+50. **Startsidans data hämtas nu i route-loadern på servern** (`src/lib/site-data.ts`). Varje
+    sidvisning gör upp till tre anrop mot Supabase från workern (med 2,5 s tidsgräns och tomt
+    fallback). Ingen cache. Om det blir märkbart långsamt: lägg cache i workern eller i loadern.
+51. **Hero-bilden i `site_settings` heter `desktop-…-chatgpt-image-28-aug.-2026-….png`**, vilket
+    tyder på att den nuvarande manuella hero-bilden i admin är AI-genererad. Regeln är att bara
+    riktiga jobb visas. Byt bild i `/admin/homepage` eller växla till case-läget.
+52. **`theme-color`-metataggen följer fortfarande admins tema** på den nya startsidan
+    (ljus adressrad i mobilen när temat är ljust), eftersom rot-scriptet och `ThemeProvider`
+    skriver den. Sidan i sig är alltid mörk. Kräver en ändring i `__root.tsx`/`use-theme.tsx`
+    som är gemensam med admin, och lämnas därför.
+53. **`body:has(.allo-v7)`** i `src/styles/site.css` sätter body-bakgrunden till svart när den
+    nya sidan är monterad, så att overscroll inte blinkar ljust. Selektorn är scopad till den
+    nya sidan men är tekniskt en body-regel. Stilfilen laddas bara av routen `/`.
+54. **Lokalt produktionsbygge kräver wrangler.** `vite preview` fungerar inte med
+    nitro/cloudflare-utdata (letar efter `dist/server/server.js`). Kör i stället
+    `npx -y wrangler@4 dev --config .output/server/wrangler.json --port 8787` efter
+    `bun run build`. Stoppa wrangler innan nästa `bun run build` (låser `.output/public`).
+55. **Testbilder i `public/test-images/`** (gitignorerat) används bara i `bun run dev`. Ett lokalt
+    `bun run build` kopierar ändå mappen till `.output/public` om den finns. Cloudflare bygger
+    från git och får aldrig mappen. Ta bort eller töm mappen före ett lokalt bygge som ska
+    granskas.
+

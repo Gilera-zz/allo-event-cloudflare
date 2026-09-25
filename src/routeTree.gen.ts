@@ -12,10 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as CaseSlugRouteImport } from './routes/case.$slug'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminCaseCmsRouteImport } from './routes/admin.case-cms'
 import { Route as AdminDesignsRouteImport } from './routes/admin.designs'
+import { Route as AdminHomepageRouteImport } from './routes/admin.homepage'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminMassutskickRouteImport } from './routes/admin.massutskick'
 import { Route as AdminMinTidrapportRouteImport } from './routes/admin.min-tidrapport'
@@ -26,6 +26,7 @@ import { Route as AdminSchemaRouteImport } from './routes/admin.schema'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminTillganglighetRouteImport } from './routes/admin.tillganglighet'
 import { Route as AdminTimesheetsRouteImport } from './routes/admin.timesheets'
+import { Route as CaseSlugRouteImport } from './routes/case.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -42,11 +43,6 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CaseSlugRoute = CaseSlugRouteImport.update({
-  id: '/case/$slug',
-  path: '/case/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -60,6 +56,11 @@ const AdminCaseCmsRoute = AdminCaseCmsRouteImport.update({
 const AdminDesignsRoute = AdminDesignsRouteImport.update({
   id: '/designs',
   path: '/designs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminHomepageRoute = AdminHomepageRouteImport.update({
+  id: '/homepage',
+  path: '/homepage',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminLeadsRoute = AdminLeadsRouteImport.update({
@@ -112,14 +113,19 @@ const AdminTimesheetsRoute = AdminTimesheetsRouteImport.update({
   path: '/timesheets',
   getParentRoute: () => AdminRoute,
 } as any)
+const CaseSlugRoute = CaseSlugRouteImport.update({
+  id: '/case/$slug',
+  path: '/case/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
-  '/case/$slug': typeof CaseSlugRoute
   '/admin/case-cms': typeof AdminCaseCmsRoute
   '/admin/designs': typeof AdminDesignsRoute
+  '/admin/homepage': typeof AdminHomepageRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/massutskick': typeof AdminMassutskickRoute
   '/admin/min-tidrapport': typeof AdminMinTidrapportRoute
@@ -130,14 +136,15 @@ export interface FileRoutesByFullPath {
   '/admin/staff': typeof AdminStaffRoute
   '/admin/tillganglighet': typeof AdminTillganglighetRoute
   '/admin/timesheets': typeof AdminTimesheetsRoute
+  '/case/$slug': typeof CaseSlugRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/case/$slug': typeof CaseSlugRoute
   '/admin/case-cms': typeof AdminCaseCmsRoute
   '/admin/designs': typeof AdminDesignsRoute
+  '/admin/homepage': typeof AdminHomepageRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/massutskick': typeof AdminMassutskickRoute
   '/admin/min-tidrapport': typeof AdminMinTidrapportRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/admin/staff': typeof AdminStaffRoute
   '/admin/tillganglighet': typeof AdminTillganglighetRoute
   '/admin/timesheets': typeof AdminTimesheetsRoute
+  '/case/$slug': typeof CaseSlugRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -155,9 +163,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
-  '/case/$slug': typeof CaseSlugRoute
   '/admin/case-cms': typeof AdminCaseCmsRoute
   '/admin/designs': typeof AdminDesignsRoute
+  '/admin/homepage': typeof AdminHomepageRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/massutskick': typeof AdminMassutskickRoute
   '/admin/min-tidrapport': typeof AdminMinTidrapportRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/admin/staff': typeof AdminStaffRoute
   '/admin/tillganglighet': typeof AdminTillganglighetRoute
   '/admin/timesheets': typeof AdminTimesheetsRoute
+  '/case/$slug': typeof CaseSlugRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -176,9 +185,9 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/login'
-    | '/case/$slug'
     | '/admin/case-cms'
     | '/admin/designs'
+    | '/admin/homepage'
     | '/admin/leads'
     | '/admin/massutskick'
     | '/admin/min-tidrapport'
@@ -189,14 +198,15 @@ export interface FileRouteTypes {
     | '/admin/staff'
     | '/admin/tillganglighet'
     | '/admin/timesheets'
+    | '/case/$slug'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
-    | '/case/$slug'
     | '/admin/case-cms'
     | '/admin/designs'
+    | '/admin/homepage'
     | '/admin/leads'
     | '/admin/massutskick'
     | '/admin/min-tidrapport'
@@ -207,15 +217,16 @@ export interface FileRouteTypes {
     | '/admin/staff'
     | '/admin/tillganglighet'
     | '/admin/timesheets'
+    | '/case/$slug'
     | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/login'
-    | '/case/$slug'
     | '/admin/case-cms'
     | '/admin/designs'
+    | '/admin/homepage'
     | '/admin/leads'
     | '/admin/massutskick'
     | '/admin/min-tidrapport'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/admin/staff'
     | '/admin/tillganglighet'
     | '/admin/timesheets'
+    | '/case/$slug'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -259,13 +271,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/case/$slug': {
-      id: '/case/$slug'
-      path: '/case/$slug'
-      fullPath: '/case/$slug'
-      preLoaderRoute: typeof CaseSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -285,6 +290,13 @@ declare module '@tanstack/react-router' {
       path: '/designs'
       fullPath: '/admin/designs'
       preLoaderRoute: typeof AdminDesignsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/homepage': {
+      id: '/admin/homepage'
+      path: '/homepage'
+      fullPath: '/admin/homepage'
+      preLoaderRoute: typeof AdminHomepageRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/leads': {
@@ -357,12 +369,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTimesheetsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/case/$slug': {
+      id: '/case/$slug'
+      path: '/case/$slug'
+      fullPath: '/case/$slug'
+      preLoaderRoute: typeof CaseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminCaseCmsRoute: typeof AdminCaseCmsRoute
   AdminDesignsRoute: typeof AdminDesignsRoute
+  AdminHomepageRoute: typeof AdminHomepageRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminMassutskickRoute: typeof AdminMassutskickRoute
   AdminMinTidrapportRoute: typeof AdminMinTidrapportRoute
@@ -379,6 +399,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCaseCmsRoute: AdminCaseCmsRoute,
   AdminDesignsRoute: AdminDesignsRoute,
+  AdminHomepageRoute: AdminHomepageRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminMassutskickRoute: AdminMassutskickRoute,
   AdminMinTidrapportRoute: AdminMinTidrapportRoute,

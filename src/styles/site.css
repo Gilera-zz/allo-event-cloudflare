@@ -1,0 +1,759 @@
+/* =====================================================================
+   alloevent.se – nya publika startsidan ("produktionsspråket")
+   Rotklass: .allo-v7. Allt här är scopat under den. Inga :root/.dark,
+   inga globala elementselektorer. Admin, /login och 404 använder inte
+   den här filen (den laddas bara av routen /).
+   ===================================================================== */
+
+/* Typsnitt, serverade från sajten själv (woff2, font-display: swap).
+   Archivo variabel med bredd- och viktaxel, JetBrains Mono 400/500 (latin). */
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-500.css";
+
+/* Bakgrund bakom sidan (overscroll) – gäller bara när den nya sidan är monterad. */
+body:has(> #root > .allo-v7),
+body:has(.allo-v7) {
+  background-color: #0a0a0a;
+}
+
+.allo-v7 {
+  /* Färger */
+  --v7-bg: #0a0a0a;
+  --v7-bg-2: #111111;
+  --v7-bg-3: #171717;
+  --v7-line: #242424;
+  --v7-line-2: #333333;
+  --v7-text: #ece8e0;
+  --v7-text-2: #b3afa6;
+  --v7-text-3: #8c8982;
+  --v7-gold: #e0ce75;
+  --v7-gold-line: #6e6234;
+  --v7-gold-dim: rgba(224, 206, 117, 0.14);
+
+  /* Typografi */
+  --v7-font: "Archivo Variable", "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --v7-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+
+  /* Mått */
+  --v7-header: 64px;
+  --v7-gutter: 20px;
+  --v7-max: 1400px;
+  --v7-grid: 64px;
+  --v7-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--v7-bg);
+  color: var(--v7-text);
+  color-scheme: dark;
+  font-family: var(--v7-font);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+@media (min-width: 768px) {
+  .allo-v7 { --v7-gutter: 32px; }
+}
+@media (min-width: 1200px) {
+  .allo-v7 { --v7-gutter: 48px; }
+}
+
+/* Planritningsrutnätet: ett tunt, synligt rutnät över hela sidan. */
+.allo-v7::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: var(--v7-grid) var(--v7-grid);
+}
+.allo-v7 > * { position: relative; z-index: 1; }
+
+.allo-v7 *,
+.allo-v7 *::before,
+.allo-v7 *::after { box-sizing: border-box; }
+
+.allo-v7 h1, .allo-v7 h2, .allo-v7 h3, .allo-v7 h4 {
+  font-family: var(--v7-font);
+  font-weight: 800;
+  font-stretch: 108%;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0;
+  color: var(--v7-text);
+}
+.allo-v7 p { margin: 0; }
+.allo-v7 a { color: inherit; text-decoration: none; }
+.allo-v7 img { display: block; max-width: 100%; }
+.allo-v7 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.allo-v7 :focus-visible { outline: 2px solid var(--v7-gold); outline-offset: 3px; }
+
+.allo-v7-wrap {
+  width: 100%;
+  max-width: var(--v7-max);
+  margin-inline: auto;
+  padding-inline: var(--v7-gutter);
+}
+
+/* Tekniska etiketter i mono */
+.allo-v7-mono {
+  font-family: var(--v7-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.allo-v7-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--v7-gold);
+}
+.allo-v7-mark::after {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--v7-gold-line);
+}
+
+/* Sektioner */
+.allo-v7-section {
+  padding-block: 64px;
+  border-top: 1px solid var(--v7-line);
+  scroll-margin-top: calc(var(--v7-header) + 8px);
+}
+@media (min-width: 1024px) {
+  .allo-v7-section { padding-block: 96px; }
+}
+.allo-v7-section-head {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.allo-v7-section-head h2 {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+}
+@media (min-width: 768px) {
+  .allo-v7-section-head {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    margin-bottom: 40px;
+  }
+  .allo-v7-section-head .allo-v7-mark,
+  .allo-v7-section-head .allo-v7-lead { grid-column: 1 / -1; }
+}
+.allo-v7-lead {
+  color: var(--v7-text-2);
+  max-width: 62ch;
+  font-size: 1.05rem;
+}
+
+/* Länk med pil */
+.allo-v7-arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--v7-text);
+  border-bottom: 1px solid var(--v7-line-2);
+  padding-bottom: 4px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.allo-v7-arrow-link:hover { color: var(--v7-gold); border-color: var(--v7-gold); }
+.allo-v7-arrow-link svg { width: 16px; height: 16px; }
+
+/* Knappar */
+.allo-v7-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--v7-line-2);
+  color: var(--v7-text);
+  font-family: var(--v7-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+.allo-v7-btn:hover { border-color: var(--v7-text-2); background: var(--v7-bg-3); }
+.allo-v7-btn svg { width: 15px; height: 15px; }
+.allo-v7-btn--primary { border-color: var(--v7-gold); }
+.allo-v7-btn--primary:hover { background: var(--v7-gold-dim); border-color: var(--v7-gold); color: var(--v7-text); }
+
+/* ---------------------------------------------------------------------
+   Header
+   --------------------------------------------------------------------- */
+.allo-v7-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.94);
+  border-bottom: 1px solid var(--v7-line);
+  backdrop-filter: blur(8px);
+}
+.allo-v7-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--v7-header);
+}
+.allo-v7-logo { display: flex; align-items: center; flex-shrink: 0; }
+.allo-v7-logo img { height: 40px; width: auto; }
+.allo-v7-nav { display: none; }
+.allo-v7-header-tools { display: none; }
+.allo-v7-nav a {
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: 104%;
+  color: var(--v7-text-2);
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.allo-v7-nav a:hover, .allo-v7-nav a.is-active { color: var(--v7-text); border-color: var(--v7-gold); }
+.allo-v7-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 10px;
+  color: var(--v7-text-2);
+  font-family: var(--v7-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.allo-v7-tool:hover { color: var(--v7-text); }
+.allo-v7-tool svg { width: 15px; height: 15px; }
+.allo-v7-lang b { color: var(--v7-gold); font-weight: 500; }
+.allo-v7-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--v7-line-2);
+  color: var(--v7-text);
+}
+.allo-v7-burger svg { width: 20px; height: 20px; }
+
+@media (min-width: 1024px) {
+  .allo-v7-nav { display: flex; gap: 28px; }
+  .allo-v7-header-tools { display: flex; align-items: center; gap: 4px; }
+  .allo-v7-header-tools .allo-v7-btn { margin-left: 8px; min-height: 40px; padding: 0 16px; }
+  .allo-v7-burger { display: none; }
+}
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .allo-v7-tool--jobs span { display: none; }
+}
+
+/* Mobilmeny */
+.allo-v7-menu {
+  border-top: 1px solid var(--v7-line);
+  background: var(--v7-bg);
+  padding-block: 12px 20px;
+}
+.allo-v7-menu nav { display: grid; }
+.allo-v7-menu nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--v7-line);
+  font-size: 18px;
+  font-weight: 700;
+  font-stretch: 106%;
+}
+.allo-v7-menu nav a small {
+  font-family: var(--v7-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--v7-gold);
+}
+.allo-v7-menu-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 16px;
+}
+.allo-v7-menu-tools .allo-v7-btn { flex: 1 1 100%; }
+@media (min-width: 1024px) { .allo-v7-menu { display: none; } }
+
+/* ---------------------------------------------------------------------
+   Första skärmen: H1 + två halvor
+   --------------------------------------------------------------------- */
+.allo-v7-hero { padding-top: 40px; }
+.allo-v7-hero h1 {
+  font-size: clamp(2.3rem, 7vw, 5.6rem);
+  font-weight: 850;
+  font-stretch: 112%;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  max-width: 14ch;
+}
+.allo-v7-hero-top {
+  display: grid;
+  gap: 18px;
+  padding-bottom: 28px;
+}
+.allo-v7-hero-top .allo-v7-mono { color: var(--v7-text-3); }
+@media (min-width: 1024px) {
+  .allo-v7-hero { padding-top: 56px; }
+  .allo-v7-hero-top {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding-bottom: 36px;
+  }
+}
+
+.allo-v7-split {
+  display: grid;
+  border: 1px solid var(--v7-line-2);
+}
+.allo-v7-half {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 48svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--v7-bg-2);
+  color: var(--v7-text);
+}
+.allo-v7-half + .allo-v7-half { border-top: 1px solid var(--v7-line-2); }
+.allo-v7-half-media { position: absolute; inset: 0; z-index: 0; }
+.allo-v7-half-media img,
+.allo-v7-half-media picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.9s var(--v7-ease);
+}
+.allo-v7-half-media img { opacity: 0; }
+.allo-v7-half-media img.is-active { opacity: 1; }
+.allo-v7-half-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.45) 42%, rgba(10, 10, 10, 0.1) 100%);
+}
+.allo-v7-half-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 16px;
+  padding: 20px;
+}
+.allo-v7-half-body .allo-v7-mono { color: var(--v7-gold); }
+.allo-v7-half-title {
+  margin-top: 10px;
+  font-size: clamp(1.7rem, 4.5vw, 3rem);
+  font-weight: 800;
+  font-stretch: 110%;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.allo-v7-half-line {
+  margin-top: 10px;
+  max-width: 34ch;
+  color: var(--v7-text-2);
+  font-size: 0.95rem;
+}
+.allo-v7-half-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--v7-gold-line);
+  color: var(--v7-gold);
+  transition: border-color 0.25s, background-color 0.25s, transform 0.4s var(--v7-ease);
+}
+.allo-v7-half-arrow svg { width: 20px; height: 20px; }
+.allo-v7-half-meta {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: none;
+  color: var(--v7-text-2);
+  text-align: right;
+}
+.allo-v7-half-meta b { color: var(--v7-gold); font-weight: 500; }
+.allo-v7-half-ticks {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  z-index: 1;
+  color: var(--v7-text-3);
+}
+
+@media (min-width: 1024px) {
+  /* Grid i stället för flex: spåren fyller alltid raden, även mitt i en övergång. */
+  .allo-v7-split { grid-template-columns: 1fr 1fr; height: clamp(440px, 64vh, 760px); }
+  .allo-v7-half { min-height: 0; min-width: 0; }
+  .allo-v7-half + .allo-v7-half { border-top: 0; border-left: 1px solid var(--v7-line-2); }
+  .allo-v7-half-body { padding: 32px; }
+  .allo-v7-half-meta { display: block; }
+  .allo-v7-half-line { font-size: 1.05rem; }
+}
+@media (min-width: 1024px) and (hover: hover) {
+  .allo-v7-split { transition: grid-template-columns 0.7s var(--v7-ease); }
+  .allo-v7-split:has(.is-event:hover) { grid-template-columns: 1.6fr 1fr; }
+  .allo-v7-split:has(.is-staffing:hover) { grid-template-columns: 1fr 1.6fr; }
+  .allo-v7-half:hover .allo-v7-half-arrow { border-color: var(--v7-gold); background: var(--v7-gold-dim); transform: translateX(4px); }
+}
+
+/* Reservyta i produktionsspråket (när bild saknas) */
+.allo-v7-plan {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 48px 48px,
+    var(--v7-bg-2);
+}
+.allo-v7-plan::before,
+.allo-v7-plan::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--v7-gold-line);
+  border-style: solid;
+}
+.allo-v7-plan::before { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+.allo-v7-plan::after { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+.allo-v7-plan-code {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  color: var(--v7-gold);
+}
+.allo-v7-plan-word {
+  position: absolute;
+  right: -0.04em;
+  top: 50%;
+  transform: translateY(-58%);
+  font-family: var(--v7-font);
+  font-weight: 900;
+  font-stretch: 120%;
+  font-size: clamp(5rem, 22vw, 15rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(236, 232, 224, 0.18);
+  user-select: none;
+  pointer-events: none;
+}
+.allo-v7-plan-note {
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  color: var(--v7-text-3);
+}
+.allo-v7-plan-scale {
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  color: var(--v7-text-3);
+}
+.allo-v7-plan-line {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 64px;
+  height: 1px;
+  background: var(--v7-gold-line);
+}
+.allo-v7-plan--small .allo-v7-plan-word { font-size: clamp(3rem, 12vw, 6rem); }
+.allo-v7-plan--small .allo-v7-plan-code,
+.allo-v7-plan--small .allo-v7-plan-note,
+.allo-v7-plan--small .allo-v7-plan-line { display: none; }
+
+/* ---------------------------------------------------------------------
+   Utvalda case
+   --------------------------------------------------------------------- */
+.allo-v7-cases {
+  display: grid;
+  gap: 1px;
+  background: var(--v7-line);
+  border: 1px solid var(--v7-line);
+}
+@media (min-width: 640px) { .allo-v7-cases { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .allo-v7-cases { grid-template-columns: repeat(3, 1fr); } }
+.allo-v7-case {
+  display: flex;
+  flex-direction: column;
+  background: var(--v7-bg);
+  transition: background-color 0.25s;
+}
+.allo-v7-case:hover { background: var(--v7-bg-2); }
+.allo-v7-case-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--v7-bg-2);
+}
+.allo-v7-case-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--v7-ease);
+}
+.allo-v7-case:hover .allo-v7-case-media img { transform: scale(1.03); }
+.allo-v7-case-no {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 4px 8px;
+  background: rgba(10, 10, 10, 0.8);
+  color: var(--v7-gold);
+}
+.allo-v7-case-body { padding: 18px 18px 22px; display: grid; gap: 8px; }
+.allo-v7-case-body h3 { font-size: 1.25rem; font-stretch: 106%; }
+.allo-v7-case-meta { color: var(--v7-text-3); }
+.allo-v7-case-cta {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--v7-text-2);
+}
+.allo-v7-case-cta svg { width: 14px; height: 14px; }
+.allo-v7-case:hover .allo-v7-case-cta { color: var(--v7-gold); }
+
+/* ---------------------------------------------------------------------
+   Allo Studio-band
+   --------------------------------------------------------------------- */
+.allo-v7-studio {
+  border-top: 1px solid var(--v7-gold-line);
+  border-bottom: 1px solid var(--v7-gold-line);
+  background: var(--v7-bg-2);
+}
+.allo-v7-studio-row {
+  display: grid;
+  gap: 18px;
+  padding-block: 28px;
+}
+.allo-v7-studio-row p { font-size: 1.15rem; font-weight: 600; font-stretch: 104%; max-width: 40ch; }
+@media (min-width: 900px) {
+  .allo-v7-studio-row {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding-block: 34px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Partners
+   --------------------------------------------------------------------- */
+.allo-v7-partners {
+  display: grid;
+  gap: 1px;
+  background: var(--v7-line);
+  border: 1px solid var(--v7-line);
+}
+@media (min-width: 900px) { .allo-v7-partners { grid-template-columns: 1fr 1fr; } }
+.allo-v7-partner {
+  display: grid;
+  gap: 18px;
+  padding: 28px 22px 30px;
+  background: var(--v7-bg);
+  transition: background-color 0.25s;
+}
+.allo-v7-partner:hover { background: var(--v7-bg-2); }
+@media (min-width: 1024px) { .allo-v7-partner { padding: 40px 36px; } }
+.allo-v7-partner-logo {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+.allo-v7-partner-logo img { max-height: 100%; width: auto; object-fit: contain; }
+.allo-v7-partner-logo--nessim img { max-height: 40px; }
+.allo-v7-partner-logo--workman img { max-height: 64px; }
+.allo-v7-partner h3 { font-size: 1.2rem; font-stretch: 106%; text-transform: uppercase; letter-spacing: 0.02em; }
+.allo-v7-partner p { color: var(--v7-text-2); font-size: 0.95rem; max-width: 56ch; }
+.allo-v7-partner .allo-v7-arrow-link { justify-self: start; }
+.allo-v7-partner:hover .allo-v7-arrow-link { color: var(--v7-gold); border-color: var(--v7-gold); }
+
+.allo-v7-partners-extra { margin-top: 48px; }
+.allo-v7-partners-extra h3 { font-size: 1rem; color: var(--v7-text-2); font-weight: 600; margin-bottom: 16px; }
+.allo-v7-partners-extra-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--v7-line);
+  border: 1px solid var(--v7-line);
+}
+.allo-v7-partners-extra-list a,
+.allo-v7-partners-extra-list div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
+  padding: 16px;
+  background: var(--v7-bg);
+  color: var(--v7-text-2);
+  font-weight: 600;
+}
+.allo-v7-partners-extra-list img { max-height: 40px; }
+
+/* ---------------------------------------------------------------------
+   Om oss
+   --------------------------------------------------------------------- */
+.allo-v7-about {
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 1024px) {
+  .allo-v7-about { grid-template-columns: 1.1fr 0.9fr; gap: 64px; }
+}
+.allo-v7-about h2 { font-size: clamp(1.9rem, 4vw, 3rem); margin-top: 14px; }
+.allo-v7-about-body { margin-top: 20px; color: var(--v7-text-2); font-size: 1.08rem; max-width: 60ch; }
+.allo-v7-facts {
+  display: grid;
+  border-top: 1px solid var(--v7-line-2);
+  align-self: start;
+}
+.allo-v7-facts div {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--v7-line);
+}
+.allo-v7-facts dt { color: var(--v7-gold); }
+.allo-v7-facts dd { margin: 0; color: var(--v7-text); font-size: 0.95rem; }
+
+/* ---------------------------------------------------------------------
+   Kontakt
+   --------------------------------------------------------------------- */
+.allo-v7-people {
+  display: grid;
+  gap: 1px;
+  background: var(--v7-line);
+  border: 1px solid var(--v7-line);
+}
+@media (min-width: 768px) { .allo-v7-people { grid-template-columns: repeat(3, 1fr); } }
+.allo-v7-person {
+  display: grid;
+  gap: 6px;
+  padding: 22px 20px 24px;
+  background: var(--v7-bg);
+}
+.allo-v7-person .allo-v7-mono { color: var(--v7-gold); margin-bottom: 8px; }
+.allo-v7-person h3 { font-size: 1.35rem; font-stretch: 106%; margin-bottom: 10px; }
+.allo-v7-person a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--v7-text-2);
+  font-size: 0.95rem;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+.allo-v7-person a:hover { color: var(--v7-gold); }
+.allo-v7-person a svg { width: 15px; height: 15px; color: var(--v7-text-3); }
+.allo-v7-company {
+  margin-top: 1px;
+  display: grid;
+  gap: 18px;
+  padding: 22px 20px 24px;
+  border: 1px solid var(--v7-line);
+  border-top: 0;
+  background: var(--v7-bg);
+}
+@media (min-width: 768px) {
+  .allo-v7-company { grid-template-columns: 1fr 1fr auto; align-items: center; padding: 26px 24px; }
+}
+.allo-v7-company dl { margin: 0; display: grid; gap: 4px; }
+.allo-v7-company dt { color: var(--v7-gold); }
+.allo-v7-company dd { margin: 0; color: var(--v7-text); }
+.allo-v7-company small { display: block; margin-top: 8px; color: var(--v7-text-3); font-size: 12px; }
+
+/* ---------------------------------------------------------------------
+   Footer
+   --------------------------------------------------------------------- */
+.allo-v7-footer {
+  border-top: 1px solid var(--v7-line-2);
+  margin-top: 32px;
+  background: var(--v7-bg);
+}
+.allo-v7-footer-grid {
+  display: grid;
+  gap: 32px;
+  padding-block: 48px;
+}
+@media (min-width: 768px) { .allo-v7-footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; } }
+.allo-v7-footer img { height: 44px; width: auto; }
+.allo-v7-footer p { margin-top: 16px; max-width: 34ch; color: var(--v7-text-3); font-size: 0.9rem; }
+.allo-v7-footer h3 { color: var(--v7-gold); margin-bottom: 14px; }
+.allo-v7-footer-col { display: grid; gap: 8px; align-content: start; }
+.allo-v7-footer-col a { color: var(--v7-text-2); font-size: 0.95rem; width: fit-content; transition: color 0.2s; }
+.allo-v7-footer-col a:hover { color: var(--v7-text); }
+.allo-v7-footer-col small { color: var(--v7-text-3); font-size: 12px; }
+.allo-v7-footer-bottom {
+  border-top: 1px solid var(--v7-line);
+}
+.allo-v7-footer-bottom .allo-v7-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-block: 18px;
+  color: var(--v7-text-3);
+  font-size: 12px;
+}
+.allo-v7-footer-bottom a:hover { color: var(--v7-text); }
+
+/* Admin-genväg (bara för inloggade admins) */
+.allo-v7-admin {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 40;
+  padding: 8px 12px;
+  border: 1px solid var(--v7-gold-line);
+  background: rgba(10, 10, 10, 0.9);
+  color: var(--v7-gold);
+}
+
+/* ---------------------------------------------------------------------
+   Rörelse: sparsam, och av vid prefers-reduced-motion
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .allo-v7 *,
+  .allo-v7 *::before,
+  .allo-v7 *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
